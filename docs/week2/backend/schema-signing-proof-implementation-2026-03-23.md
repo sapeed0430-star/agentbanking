@@ -71,12 +71,18 @@
 
 ## Verification Result
 - Test command: `npm test`
-- Result: `PASS (13/13)`
+- Result: `PASS (17/17)`
 - Added proof-unavailable negative test:
   - confirms `503` and detailed stage metadata for operational triage
 - Added offline verifier tests:
   - PASS for valid fixture
   - FAIL for digest mismatch
+- Added strict Ed25519 verification test:
+  - offline verify PASS with generated key pair in strict mode
+- Added adapter-focused tests:
+  - Rekor response parsing success path
+  - Rekor missing public key failure path
+  - RFC3161 missing endpoint failure path
 
 ## Remaining Work
 1. Wire signer to HSM/KMS and key rotation policy.

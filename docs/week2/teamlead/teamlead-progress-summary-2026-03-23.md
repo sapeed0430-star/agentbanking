@@ -34,13 +34,16 @@
   - `scripts/verify-receipt-cli.js`
   - `test/auditApi.test.js`
   - `test/offlineVerify.test.js`
+  - `test/offlineVerifyEd25519.test.js`
+  - `test/transparencyAdapter.test.js`
+  - `test/timestampAdapter.test.js`
 - Documents:
   - `docs/week2/backend/schema-signing-proof-implementation-2026-03-23.md`
   - `docs/week2/operations/agent-execution-status-2026-03-23.md`
 
 ## Test Result
 - Command: `npm test`
-- Result: `PASS (13/13)`
+- Result: `PASS (17/17)`
 
 ## Remaining Risk (Gate Not Yet Closed)
 1. Production 인증서/공개키를 사용한 TSA/Rekor staging integration test가 아직 없음.
