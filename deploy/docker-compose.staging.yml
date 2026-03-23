@@ -1,0 +1,47 @@
+services:
+  api:
+    container_name: agentbanking-api-staging
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: agentbanking-api:staging
+    init: true
+    restart: unless-stopped
+    ports:
+      - "${STAGING_API_PORT:-3000}:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      # Required in production runtime; placeholder values are rejected at startup.
+      AUDIT_ADMIN_TOKEN: "${AUDIT_ADMIN_TOKEN:?AUDIT_ADMIN_TOKEN is required}"
+      AUDIT_PROOF_TIMEOUT_MS: "${AUDIT_PROOF_TIMEOUT_MS:-10000}"
+
+      # Safe defaults for staging. Switch to real providers per environment.
+      AUDIT_SIGNER_MODE: "${AUDIT_SIGNER_MODE:-mock}"
+      AUDIT_TIMESTAMP_MODE: "${AUDIT_TIMESTAMP_MODE:-mock}"
+      AUDIT_TRANSPARENCY_MODE: "${AUDIT_TRANSPARENCY_MODE:-mock}"
+
+      AUDIT_SIGNER_KID: "${AUDIT_SIGNER_KID:-staging-ed25519-key-2026q1}"
+      AUDIT_SIGNER_PRIVATE_KEY_PEM: "${AUDIT_SIGNER_PRIVATE_KEY_PEM:-}"
+
+      AUDIT_RFC3161_ENDPOINT: "${AUDIT_RFC3161_ENDPOINT:-}"
+      AUDIT_TSA_NAME: "${AUDIT_TSA_NAME:-rfc3161-tsa}"
+      AUDIT_RFC3161_CA_CERT_PATH: "${AUDIT_RFC3161_CA_CERT_PATH:-}"
+
+      AUDIT_REKOR_BASE_URL: "${AUDIT_REKOR_BASE_URL:-}"
+      AUDIT_REKOR_PUBLIC_KEY_PEM_B64: "${AUDIT_REKOR_PUBLIC_KEY_PEM_B64:-}"
+      AUDIT_TRANSPARENCY_LOG_ID: "${AUDIT_TRANSPARENCY_LOG_ID:-rekor-staging}"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "const http=require('http');const req=http.get({host:'127.0.0.1',port:3000,path:'/.well-known/jwks.json',timeout:3000},(res)=>{process.exit(res.statusCode===200?0:1)});req.on('error',()=>process.exit(1));req.on('timeout',()=>{req.destroy();process.exit(1);});"
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true

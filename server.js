@@ -15,6 +15,7 @@ import { createVerifierEngine } from './src/audit/verifier-engine.js';
 const PORT = process.env.PORT || 3000;
 const ROOT = process.cwd();
 const RETENTION_YEARS = 6;
+const DEFAULT_ADMIN_TOKEN = 'local-admin-token';
 const RECEIPT_SCHEMA_PATH = join(ROOT, 'docs/week1/backend/receipt-1.0.0.schema.json');
 
 const MIME_TYPES = {
@@ -65,8 +66,30 @@ function authTokenValid(req) {
 
 function adminTokenValid(req) {
   const adminToken = req.headers['x-admin-token'];
-  const expected = process.env.AUDIT_ADMIN_TOKEN || 'local-admin-token';
+  const expected = process.env.AUDIT_ADMIN_TOKEN || DEFAULT_ADMIN_TOKEN;
   return isNonEmptyString(adminToken) && adminToken === expected;
+}
+
+function isWeakAdminToken(adminToken) {
+  if (!isNonEmptyString(adminToken)) return true;
+  const normalized = adminToken.trim().toLowerCase();
+  return (
+    adminToken === DEFAULT_ADMIN_TOKEN ||
+    normalized.includes('change-me') ||
+    normalized.includes('changeme') ||
+    normalized.includes('default') ||
+    adminToken.length < 24
+  );
+}
+
+function validateRuntimeSecurityConfig() {
+  if ((process.env.NODE_ENV || '').toLowerCase() !== 'production') return;
+  const adminToken = process.env.AUDIT_ADMIN_TOKEN || '';
+  if (isWeakAdminToken(adminToken)) {
+    throw new Error(
+      'AUDIT_ADMIN_TOKEN must be a strong non-default token in production (>=24 chars, no placeholder text).'
+    );
+  }
 }
 
 function parseJsonBody(req) {
@@ -130,6 +153,8 @@ export function createAppServer({
   receiptIssuer = createReceiptIssuer({ retentionYears: RETENTION_YEARS }),
   certificateIssuer = createCertificateIssuer(),
 } = {}) {
+  validateRuntimeSecurityConfig();
+
   const receipts = new Map();
   const reports = new Map();
   const certificates = new Map();

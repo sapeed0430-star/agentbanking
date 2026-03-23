@@ -14,6 +14,7 @@ Copy `.env.example` and configure adapters:
 - signer: `AUDIT_SIGNER_MODE=mock|local-ed25519`
 - timestamp: `AUDIT_TIMESTAMP_MODE=mock|rfc3161`
 - transparency: `AUDIT_TRANSPARENCY_MODE=mock|rekor`
+- production guard: `AUDIT_ADMIN_TOKEN` must be non-default, 24+ chars
 
 ## Local commands
 ```bash

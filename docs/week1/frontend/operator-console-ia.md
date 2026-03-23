@@ -9,8 +9,11 @@
 5. Evidence Vault
 6. Policy Rules
 7. Integrations
-8. Billing
-9. Settings
+8. LLM Monitor
+9. Billing & Subscription
+10. API Security
+11. Export Center
+12. Settings
 
 ## Overview Page Modules
 
@@ -45,8 +48,48 @@
 5. Timeline and chain-of-custody section
 6. Actions: download JSON, copy verification command, open report
 
-## Access Model
+## Launch Operations IA
 
-1. Operator: read/write verify endpoints, read receipts
-2. Reviewer: read receipts/reports, comment only
-3. Compliance admin: export, retention, legal hold controls
+### Billing & Subscription Management
+
+1. Current plan and environment scope (sandbox/production)
+2. Usage meters (verification count, storage, API overage)
+3. Invoice history and receipt download
+4. Payment method and tax/business profile
+5. Seat and role license assignment
+6. Upgrade/downgrade and renewal controls
+7. Dunning and failed payment alerts
+
+### API Keys & JWKS Visibility
+
+1. API key inventory (name, scope, created at, last used)
+2. Key lifecycle actions (create, rotate, revoke, expire)
+3. Scoped permissions matrix by endpoint group
+4. JWKS viewer (active `kid`, algorithm, status, publish time)
+5. Key rotation audit timeline and rollout checklist
+6. mTLS/OIDC integration status panel
+
+### Audit Evidence Export Center
+
+1. Export request form (date range, agent, policy, result)
+2. Export package profiles (regulator, internal audit, legal)
+3. Bundle manifest preview (report, receipt, proof, key state)
+4. Job queue and progress tracking
+5. Secure delivery channel selector (signed URL/SFTP/API push)
+6. Retention expiry and re-export history
+
+## LLM Verification Monitoring IA
+
+1. Model traffic overview by provider/model/version
+2. Latency dashboard (p50/p95/p99, timeout rate)
+3. Failure reason breakdown (schema mismatch, signature invalid, policy reject, provider error)
+4. Cost analytics (cost per verification, daily burn, budget threshold alerts)
+5. Drift watch (result delta by policy/model change)
+6. Incident timeline with linked receipts and evidence
+7. Alert rules (SLO breach, cost spike, failure burst)
+
+## Role-Based Access Notes
+
+1. Operator: run verification, view receipts/reports, monitor LLM performance; no key rotation, billing owner update, retention/legal policy change authority.
+2. Compliance: access Export Center, evidence retention, legal hold, audit package generation; read-only for API key lifecycle and billing plan changes.
+3. Admin: full control over billing/subscription, API keys, JWKS lifecycle, org-wide settings; approval authority for key revoke, plan downgrade, retention policy change.

@@ -155,3 +155,94 @@
 3. Error callout에 `error_code`, `severity`, `retryable`, `correlation_id`, `remediation` 표시.
 4. 모든 터치 액션 버튼 최소 높이 `44px` 충족.
 5. `PASS/PARTIAL/BLOCK` 진행 잠금 규칙이 화면 행동 설명과 일치.
+
+## 8) Billing + Plan Management (Launch-Critical)
+
+```
++--------------------------------------------------------------------------------+
+| Billing & Plan                                                                  |
++--------------------------------------------------------------------------------+
+| Current Plan Card                | Usage Snapshot                               |
+| - plan_tier                      | - verify requests (MTD)                      |
+| - monthly base fee               | - tsa/rekor overage count                    |
+| - next invoice date              | - projected invoice                           |
++----------------------------------+----------------------------------------------+
+| Payment Method                   | Invoices                                      |
+| - card/bank account              | - invoice_id | period | amount | status       |
+| - billing contact                | - download pdf/json                           |
++----------------------------------+----------------------------------------------+
+| Plan Actions: Upgrade | Downgrade | Cancel | Set Spend Alert                   |
++--------------------------------------------------------------------------------+
+```
+
+### Billing Screen Behavior Notes
+1. Plan downgrade는 즉시 적용이 아니라 다음 청구주기 적용으로 명시.
+2. 미납/결제 실패는 `high` severity 경고 배너로 표시하고 결제수단 업데이트를 강제.
+3. 한도 초과 임박(예: 80% 이상)은 `medium` 콜아웃으로 노출.
+
+### Mobile 320px Constraints (Billing)
+1. Plan Card, Usage Snapshot, Payment Method, Invoices 순서의 단일 컬럼 스택.
+2. Invoice row는 요약 카드(`invoice_id`, `amount`, `status`) 후 탭 확장 상세.
+3. 주요 액션 버튼은 수직 스택, 최소 높이 `44px`, 버튼 간격 `8px`.
+
+## 9) API Key / JWKS Management (Launch-Critical)
+
+```
++--------------------------------------------------------------------------------+
+| API Keys & JWKS                                                                 |
++--------------------------------------------------------------------------------+
+| API Keys                            | Key Rotation / Access                     |
+| - key_id | created_at | last_used    | - create key                             |
+| - status(active/revoked)            | - rotate key (schedule/immediate)        |
+| - scope(verify/read/admin)          | - revoke key                              |
++--------------------------------------+------------------------------------------+
+| JWKS Publish                         | Access Controls                            |
+| - /.well-known/jwks.json endpoint    | - operator role mapping                    |
+| - active kids                         | - mTLS requirement status                  |
+| - cache ttl / last publish            | - IP allowlist summary                     |
++--------------------------------------+------------------------------------------+
+| Actions: Copy JWKS URL | Generate Key | Rotate | Revoke                         |
++--------------------------------------------------------------------------------+
+```
+
+### API Key/JWKS Severity Contract
+1. `critical`: 서명 키 유출 의심, 즉시 lane lock + 신규 키 강제 회전.
+2. `high`: 만료 임박 또는 JWKS publish 실패, 승인 전 조치 필요.
+3. `medium`: 과도한 미사용 키 감지, 정리 권고 체크리스트.
+4. `low`: 일반 운영 알림(예: cache refresh 완료).
+
+### Mobile 320px Constraints (API/JWKS)
+1. API Keys 테이블은 카드 리스트로 전환 (`key_id`, `status`, `scope`, `last_used`).
+2. JWKS endpoint/active kid는 줄바꿈 가능한 monospace 블록으로 표기.
+3. Rotate/Revoke는 오동작 방지를 위해 확인 모달 2단계 유지.
+
+## 10) Verification Cost / Latency Monitor (Launch-Critical)
+
+```
++--------------------------------------------------------------------------------+
+| Verification Cost & Latency Monitor                                            |
++--------------------------------------------------------------------------------+
+| Time Range: 1h | 24h | 7d | 30d     | Filter: agent_id / policy / result       |
++--------------------------------------------------------------------------------+
+| Latency Trend (p50/p95/p99)            | Cost Trend (request/timestamp/log)      |
++-----------------------------------------+----------------------------------------+
+| Error Budget / SLO Burn                 | External Dependency Health               |
+| - p95 target: <= 2s (<=3s with TSA)     | - TSA response latency                   |
+| - breach windows                         | - Rekor submit latency                   |
++-----------------------------------------+----------------------------------------+
+| Hotspots Table: request_id | latency_ms | cost | external_step | severity        |
++--------------------------------------------------------------------------------+
+| Actions: Open Receipt | Open Report | Export CSV                                |
++--------------------------------------------------------------------------------+
+```
+
+### Cost/Latency Severity Mapping
+1. `critical`: SLO 연속 위반 + 비용 급증 동시 발생, BLOCK 및 incident 생성.
+2. `high`: p95 초과가 임계치 구간에서 지속, owner 할당 및 완화작업 필요.
+3. `medium`: 일시적 스파이크, 원인 분석 태스크 자동 생성.
+4. `low`: 정상 범위 내 변동, 추세 참고용.
+
+### Mobile 320px Constraints (Cost/Latency)
+1. 두 개의 추세 차트는 탭 전환(`Latency`, `Cost`) 방식으로 1개씩 표시.
+2. Hotspots Table은 세로 카드 리스트로 전환, 핵심 4필드 우선 노출.
+3. SLO/Burn 경고는 상단 sticky callout으로 표시, 상세는 하단 시트 확장.

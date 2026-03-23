@@ -293,6 +293,32 @@ test('GET /.well-known/jwks.json returns public keys', async (t) => {
   assert.equal(jwks.keys[0].crv, 'Ed25519');
 });
 
+test('createAppServer rejects weak admin token in production', () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  const previousAdminToken = process.env.AUDIT_ADMIN_TOKEN;
+  try {
+    process.env.NODE_ENV = 'production';
+    process.env.AUDIT_ADMIN_TOKEN = 'change-me-staging-admin-token';
+
+    assert.throws(
+      () => createAppServer(),
+      /AUDIT_ADMIN_TOKEN must be a strong non-default token in production/
+    );
+  } finally {
+    if (previousNodeEnv === undefined) {
+      delete process.env.NODE_ENV;
+    } else {
+      process.env.NODE_ENV = previousNodeEnv;
+    }
+
+    if (previousAdminToken === undefined) {
+      delete process.env.AUDIT_ADMIN_TOKEN;
+    } else {
+      process.env.AUDIT_ADMIN_TOKEN = previousAdminToken;
+    }
+  }
+});
+
 test('admin key rotate and revoke flow', async (t) => {
   const server = createAppServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));

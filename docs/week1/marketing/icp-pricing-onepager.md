@@ -33,12 +33,37 @@ AgentBanking issues tamper-evident Receipt/Certificate artifacts for autonomous 
 ## Packaging and Price Draft
 
 | Plan | Target ICP | Included | Price Draft | Trust-Focused CTA |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | Starter | Segment 1 | 50k verifications/mo, basic receipt, 3 users | USD 499/mo + overage | "Publish LP-ready Receipt evidence for each key strategy run." |
 | Growth | Segment 2 | 500k verifications/mo, RFC3161, evidence vault, 10 users | USD 2,500/mo + overage | "Automate reviewer-ready Receipt/Certificate bundles across teams." |
 | Regulated | Segment 3 | 2M verifications/mo, transparency proofs, legal hold, SSO, 99.95 SLA | USD 12,000/mo + overage | "Defend examiner and legal reviews with tamper-evident Certificate proof trails." |
 
 Compliance note near CTA: These CTAs describe evidence workflow outcomes and do not guarantee regulatory approval or exam outcomes.
+
+## Week 9-12 Launch Packaging
+
+### 1) Pilot Offer (Week 9-11)
+
+- Name: Design Partner Pilot (time-boxed)
+- Duration: 8-12 weeks
+- Scope: one production-like workflow, one policy profile, weekly proof validation review
+- Commercial model: discounted fixed fee + capped event volume + implementation support hours
+- Success criteria: receipt issuance reliability, offline verify pass rate, operator adoption checkpoints
+- Pilot guardrail: pilot materials can support control-evidence preparation but are not represented as regulator-approved status.
+
+### 2) GA Pricing Transition (Week 12)
+
+- Transition rule: pilot customers move to Starter/Growth/Regulated within 30 days of pilot completion.
+- Credit policy: a defined portion of pilot fee is credited to the first GA annual contract.
+- Migration package: carryover of receipt history, policy configs, and operator onboarding artifacts.
+- Commercial milestone: GA quote is issued only after pilot exit checklist sign-off by customer engineering and compliance owners.
+
+### 3) Enterprise Security Add-on Framing
+
+- Positioning: "Security and governance acceleration package" for regulated or high-risk deployments.
+- Includes: dedicated tenancy option, BYOK/KMS integration support, SSO/SAML hardening, log export/SIEM integration support, incident-response runbook review.
+- Pricing model: base monthly add-on + optional one-time security onboarding fee.
+- Claim guardrail: framed as risk-reduction and operational control support, not as standalone compliance certification.
 
 ## Overage and Add-ons
 
@@ -46,6 +71,15 @@ Compliance note near CTA: These CTAs describe evidence workflow outcomes and do 
 2. Additional storage: per GB-month.
 3. Dedicated tenancy and BYOK: enterprise add-on.
 4. Compliance export pack: per framework per month.
+5. Enterprise security onboarding: one-time package for architecture and control rollout support.
+
+## Payment Experience (Subscription + Invoicing, No-Overclaim)
+
+1. Default billing path: monthly or annual subscription by card for Starter/Growth.
+2. Invoicing path: bank-transfer invoicing for Regulated and enterprise customers with procurement workflow.
+3. Contract controls: PO number, billing contact split, tax/VAT fields, and renewal notice window captured at order time.
+4. Revenue policy message: invoices and receipts represent service usage and evidence processing scope only; they do not represent legal or regulatory clearance.
+5. Customer trust note: payment terms and refund/cancellation rules are shown in plain language before activation.
 
 ## Positioning Messages
 
