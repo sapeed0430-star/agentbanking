@@ -1,0 +1,82 @@
+:root {
+  --bg: #f4f4f4;
+  --panel: #ffffff;
+  --text: #222222;
+  --border: #cfcfcf;
+  --snake: #1f7a3f;
+  --food: #c0392b;
+  --empty: #fdfdfd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.app {
+  max-width: 480px;
+  margin: 24px auto;
+  padding: 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.hud h1 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+}
+
+.hud p {
+  margin: 4px 0;
+}
+
+.game-wrap {
+  margin: 12px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--border);
+  background: var(--empty);
+}
+
+.cell {
+  border: 1px solid #efefef;
+}
+
+.cell.snake {
+  background: var(--snake);
+}
+
+.cell.food {
+  background: var(--food);
+}
+
+.actions,
+.controls,
+.middle-row {
+  display: flex;
+  gap: 8px;
+}
+
+.controls {
+  flex-direction: column;
+  margin-top: 12px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 8px 10px;
+  cursor: pointer;
+}
