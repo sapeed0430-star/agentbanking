@@ -20,6 +20,7 @@
 4. Offline Verification Gate
 - Offline verify module + CLI skeleton implemented.
 - Digest mismatch negative case validated in test.
+- `POST /verify/offline` API path added and pass/fail behavior validated.
 
 ## Evidence
 - Code:
@@ -45,7 +46,7 @@
 
 ## Test Result
 - Command: `npm test`
-- Result: `PASS (17/17)`
+- Result: `PASS (19/19)`
 
 ## Remaining Risk (Gate Not Yet Closed)
 1. Production 인증서/공개키를 사용한 TSA/Rekor staging integration test가 아직 없음.

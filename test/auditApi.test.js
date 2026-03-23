@@ -44,6 +44,17 @@ async function postVerify(baseUrl, payload, operatorId = payload.operator_id) {
   });
 }
 
+async function postOfflineVerify(baseUrl, payload) {
+  return fetch(`${baseUrl}/verify/offline`, {
+    method: 'POST',
+    headers: {
+      ...AUTH,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
 test('POST /verify issues receipt and audit report', async (t) => {
   const server = createAppServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
@@ -152,6 +163,56 @@ test('GET /receipts/{id} returns 403 when operator does not match', async (t) =>
   assert.equal(res.status, 403);
   const error = await res.json();
   assert.equal(error.code, 'FORBIDDEN');
+});
+
+test('POST /verify/offline returns PASS for issued receipt/report', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const payload = verifyPayload({ request_id: 'req-offline-pass-001' });
+  const created = await postVerify(baseUrl, payload);
+  assert.equal(created.status, 201);
+  const createdBody = await created.json();
+
+  const res = await postOfflineVerify(baseUrl, {
+    receipt: createdBody.receipt,
+    audit_report: createdBody.audit_report,
+    strict_signature: false,
+  });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.verification_result, 'PASS');
+});
+
+test('POST /verify/offline returns 422 for tampered audit report', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const payload = verifyPayload({ request_id: 'req-offline-fail-001' });
+  const created = await postVerify(baseUrl, payload);
+  assert.equal(created.status, 201);
+  const createdBody = await created.json();
+
+  const tamperedReport = {
+    ...createdBody.audit_report,
+    summary: 'tampered-summary',
+  };
+
+  const res = await postOfflineVerify(baseUrl, {
+    receipt: createdBody.receipt,
+    audit_report: tamperedReport,
+    strict_signature: false,
+  });
+  assert.equal(res.status, 422);
+  const body = await res.json();
+  assert.equal(body.code, 'INTEGRITY_CHECK_FAILED');
+  assert.ok(body.integrity_result.failed_codes.includes('DIGEST_MISMATCH'));
 });
 
 test('POST /verify returns 503 when proof adapter is unavailable', async (t) => {

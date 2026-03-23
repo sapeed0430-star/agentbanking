@@ -68,6 +68,8 @@
   - digest consistency
   - JWS signature format and optional Ed25519 verification
   - timestamp/transparency proof basic shape checks
+- Added offline verification API endpoint:
+  - `POST /verify/offline` (same verification core as CLI/module)
 - Added local key generation utility:
   - `scripts/generate-ed25519-keypair.js`
 - Added staging runbook:
@@ -75,7 +77,7 @@
 
 ## Verification Result
 - Test command: `npm test`
-- Result: `PASS (17/17)`
+- Result: `PASS (19/19)`
 - Added proof-unavailable negative test:
   - confirms `503` and detailed stage metadata for operational triage
 - Added offline verifier tests:
@@ -87,6 +89,9 @@
   - Rekor response parsing success path
   - Rekor missing public key failure path
   - RFC3161 missing endpoint failure path
+- Added offline API tests:
+  - `/verify/offline` PASS for issued receipt/report
+  - `/verify/offline` 422 for tampered report digest mismatch
 
 ## Remaining Work
 1. Wire signer to HSM/KMS and key rotation policy.

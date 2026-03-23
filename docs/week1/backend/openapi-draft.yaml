@@ -72,6 +72,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /verify/offline:
+    post:
+      operationId: verifyReceiptOffline
+      summary: Verify issued receipt/report pair without re-running online pipeline.
+      tags: [Verification]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfflineVerifyRequest'
+      responses:
+        '200':
+          description: Offline verification passed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfflineVerifyResult'
+        '400':
+          description: Invalid offline verification payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Offline verification failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrityFailureResponse'
+        '500':
+          description: Internal verification error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /receipts/{receiptId}:
     get:
       operationId: getReceiptById
@@ -158,6 +200,62 @@ components:
           $ref: '#/components/schemas/Receipt'
         audit_report:
           $ref: '#/components/schemas/AuditReport'
+    OfflineVerifyRequest:
+      type: object
+      required: [receipt, audit_report]
+      properties:
+        receipt:
+          $ref: '#/components/schemas/Receipt'
+        audit_report:
+          $ref: '#/components/schemas/AuditReport'
+        public_key_pem:
+          type: string
+          description: Optional Ed25519 public key PEM for strict signature verification.
+        strict_signature:
+          type: boolean
+          default: false
+    OfflineVerifyCheck:
+      type: object
+      required: [name, ok, code, severity, message]
+      properties:
+        name:
+          type: string
+        ok:
+          type: boolean
+        code:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        message:
+          type: string
+    OfflineVerifyResult:
+      type: object
+      required:
+        - correlation_id
+        - verification_result
+        - failed_codes
+        - warnings
+        - checks
+      properties:
+        correlation_id:
+          type: string
+          format: uuid
+        verification_result:
+          type: string
+          enum: [PASS, FAIL]
+        failed_codes:
+          type: array
+          items:
+            type: string
+        warnings:
+          type: array
+          items:
+            type: string
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfflineVerifyCheck'
     Receipt:
       type: object
       required:

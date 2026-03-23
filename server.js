@@ -4,11 +4,13 @@ import { extname, join, normalize } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { digestCanonicalJson } from './src/audit/canonical.js';
+import { verifyReceiptOffline } from './src/audit/offline-verify.js';
 import { createAuditRuntime } from './src/audit/runtime.js';
 
 const PORT = process.env.PORT || 3000;
 const ROOT = process.cwd();
 const RETENTION_YEARS = 6;
+const RECEIPT_SCHEMA_PATH = join(ROOT, 'docs/week1/backend/receipt-1.0.0.schema.json');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -400,6 +402,111 @@ export function createAppServer({ root = ROOT, auditRuntime = createAuditRuntime
         receipt,
         audit_report: auditReport,
       });
+    }
+
+    if (req.method === 'POST' && path === '/verify/offline') {
+      if (!authTokenValid(req)) {
+        return json(
+          res,
+          401,
+          errorResponse(
+            'UNAUTHORIZED',
+            'Missing or invalid Authorization header.',
+            'authz',
+            true,
+            'medium',
+            { header: 'authorization' },
+            'Send a valid Bearer token and retry.'
+          )
+        );
+      }
+
+      let body;
+      try {
+        body = await parseJsonBody(req);
+      } catch {
+        return json(
+          res,
+          400,
+          errorResponse(
+            'INVALID_REQUEST',
+            'Invalid JSON payload.',
+            'validation',
+            false,
+            'medium',
+            { parse: 'invalid_json' },
+            'Fix JSON syntax and retry.'
+          )
+        );
+      }
+
+      if (!body || typeof body !== 'object' || !body.receipt || !body.audit_report) {
+        return json(
+          res,
+          400,
+          errorResponse(
+            'INVALID_REQUEST',
+            'receipt and audit_report are required.',
+            'validation',
+            false,
+            'medium',
+            {},
+            'Send receipt and audit_report in request body.'
+          )
+        );
+      }
+
+      let schema;
+      try {
+        const raw = await readFile(RECEIPT_SCHEMA_PATH, 'utf8');
+        schema = JSON.parse(raw);
+      } catch (err) {
+        return json(
+          res,
+          500,
+          errorResponse(
+            'INTERNAL_ERROR',
+            'Failed to load receipt schema for offline verification.',
+            'system',
+            true,
+            'high',
+            { reason: err.message },
+            'Check schema path and server configuration.'
+          )
+        );
+      }
+
+      const result = verifyReceiptOffline({
+        receipt: body.receipt,
+        auditReport: body.audit_report,
+        schema,
+        publicKeyPem: typeof body.public_key_pem === 'string' ? body.public_key_pem : '',
+        strictSignature: body.strict_signature === true,
+      });
+
+      if (result.verification_result === 'PASS') {
+        return json(res, 200, result);
+      }
+
+      return json(
+        res,
+        422,
+        {
+          ...errorResponse(
+            'INTEGRITY_CHECK_FAILED',
+            'Offline verification failed.',
+            'integrity',
+            false,
+            'high',
+            {
+              failed_codes: result.failed_codes,
+              checks: result.checks,
+            },
+            'Review failed checks and submit corrected receipt/report.'
+          ),
+          integrity_result: result,
+        }
+      );
     }
 
     if (req.method === 'GET' && path.startsWith('/receipts/')) {

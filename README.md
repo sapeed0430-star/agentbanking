@@ -4,6 +4,7 @@ Autonomous investment agent verification/audit prototype.
 
 ## Current backend scope
 - `POST /verify`
+- `POST /verify/offline`
 - `GET /receipts/{receiptId}`
 - `GET /receipts/{receiptId}/verify`
 - `GET /reports/{reportId}`

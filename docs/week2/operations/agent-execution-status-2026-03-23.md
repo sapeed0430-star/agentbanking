@@ -4,7 +4,7 @@
 | Agent | Assigned Scope | Today Check Result | Evidence |
 |---|---|---|---|
 | Research | 규제/표준 매핑 정합성 강화 | PARTIAL | `docs/program/detailed-plan-product-architecture-integrity-receipt.md` |
-| Backend | API/스키마/무결성 처리 구현 | PASS | `server.js`, `scripts/verify-receipt-cli.js`, `scripts/generate-ed25519-keypair.js`, `src/audit/*`, `test/auditApi.test.js`, `test/offlineVerify.test.js`, `test/offlineVerifyEd25519.test.js`, `test/transparencyAdapter.test.js`, `test/timestampAdapter.test.js`, `docs/week2/backend/rfc3161-rekor-staging-playbook.md` |
+| Backend | API/스키마/무결성 처리 구현 | PASS | `server.js`, `scripts/verify-receipt-cli.js`, `scripts/generate-ed25519-keypair.js`, `src/audit/*`, `test/auditApi.test.js`, `test/offlineVerify.test.js`, `test/offlineVerifyEd25519.test.js`, `test/transparencyAdapter.test.js`, `test/timestampAdapter.test.js`, `docs/week2/backend/rfc3161-rekor-staging-playbook.md` (`19/19` pass) |
 | Frontend | 오류코드 UI 상태 패널 | PARTIAL | `docs/week2/frontend/error-code-ui-mapping-contract.md` |
 | Design | 무결성 상태 시각 가이드 | PARTIAL | 기존 와이어/토큰 문서 기준, 금일 코드 반영 없음 |
 | Marketing | ICP/요금/가치 메시지 | PARTIAL | 기존 one-pager 초안 기준, 금일 업데이트 없음 |
