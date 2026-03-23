@@ -19,6 +19,8 @@
     "timestamp_proof",
     "transparency_proof",
     "evidence_refs",
+    "retention_until",
+    "verification_endpoint",
     "links"
   ],
   "properties": {
@@ -175,6 +177,14 @@
           }
         }
       }
+    },
+    "retention_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verification_endpoint": {
+      "type": "string",
+      "format": "uri"
     },
     "links": {
       "type": "object",

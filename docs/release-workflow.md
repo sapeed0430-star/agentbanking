@@ -51,3 +51,11 @@ This repository now includes an automation Makefile for branch operations.
 7. `make release-finish VERSION=<x.y.z>`
 8. `make push-main`
 9. apply branch protection rules in GitHub UI (manual)
+
+## GitHub HTTPS Authentication
+
+- Configure once per machine: `git config --global credential.helper osxkeychain`
+- On first push, use:
+  - Username: `sapeed0430-star`
+  - Password: Personal Access Token (PAT, repo scope required)
+- If push fails, retry with: `make push-all`

@@ -51,3 +51,33 @@
 2. Twice-weekly risk review for security/compliance issues.
 3. Weekly demo with cross-functional sign-off.
 4. Weekly backlog reprioritization by team lead.
+
+## 5) Git/Release Readiness Checklist (Immediate)
+
+1. Confirm `.gitignore` contains `.DS_Store` and local macOS artifacts are removed.
+2. Confirm branch topology: `main`, `develop`, `staging` exist and are clean.
+3. Confirm remote is set correctly: `origin=https://github.com/sapeed0430-star/agentbanking.git`.
+4. Confirm `main` is pushed with `git push -u origin main`.
+5. Push remaining branches with local credentials in hand:
+   - `make push-all`
+   - If `make push-all` blocks on auth, retry with PAT via interactive prompt.
+6. Verify remote branches via `git branch -r`.
+7. Close the loop in team note with:
+   - push timestamp
+   - push result
+   - blocked items and owner
+
+## 6) Operational Check Documents
+
+- Origin branch verification checklist: `docs/week1/teamlead/origin-branch-verification-checklist.md`
+- Week 2 execution plan: `docs/week2/team2-week-plan.md`
+- Week 2 KPI dashboard: `docs/week2/teamlead/kpi-dashboard-spec.md`
+- Week 2 RACI and approval gates: `docs/week2/teamlead/raci-approval-gates.md`
+- Week 2 escalation SLA: `docs/week2/teamlead/escalation-sla.md`
+- Week 2 daily report template: `docs/week2/operations/daily-report-template.md`
+- Week 2 agent allocation: `docs/week2/operations/agent-work-allocation-2026-03-23.md`
+- 12-week daily tracking plan: `docs/program/12-week-development-plan-daily.md`
+- 12-week daily tracking index: `docs/program/daily-tracking-index.md`
+- 12-week daily reports folder: `docs/program/daily-tracking/`
+- Detailed 4-scope development plan: `docs/program/detailed-plan-product-architecture-integrity-receipt.md`
+- Agent ownership reinforcement v2: `docs/program/agent-ownership-plan-v2.md`

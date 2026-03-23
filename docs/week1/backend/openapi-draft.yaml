@@ -30,6 +30,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Operator not allowed to verify this agent/request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Duplicate verification request detected by idempotency key/request_id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Verification processed but integrity checks failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrityFailureResponse'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal verification pipeline error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Dependent proof service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /receipts/{receiptId}:
     get:
       operationId: getReceiptById
@@ -49,8 +91,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Receipt'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Operator not allowed to access this receipt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: Receipt not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too many requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal retrieval error.
           content:
             application/json:
               schema:
@@ -103,6 +169,8 @@ components:
         - schema_version
         - issued_at
         - verification_result
+        - retention_until
+        - verification_endpoint
       properties:
         receipt_id:
           type: string
@@ -172,6 +240,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EvidenceRef'
+        retention_until:
+          type: string
+          format: date-time
+        verification_endpoint:
+          type: string
+          format: uri
         links:
           type: object
           properties:
@@ -224,9 +298,108 @@ components:
           type: string
     ErrorResponse:
       type: object
-      required: [code, message]
+      required:
+        - code
+        - message
+        - severity
+        - category
+        - retryable
+        - correlation_id
       properties:
         code:
           type: string
+          enum:
+            - INVALID_REQUEST
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - DUPLICATE_REQUEST
+            - INTEGRITY_CHECK_FAILED
+            - SIGNATURE_VERIFICATION_FAILED
+            - DIGEST_MISMATCH
+            - TIMESTAMP_PROOF_INVALID
+            - TRANSPARENCY_PROOF_INVALID
+            - REQUEST_REPLAY_DETECTED
+            - RATE_LIMITED
+            - INTERNAL_ERROR
+            - PROOF_SERVICE_UNAVAILABLE
+            - RECEIPT_NOT_FOUND
         message:
           type: string
+        severity:
+          type: string
+          enum: [info, low, medium, high, critical]
+        category:
+          type: string
+          enum: [validation, authz, conflict, integrity, rate_limit, system, not_found]
+        retryable:
+          type: boolean
+        correlation_id:
+          type: string
+          format: uuid
+        details:
+          type: object
+          additionalProperties: true
+        remediation:
+          type: string
+    IntegrityFailureItem:
+      type: object
+      required:
+        - check
+        - reason_code
+        - message
+        - severity
+        - retryable
+      properties:
+        check:
+          type: string
+          enum:
+            - signature
+            - digest
+            - timestamp_proof
+            - transparency_proof
+            - request_replay
+        reason_code:
+          type: string
+          enum:
+            - SIGNATURE_INVALID
+            - DIGEST_MISMATCH
+            - TIMESTAMP_TOKEN_INVALID
+            - TIMESTAMP_TIME_SKEW
+            - TRANSPARENCY_INCLUSION_MISSING
+            - TRANSPARENCY_ROOT_MISMATCH
+            - REQUEST_REPLAY_DETECTED
+        message:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        retryable:
+          type: boolean
+        evidence_uri:
+          type: string
+          format: uri
+        observed_at:
+          type: string
+          format: date-time
+    IntegrityFailureResult:
+      type: object
+      required:
+        - verification_result
+        - failed_checks
+      properties:
+        verification_result:
+          type: string
+          enum: [fail]
+        failed_checks:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/IntegrityFailureItem'
+    IntegrityFailureResponse:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          required: [integrity_result]
+          properties:
+            integrity_result:
+              $ref: '#/components/schemas/IntegrityFailureResult'

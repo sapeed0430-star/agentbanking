@@ -5,7 +5,8 @@ SHELL := /bin/bash
 .PHONY: branch-dev branch-stage branch-sync
 .PHONY: release-start release-finish release-announce
 .PHONY: hotfix-start hotfix-finish
-.PHONY: push-main
+.PHONY: push-main push-all
+.PHONY: daily-report-check
 
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
@@ -19,6 +20,8 @@ help:
 	@echo "make hotfix-start ISSUE=token"
 	@echo "make hotfix-finish ISSUE=token"
 	@echo "make push-main           - push main, develop, staging"
+	@echo "make push-all            - push all branches in .gitignore-safe baseline + release/hotfix"
+	@echo "make daily-report-check DATE=YYYY-MM-DD - validate one daily report"
 
 status:
 	@echo "Current branch: $(CURRENT_BRANCH)"
@@ -120,3 +123,18 @@ push-main:
 	@git push -u origin develop
 	@git push -u origin staging
 	@echo "Push complete for main/develop/staging"
+
+push-all: push-main
+	@for b in $$(git branch --list 'release/*' 'hotfix/*' | sed 's/^..//'); do \
+		if [ -n "$$b" ]; then \
+			git push -u origin "$$b"; \
+		fi; \
+	done
+	@echo "Push complete for main/develop/staging and all local release/* hotfix/* branches"
+
+daily-report-check:
+	@if [ -z "$(DATE)" ]; then \
+		npm run check:daily; \
+	else \
+		npm run check:daily -- --date=$(DATE); \
+	fi
