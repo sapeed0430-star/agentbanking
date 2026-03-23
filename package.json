@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "check:daily": "node scripts/check-daily-report.js"
+    "check:daily": "node scripts/check-daily-report.js",
+    "verify:offline": "node scripts/verify-receipt-cli.js"
   }
 }

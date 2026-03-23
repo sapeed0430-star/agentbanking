@@ -1,24 +1,38 @@
 # Backend Status Report: Error Model and Integrity Failure Handling (2026-03-23)
 
 ## Executive Status
-- Overall status: `PARTIAL (Draft level)`
-- Launch readiness for this scope: `NOT READY`
-- Reason: error model is currently generic and integrity failure handling is not yet fully codified in API response contracts.
+- Overall status: `IN_PROGRESS (Runtime-validated draft)`
+- Launch readiness for this scope: `PARTIAL`
+- Reason: error model and integrity response contracts are runtime-implemented and tested, but cryptographic proof adapters are still mock-level.
 
-## Current Defined State (as-is)
+## Current Defined State (updated runtime)
 
 ### Source 1: `docs/week1/backend/openapi-draft.yaml`
 1. `POST /verify`
-- Defined responses: `201`, `400`
-- Error schema for `400`: `ErrorResponse` (`code`, `message`)
+- Defined responses: `201`, `400`, `401`, `403`, `409`, `422`, `429`, `500`, `503`
+- Runtime-implemented responses:
+  - `201` success receipt issuance
+  - `409` replay detection (`REQUEST_REPLAY_DETECTED`)
+  - `422` integrity failure (`IntegrityFailureResponse`)
+  - `401/403` auth/authz checks
 
 2. `GET /receipts/{receiptId}`
-- Defined responses: `200`, `404`
-- Error schema for `404`: `ErrorResponse` (`code`, `message`)
+- Defined responses: `200`, `401`, `403`, `404`, `429`, `500`
+- Runtime-implemented responses:
+  - `200` receipt retrieval
+  - `403` operator scope mismatch
+  - `404` receipt not found
 
 3. `ErrorResponse` model
-- Required fields: `code`, `message`
-- Missing fields: `severity`, `category`, `retryable`, `correlation_id`, `details`, `remediation`
+- Runtime fields present:
+  - `code`
+  - `message`
+  - `severity`
+  - `category`
+  - `retryable`
+  - `correlation_id`
+  - `details`
+  - `remediation`
 
 ### Source 2: `docs/week1/backend/receipt-1.0.0.schema.json`
 1. Integrity-related required fields exist:
@@ -64,8 +78,10 @@
    `DONE (matrix doc added)`
 5. Align FE state mapping with backend error schema in one contract table.
    `DONE (docs/week2/frontend/error-code-ui-mapping-contract.md)`
+6. Implement runtime and test verification for API.
+   `DONE (server.js + test/auditApi.test.js, 10/10 pass)`
 
 ## Proposed Status Label for Daily Operations
-- `Error Model`: `IN_PROGRESS (v2 draft updated + FE mapping contract added)`
-- `Integrity Failure Handling`: `IN_PROGRESS (decision matrix applied)`
-- `Gate Impact`: still blocks full pass of `G2 Schema/API Freeze` and `G3 Crypto/Integrity Gate` until runtime implementation validation complete
+- `Error Model`: `PASS (runtime validated)`
+- `Integrity Failure Handling`: `PASS (runtime validated, mock-proof mode)`
+- `Gate Impact`: `G2 Schema/API Freeze` risk reduced; `G3 Crypto/Integrity Gate` remains open until real signer/TSA/TLog integration
