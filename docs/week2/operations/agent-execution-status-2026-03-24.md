@@ -15,14 +15,21 @@
 |---|---|---|---|---|
 | Backend | `docs/week2/backend/staging-security-hardening-2026-03-24.md`, `npm test` 24/24 PASS | PARTIAL | No | 보안 하드닝 완료, 단 실연동(RFC3161/Rekor) 및 Docker 기동 증적 미첨부 |
 
+## Task Gate Snapshot (11:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-LIVE-1100 | Backend | `scripts/capture-live-proof-evidence.js`, `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json` | BLOCK | No | 자동수집 구현 완료, 실행 증적은 `timestamp` 단계 실패(`MISSING_TSA_ENDPOINT`) |
+| B-RUNTIME-1100 | Backend | `scripts/capture-runtime-proof.sh`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `Makefile` | PARTIAL | No | compose 미설치로 실패, node fallback은 `jwks=200`, `verify=201` 확인 |
+| R-PAY-1100 | Research | `docs/week2/research/payment-provider-scorecard-2026-03-24.md` | PASS | Yes | 국내 PG + 글로벌 MoR 점수화/권고안 확정 |
+
 ## Open Blockers
 1. Backend
 - Owner: Backend Agent
-- Due: 2026-03-24 11:00 KST
+- Due: 2026-03-24 12:00 KST
 - Required closure:
-  - RFC3161 실연동 성공 증적
-  - Rekor 실연동 성공 증적
-  - Docker compose 실제 기동 증적(또는 동등 환경 로그)
+  - RFC3161 실연동 성공 증적 (`PASS` 결과)
+  - Rekor 실연동 성공 증적 (`PASS` 결과)
+  - Docker compose 실제 기동 증적(동등 환경 로그는 이미 확보)
 
 ## Gate Control Rule Confirmation
 1. `PASS`만 `Next Task Allowed=Yes`

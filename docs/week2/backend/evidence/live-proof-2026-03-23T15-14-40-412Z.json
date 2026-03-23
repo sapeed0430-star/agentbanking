@@ -1,0 +1,95 @@
+{
+  "evidence_type": "live-proof-capture",
+  "spec_version": "B-LIVE-1100",
+  "run_id": "891cf0b6-bebe-4ce2-9961-f33a791a1ec8",
+  "captured_at": "2026-03-23T15:14:40.412Z",
+  "output_path": "/Users/myungchoi/Documents/New project/docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json",
+  "config": {
+    "signer_mode": "mock",
+    "timestamp_mode": "rfc3161",
+    "transparency_mode": "rekor",
+    "proof_timeout_ms": 10000,
+    "tsa_endpoint": null,
+    "rekor_base_url": null,
+    "rekor_public_key_set": false,
+    "tsa_ca_cert_path": ""
+  },
+  "sample": {
+    "request": {
+      "request_id": "req-891cf0b6-bebe-4ce2-9961-f33a791a1ec8",
+      "agent_id": "agent-live-proof",
+      "operator_id": "operator-live-proof",
+      "policy_version": "policy-2026.03",
+      "strategy_hash": "strategy-891cf0b6",
+      "model_hash": "model-891cf0b6",
+      "evidence_refs": [
+        {
+          "kind": "input",
+          "uri": "https://evidence.agentbanking.dev/live-proof/891cf0b6-bebe-4ce2-9961-f33a791a1ec8",
+          "digest": {
+            "alg": "sha-256",
+            "value": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        }
+      ],
+      "proof_targets": [
+        "timestamp",
+        "transparency"
+      ],
+      "run_id": "891cf0b6-bebe-4ce2-9961-f33a791a1ec8"
+    },
+    "digest": {
+      "alg": "sha-256",
+      "value": "7687694a9df159c9020c15e2907e10bbceb69610d11c958f5021f8fd398296cf"
+    },
+    "receipt_id": "live-proof-891cf0b6-bebe-4ce2-9961-f33a791a1ec8",
+    "issued_at": "2026-03-23T15:14:40.412Z"
+  },
+  "steps": [
+    {
+      "stage": "signer",
+      "status": "success",
+      "duration_ms": 0.15,
+      "output": {
+        "format": "jws-compact",
+        "alg": "EdDSA",
+        "kid": "dev-ed25519-key-2026q1",
+        "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRldi1lZDI1NTE5LWtleS0yMDI2cTEifQ.eyJpc3MiOiJhZ2VudGJhbmtpbmctbW9jay1zaWduZXIiLCJhdWQiOiJyZWNlaXB0IiwicmVjZWlwdF9pZCI6ImxpdmUtcHJvb2YtODkxY2YwYjYtYmViZS00Y2UyLTk5NjEtZjMzYTc5MWExZWM4IiwiZGlnZXN0Ijp7ImFsZyI6InNoYS0yNTYiLCJ2YWx1ZSI6Ijc2ODc2OTRhOWRmMTU5YzkwMjBjMTVlMjkwN2UxMGJiY2ViNjk2MTBkMTFjOTU4ZjUwMjFmOGZkMzk4Mjk2Y2YifSwiaWF0IjoiMjAyNi0wMy0yM1QxNToxNDo0MC40MTJaIiwianRpIjoiNTZlY2U5ZDYtMzVmNy00OTIzLWIyOWMtOTQ4YTkwYjZjODk1In0.ZGVmMzIwMzgwYmE2ZmFkNjdkNWY4NDUwMDNiZTAwY2I1NmVmNjgwZGI5ZmVkNGE4YjI2MjRkODFmNTJiZDJlMA"
+      }
+    },
+    {
+      "stage": "timestamp",
+      "status": "failed",
+      "duration_ms": 0.14,
+      "error": {
+        "stage": "timestamp",
+        "error_code": "MISSING_TSA_ENDPOINT",
+        "message": "missing_tsa_endpoint"
+      }
+    },
+    {
+      "stage": "transparency",
+      "status": "skipped",
+      "reason": "not_run_after_timestamp_failure"
+    }
+  ],
+  "artifacts": {
+    "signature": {
+      "format": "jws-compact",
+      "alg": "EdDSA",
+      "kid": "dev-ed25519-key-2026q1",
+      "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRldi1lZDI1NTE5LWtleS0yMDI2cTEifQ.eyJpc3MiOiJhZ2VudGJhbmtpbmctbW9jay1zaWduZXIiLCJhdWQiOiJyZWNlaXB0IiwicmVjZWlwdF9pZCI6ImxpdmUtcHJvb2YtODkxY2YwYjYtYmViZS00Y2UyLTk5NjEtZjMzYTc5MWExZWM4IiwiZGlnZXN0Ijp7ImFsZyI6InNoYS0yNTYiLCJ2YWx1ZSI6Ijc2ODc2OTRhOWRmMTU5YzkwMjBjMTVlMjkwN2UxMGJiY2ViNjk2MTBkMTFjOTU4ZjUwMjFmOGZkMzk4Mjk2Y2YifSwiaWF0IjoiMjAyNi0wMy0yM1QxNToxNDo0MC40MTJaIiwianRpIjoiNTZlY2U5ZDYtMzVmNy00OTIzLWIyOWMtOTQ4YTkwYjZjODk1In0.ZGVmMzIwMzgwYmE2ZmFkNjdkNWY4NDUwMDNiZTAwY2I1NmVmNjgwZGI5ZmVkNGE4YjI2MjRkODFmNTJiZDJlMA"
+    },
+    "timestamp_proof": null,
+    "transparency_proof": null
+  },
+  "result": {
+    "outcome": "FAIL",
+    "failed_stage": "timestamp",
+    "error": {
+      "stage": "timestamp",
+      "error_code": "MISSING_TSA_ENDPOINT",
+      "message": "missing_tsa_endpoint"
+    }
+  }
+}

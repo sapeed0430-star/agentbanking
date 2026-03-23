@@ -42,13 +42,42 @@
 | Marketing | M-ICP-1000 | docs/week1/marketing/icp-pricing-onepager.md | PASS | Yes | - | - | - | Y | ICP, pricing tiers, and compliance guardrails are sufficient for ongoing GTM execution. |
 
 ### Cycle: 2026-03-24 11:00 KST
+#### 11:00 Gate Criteria (Pre-defined)
+- Gate scope: `B-LIVE-1100`, `B-RUNTIME-1100`, `R-PAY-1100`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 검증 불가하면 `BLOCK`.
+- 판정 표기 규칙: 승인 기준 충족 + 필수증적 완비 + 재현 가능 로그 확인 = `PASS`; 그 외는 우선 `BLOCK`으로 잠금 유지.
+
+##### B-LIVE-1100
+- 승인 기준: RFC3161/Rekor 실연동 증적을 자동으로 수집하는 스크립트가 실행되어, 요청-응답-검증 결과를 한 번에 재현할 수 있어야 한다.
+- 필수증적: 스크립트 경로 또는 실행 명령, 실행 stdout/stderr 로그, RFC3161 request/response 요약, Rekor entry/result 요약, 성공한 실행 결과 링크.
+- 판정 룰: 위 증적 중 하나라도 누락되거나 링크가 없으면 `BLOCK`; 모두 존재하고 성공 실행이 확인되면 `PASS`.
+
+##### B-RUNTIME-1100
+- 승인 기준: Docker compose 기동 증적 또는 동등한 실행환경 로그가 존재하고, 서비스가 실제로 올라왔음을 확인할 수 있어야 한다.
+- 필수증적: `docker compose up` 또는 동등 명령 로그, 컨테이너 상태/헬스체크 결과, 실행환경 식별자(이미지 태그/컨테이너 ID/포트 바인딩 중 최소 1개), 성공 확인 링크.
+- 판정 룰: 기동 로그와 확인 증적이 모두 있으면 `PASS`; 증거 링크가 없거나 서비스 기동이 확인되지 않으면 `BLOCK`.
+
+##### R-PAY-1100
+- 승인 기준: 결제 공급자 의사결정 점수표가 완성되어 비교 기준, 점수, 추천안이 명시되어야 한다.
+- 필수증적: 점수표 문서 링크, 비교 기준 정의(정산/수수료/계약/세무/환불/관할/보안/API 성숙도 중 적용 항목), 최종 추천안 또는 보류 사유, 확인 가능한 작성본 링크.
+- 판정 룰: 점수표가 미완성, 추천안이 불명확, 또는 링크가 없으면 `BLOCK`; 항목이 채워지고 판단 근거가 일관되면 `PASS`.
+
+##### 11:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-LIVE-1100 | `scripts/capture-live-proof-evidence.js`, `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json` | BLOCK | No | Backend Agent | 2026-03-24 12:00 | 2026-03-24 12:00 | N | Automation exists, but the evidence JSON ends in `FAIL` at `timestamp` with `MISSING_TSA_ENDPOINT`, so live RFC3161/Rekor proof is not complete. |
+| B-RUNTIME-1100 | `scripts/capture-runtime-proof.sh`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `Makefile` (`runtime-proof` target) | PARTIAL | No | Backend Agent | 2026-03-24 12:00 | 2026-03-24 12:00 | N | Compose-first attempt failed (`docker: command not found`), but node fallback verified `jwks=200` and `verify=201`; equivalent runtime proof is present, compose proof remains incomplete. |
+| R-PAY-1100 | `docs/week2/research/payment-provider-scorecard-2026-03-24.md` | PASS | Yes | - | - | - | Y | Weighted scorecard is complete and the final recommendation is explicit. |
+
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+| Research | R-PAY-1100 | `docs/week2/research/payment-provider-scorecard-2026-03-24.md` | PASS | Yes | - | - | - | Y | Scorecard complete; lane allowed to proceed. |
+| Backend | B-LIVE-1100 / B-RUNTIME-1100 | `scripts/capture-live-proof-evidence.js`, `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`, `scripts/capture-runtime-proof.sh`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `Makefile` (`runtime-proof` target) | PARTIAL | No | Backend Agent | 2026-03-24 12:00 | 2026-03-24 12:00 | N | Rolls up one `BLOCK` live-proof task and one `PARTIAL` runtime-proof task; backend remains locked. |
+| Frontend | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Design | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ### Cycle: 2026-03-24 12:00 KST
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |

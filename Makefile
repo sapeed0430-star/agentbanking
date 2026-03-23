@@ -8,6 +8,7 @@ SHELL := /bin/bash
 .PHONY: push-main push-all
 .PHONY: daily-report-check
 .PHONY: offline-verify keys-gen
+.PHONY: runtime-proof
 
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
@@ -25,6 +26,7 @@ help:
 	@echo "make daily-report-check DATE=YYYY-MM-DD - validate one daily report"
 	@echo "make keys-gen            - generate local Ed25519 key pair for signer/rekor tests"
 	@echo "make offline-verify RECEIPT=... REPORT=... [SCHEMA=...] [PUBKEY=...] - run offline verification CLI"
+	@echo "make runtime-proof       - capture compose-first runtime proof with node fallback"
 
 status:
 	@echo "Current branch: $(CURRENT_BRANCH)"
@@ -163,3 +165,6 @@ offline-verify:
 			npm run verify:offline -- --receipt "$(RECEIPT)" --report "$(REPORT)" --schema "$(SCHEMA)" --public-key "$(PUBKEY)"; \
 		fi; \
 	fi
+
+runtime-proof:
+	@bash scripts/capture-runtime-proof.sh

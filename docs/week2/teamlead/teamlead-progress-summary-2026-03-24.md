@@ -69,6 +69,50 @@
   - `PARTIAL/BLOCK` -> `Next Task Allowed = No`
 - No lane without evidence link was accepted in this cycle.
 
+## 11:00 KST Pre-Gate Checklist
+- This gate is defined before any worker result arrives.
+- Scope:
+  - `B-LIVE-1100`: RFC3161/Rekor 실연동 증적 자동수집 스크립트 + 실행 결과
+  - `B-RUNTIME-1100`: Docker compose 기동 증적 또는 동등 실행환경 로그
+  - `R-PAY-1100`: 결제 공급자 의사결정 점수표 완성
+- Decision rule:
+  - `PASS`만 `Next Task Allowed = Yes`
+  - evidence link가 없으면 자동 `BLOCK`
+  - 링크가 있어도 실행 로그/산출물/결과가 검증 불가하면 `BLOCK`
+- Review checklist:
+  - each task must have a readable evidence link
+  - each task must show the required artifact and a successful or complete state
+  - incomplete scorecards, missing runtime proof, or missing RFC3161/Rekor capture stay locked
+- Current posture: pending worker evidence; no pre-approval is implied by this template.
+
+## 11:00 Final Gate Verdict
+- Cycle verdict: `1 PASS / 1 PARTIAL / 1 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `R-PAY-1100`
+  - `Locked`: `B-LIVE-1100`, `B-RUNTIME-1100`
+- Team Lead approval status:
+  - `Y`: `R-PAY-1100`
+  - `N`: `B-LIVE-1100`, `B-RUNTIME-1100`
+- Verdict details:
+  - `B-LIVE-1100` - `BLOCK`
+    - Evidence: `scripts/capture-live-proof-evidence.js`, `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
+    - Reason: evidence bundle ends in `FAIL` at `timestamp` with `MISSING_TSA_ENDPOINT`, so RFC3161/Rekor live proof is incomplete.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 12:00 KST`
+    - Next update time: `2026-03-24 12:00 KST`
+  - `B-RUNTIME-1100` - `PARTIAL`
+    - Evidence: `scripts/capture-runtime-proof.sh`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `Makefile` (`runtime-proof` target)
+    - Reason: compose-first attempt failed (`docker: command not found`), but node fallback verified `jwks=200` and `verify=201`, so runtime evidence is partial rather than full compose proof.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 12:00 KST`
+    - Next update time: `2026-03-24 12:00 KST`
+  - `R-PAY-1100` - `PASS`
+    - Evidence: `docs/week2/research/payment-provider-scorecard-2026-03-24.md`
+    - Reason: weighted scorecard is complete, comparison criteria are explicit, and the final recommendation is stated.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
+
 ---
 
 ## 10:00 KST Re-validation (Second Decision in Day Cycle)
