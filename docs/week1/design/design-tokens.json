@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "name": "agent-audit-ui-tokens",
+    "version": "0.1.0"
+  },
+  "color": {
+    "bg": {
+      "canvas": "#f3f6fb",
+      "surface": "#ffffff",
+      "surfaceAlt": "#ecf2ff"
+    },
+    "text": {
+      "primary": "#0f172a",
+      "secondary": "#334155",
+      "muted": "#64748b",
+      "inverse": "#f8fafc"
+    },
+    "brand": {
+      "primary": "#0f766e",
+      "primaryStrong": "#115e59",
+      "accent": "#c2410c"
+    },
+    "state": {
+      "success": "#15803d",
+      "warning": "#b45309",
+      "danger": "#b91c1c",
+      "info": "#1d4ed8"
+    },
+    "stroke": {
+      "default": "#cbd5e1",
+      "strong": "#94a3b8"
+    }
+  },
+  "type": {
+    "family": {
+      "heading": "Space Grotesk, Segoe UI, sans-serif",
+      "body": "IBM Plex Sans, Segoe UI, sans-serif",
+      "mono": "JetBrains Mono, SFMono-Regular, monospace"
+    },
+    "size": {
+      "xs": 12,
+      "sm": 14,
+      "md": 16,
+      "lg": 20,
+      "xl": 28,
+      "display": 36
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700
+    },
+    "lineHeight": {
+      "tight": 1.2,
+      "normal": 1.5,
+      "relaxed": 1.7
+    }
+  },
+  "space": {
+    "2": 2,
+    "4": 4,
+    "8": 8,
+    "12": 12,
+    "16": 16,
+    "20": 20,
+    "24": 24,
+    "32": 32,
+    "40": 40,
+    "48": 48,
+    "64": 64
+  },
+  "radius": {
+    "sm": 6,
+    "md": 10,
+    "lg": 14,
+    "xl": 20,
+    "pill": 999
+  },
+  "shadow": {
+    "soft": "0 8px 24px rgba(15, 23, 42, 0.08)",
+    "hard": "0 12px 32px rgba(15, 23, 42, 0.18)"
+  },
+  "motion": {
+    "durationFast": "120ms",
+    "durationBase": "220ms",
+    "durationSlow": "420ms",
+    "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)"
+  }
+}

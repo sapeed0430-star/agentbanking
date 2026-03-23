@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Audit Console Mockup</title>
+    <style>
+      :root {
+        --bg: #f3f6fb;
+        --surface: #ffffff;
+        --surface-alt: #e6f2f5;
+        --text: #0f172a;
+        --muted: #5b667a;
+        --brand: #0f766e;
+        --accent: #c2410c;
+        --ok: #15803d;
+        --warn: #b45309;
+        --danger: #b91c1c;
+        --stroke: #cbd5e1;
+        --shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 10%, #d8f4ed 0%, transparent 35%),
+          radial-gradient(circle at 90% 0%, #ffe8d7 0%, transparent 30%),
+          var(--bg);
+        color: var(--text);
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+      }
+
+      .sidebar {
+        background: linear-gradient(180deg, #115e59, #0f766e);
+        color: #ecfeff;
+        padding: 24px;
+      }
+
+      .brand {
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        margin-bottom: 20px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 10px;
+      }
+
+      .nav-item {
+        border: 1px solid rgba(236, 254, 255, 0.22);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+
+      .nav-item.active {
+        background: rgba(236, 254, 255, 0.16);
+        border-color: rgba(236, 254, 255, 0.4);
+      }
+
+      .content {
+        padding: 26px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .topbar {
+        background: var(--surface);
+        border: 1px solid var(--stroke);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 16px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .status {
+        font-weight: 600;
+        color: var(--ok);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.7fr 1fr;
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--stroke);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0 0 10px;
+        font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      h2 {
+        font-size: 19px;
+      }
+
+      h3 {
+        font-size: 16px;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-right: 8px;
+      }
+
+      .pill.pass {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .pill.warn {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .kv {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 8px;
+        font-size: 14px;
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--stroke);
+      }
+
+      .kv:last-child {
+        border-bottom: none;
+      }
+
+      .k {
+        color: var(--muted);
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+        font-size: 12px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+      }
+
+      .event {
+        border-left: 3px solid var(--brand);
+        padding-left: 10px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: var(--brand);
+        color: #ecfeff;
+      }
+
+      .btn.secondary {
+        background: #ecfeff;
+        color: var(--brand);
+        border: 1px solid #99f6e4;
+      }
+
+      .btn.alert {
+        background: #ffedd5;
+        color: var(--accent);
+        border: 1px solid #fed7aa;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--stroke);
+        text-align: left;
+        padding: 9px 6px;
+      }
+
+      th {
+        color: var(--muted);
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-bottom: 1px solid rgba(236, 254, 255, 0.25);
+        }
+
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">AgentAudit Console</div>
+        <div class="nav">
+          <div class="nav-item">Overview</div>
+          <div class="nav-item">Verify Run</div>
+          <div class="nav-item active">Receipts</div>
+          <div class="nav-item">Audit Reports</div>
+          <div class="nav-item">Evidence Vault</div>
+          <div class="nav-item">Policy Rules</div>
+          <div class="nav-item">Integrations</div>
+          <div class="nav-item">Billing</div>
+          <div class="nav-item">Settings</div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="topbar">
+          <div>
+            <h1>Receipt Detail</h1>
+            <div class="mono">receipt_id: 37e22d2d-58c2-4e27-b38c-3baed2c4e1ea</div>
+          </div>
+          <div class="status">Proof chain healthy</div>
+        </section>
+
+        <section class="layout">
+          <div class="card">
+            <h2>Verification Summary</h2>
+            <span class="pill pass">PASS</span>
+            <span class="pill warn">1 warning</span>
+
+            <div class="kv"><div class="k">Agent ID</div><div>agt-prod-kr-001</div></div>
+            <div class="kv"><div class="k">Operator</div><div>operator-alpha</div></div>
+            <div class="kv"><div class="k">Policy Version</div><div>policy-2026.03.23</div></div>
+            <div class="kv"><div class="k">Issued At</div><div>2026-03-23T11:12:03Z</div></div>
+            <div class="kv"><div class="k">Report Digest</div><div class="mono">sha-256: d68c...d2aa</div></div>
+            <div class="kv"><div class="k">Signature</div><div class="mono">EdDSA / kid: key-prod-2026q1</div></div>
+
+            <h3 style="margin-top: 16px">Evidence References</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Kind</th>
+                  <th>URI</th>
+                  <th>Digest</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>input</td>
+                  <td class="mono">s3://audit/input/req-901.json</td>
+                  <td class="mono">sha-256:c1e2...</td>
+                </tr>
+                <tr>
+                  <td>execution_log</td>
+                  <td class="mono">s3://audit/logs/run-901.log</td>
+                  <td class="mono">sha-256:a8f1...</td>
+                </tr>
+                <tr>
+                  <td>policy_snapshot</td>
+                  <td class="mono">s3://audit/policy/v2026.03.23.json</td>
+                  <td class="mono">sha-256:88f0...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card">
+            <h2>Proof Timeline</h2>
+            <div class="timeline">
+              <div class="event">
+                <div><strong>Verification executed</strong></div>
+                <div class="mono">2026-03-23T11:11:58Z</div>
+              </div>
+              <div class="event">
+                <div><strong>JWS signature issued</strong></div>
+                <div class="mono">kid: key-prod-2026q1</div>
+              </div>
+              <div class="event">
+                <div><strong>RFC3161 timestamp attached</strong></div>
+                <div class="mono">tsa: tsa-primary-1</div>
+              </div>
+              <div class="event">
+                <div><strong>Transparency log anchored</strong></div>
+                <div class="mono">entry_id: 1092388</div>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 16px">Actions</h3>
+            <div class="actions">
+              <button class="btn primary">Download Receipt JSON</button>
+              <button class="btn secondary">Copy Verify Command</button>
+              <button class="btn alert">Open Full Audit Report</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

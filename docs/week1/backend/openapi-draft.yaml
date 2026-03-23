@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  title: Agent Audit Receipt API
+  version: 0.1.0
+  summary: Draft API for verification and receipt retrieval.
+servers:
+  - url: https://api.agentbanking.dev
+paths:
+  /verify:
+    post:
+      operationId: createVerification
+      summary: Verify an agent run and issue a receipt.
+      tags: [Verification]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+      responses:
+        '201':
+          description: Verification accepted and receipt issued.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '400':
+          description: Invalid request payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /receipts/{receiptId}:
+    get:
+      operationId: getReceiptById
+      summary: Retrieve an issued receipt.
+      tags: [Receipts]
+      parameters:
+        - in: path
+          name: receiptId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Receipt found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '404':
+          description: Receipt not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    VerifyRequest:
+      type: object
+      required:
+        - request_id
+        - agent_id
+        - operator_id
+        - policy_version
+        - strategy_hash
+        - model_hash
+        - evidence_refs
+      properties:
+        request_id:
+          type: string
+        agent_id:
+          type: string
+        operator_id:
+          type: string
+        policy_version:
+          type: string
+        strategy_hash:
+          type: string
+        model_hash:
+          type: string
+        evidence_refs:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceRef'
+    VerifyResponse:
+      type: object
+      required: [receipt, audit_report]
+      properties:
+        receipt:
+          $ref: '#/components/schemas/Receipt'
+        audit_report:
+          $ref: '#/components/schemas/AuditReport'
+    Receipt:
+      type: object
+      required:
+        - receipt_id
+        - report_id
+        - request_id
+        - agent_id
+        - operator_id
+        - schema_version
+        - issued_at
+        - verification_result
+      properties:
+        receipt_id:
+          type: string
+          format: uuid
+        report_id:
+          type: string
+        request_id:
+          type: string
+        agent_id:
+          type: string
+        operator_id:
+          type: string
+        schema_version:
+          type: string
+          example: 1.0.0
+        issued_at:
+          type: string
+          format: date-time
+        verification_result:
+          type: string
+          enum: [pass, warning, fail]
+        policy_version:
+          type: string
+        report_digest:
+          $ref: '#/components/schemas/Digest'
+        signature:
+          type: object
+          properties:
+            format:
+              type: string
+              enum: [jws-compact, jws-json]
+            alg:
+              type: string
+              enum: [EdDSA, ES256]
+            kid:
+              type: string
+            value:
+              type: string
+        timestamp_proof:
+          type: object
+          properties:
+            tsa_name:
+              type: string
+            gen_time:
+              type: string
+              format: date-time
+            token_b64:
+              type: string
+        transparency_proof:
+          type: object
+          properties:
+            log_id:
+              type: string
+            entry_id:
+              type: string
+            leaf_hash:
+              type: string
+            root_hash:
+              type: string
+            tree_size:
+              type: integer
+            inclusion_proof:
+              type: array
+              items:
+                type: string
+        evidence_refs:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceRef'
+        links:
+          type: object
+          properties:
+            verify_url:
+              type: string
+              format: uri
+            report_url:
+              type: string
+              format: uri
+    AuditReport:
+      type: object
+      required: [report_id, summary, findings]
+      properties:
+        report_id:
+          type: string
+        summary:
+          type: string
+        findings:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              severity:
+                type: string
+                enum: [info, low, medium, high, critical]
+              message:
+                type: string
+    EvidenceRef:
+      type: object
+      required: [kind, uri, digest]
+      properties:
+        kind:
+          type: string
+          enum: [input, execution_log, output, policy_snapshot]
+        uri:
+          type: string
+          format: uri
+        digest:
+          $ref: '#/components/schemas/Digest'
+    Digest:
+      type: object
+      required: [alg, value]
+      properties:
+        alg:
+          type: string
+          enum: [sha-256, sha-512]
+        value:
+          type: string
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
