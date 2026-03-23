@@ -68,6 +68,10 @@
   - digest consistency
   - JWS signature format and optional Ed25519 verification
   - timestamp/transparency proof basic shape checks
+- Added local key generation utility:
+  - `scripts/generate-ed25519-keypair.js`
+- Added staging runbook:
+  - `docs/week2/backend/rfc3161-rekor-staging-playbook.md`
 
 ## Verification Result
 - Test command: `npm test`

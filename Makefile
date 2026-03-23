@@ -7,6 +7,7 @@ SHELL := /bin/bash
 .PHONY: hotfix-start hotfix-finish
 .PHONY: push-main push-all
 .PHONY: daily-report-check
+.PHONY: offline-verify keys-gen
 
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 
@@ -22,6 +23,8 @@ help:
 	@echo "make push-main           - push main, develop, staging"
 	@echo "make push-all            - push all branches in .gitignore-safe baseline + release/hotfix"
 	@echo "make daily-report-check DATE=YYYY-MM-DD - validate one daily report"
+	@echo "make keys-gen            - generate local Ed25519 key pair for signer/rekor tests"
+	@echo "make offline-verify RECEIPT=... REPORT=... [SCHEMA=...] [PUBKEY=...] - run offline verification CLI"
 
 status:
 	@echo "Current branch: $(CURRENT_BRANCH)"
@@ -137,4 +140,26 @@ daily-report-check:
 		npm run check:daily; \
 	else \
 		npm run check:daily -- --date=$(DATE); \
+	fi
+
+keys-gen:
+	@npm run keys:gen
+
+offline-verify:
+	@if [ -z "$(RECEIPT)" ] || [ -z "$(REPORT)" ]; then \
+		echo "Usage: make offline-verify RECEIPT=path/to/receipt.json REPORT=path/to/report.json [SCHEMA=docs/week1/backend/receipt-1.0.0.schema.json] [PUBKEY=path/to/public.pem]"; \
+		exit 1; \
+	fi
+	@if [ -z "$(SCHEMA)" ]; then \
+		if [ -z "$(PUBKEY)" ]; then \
+			npm run verify:offline -- --receipt "$(RECEIPT)" --report "$(REPORT)"; \
+		else \
+			npm run verify:offline -- --receipt "$(RECEIPT)" --report "$(REPORT)" --public-key "$(PUBKEY)"; \
+		fi; \
+	else \
+		if [ -z "$(PUBKEY)" ]; then \
+			npm run verify:offline -- --receipt "$(RECEIPT)" --report "$(REPORT)" --schema "$(SCHEMA)"; \
+		else \
+			npm run verify:offline -- --receipt "$(RECEIPT)" --report "$(REPORT)" --schema "$(SCHEMA)" --public-key "$(PUBKEY)"; \
+		fi; \
 	fi

@@ -32,6 +32,7 @@
   - `src/audit/adapters/transparency.js`
   - `src/audit/offline-verify.js`
   - `scripts/verify-receipt-cli.js`
+  - `scripts/generate-ed25519-keypair.js`
   - `test/auditApi.test.js`
   - `test/offlineVerify.test.js`
   - `test/offlineVerifyEd25519.test.js`
@@ -39,6 +40,7 @@
   - `test/timestampAdapter.test.js`
 - Documents:
   - `docs/week2/backend/schema-signing-proof-implementation-2026-03-23.md`
+  - `docs/week2/backend/rfc3161-rekor-staging-playbook.md`
   - `docs/week2/operations/agent-execution-status-2026-03-23.md`
 
 ## Test Result
