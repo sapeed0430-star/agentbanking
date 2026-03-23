@@ -13,8 +13,8 @@
 5. Pricing/GTM and launch readiness
 
 ## Daily Operating Contract
-1. All 6 agents submit daily report by 18:00 KST.
-2. Team Lead must verify and issue one verdict by 19:00 KST:
+1. All 6 agents run in parallel and submit hourly checkpoint reports (every hour, by `:50` KST).
+2. Team Lead must verify and issue one verdict every hour (at `:00` KST):
 - `PASS`
 - `PARTIAL PASS`
 - `BLOCK`
@@ -23,7 +23,11 @@
 - blocking items
 - corrective actions
 - evidence links
-4. Day is not closed if verdict is missing.
+4. Agent task progression rule:
+- `PASS` required before moving to the next queued task in that agent lane.
+- `PARTIAL PASS` allows only team-lead-approved scoped continuation.
+- `BLOCK` freezes next-task execution until re-validation.
+5. Day is not closed if any hourly verdict is missing.
 
 ## Source-of-Truth Documents
 1. Daily index:

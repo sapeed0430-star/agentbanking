@@ -4,10 +4,11 @@
 제품 정의/아키텍처/위변조 불가 설계/Receipt 스키마 4개 영역을 에이전트별 실행 단위로 분해한다.
 
 ## 1) 공통 운영 규칙
-1. 보고 마감: 매일 18:00 KST
-2. 팀장 검증 판정: 매일 19:00 KST
+1. 병렬 실행 단위: 1시간 사이클(예: 09:00, 10:00, 11:00 ... KST)
+2. 모든 에이전트는 매 시각 `:50`까지 중간보고 제출, 팀장 에이전트는 `:00`에 검증 판정
 3. 각 에이전트는 산출물 경로를 보고에 반드시 포함
 4. 팀장 승인 없는 주요 설계 변경 금지
+5. 팀장 검증이 `PASS`가 아니면 다음 업무로 이동 금지(재작업 또는 BLOCK 해소 우선)
 
 ## 2) 영역별 책임 매트릭스
 
@@ -102,14 +103,18 @@
 - 게이트 판정(G2/G3/G4 중심)
 - BLOCK 해소 조정
 2. 입력
-- 일일 보고서
+- 시간별 보고서(1시간 주기)
 - KPI/RACI/SLA 문서
 3. 출력
-- 일일 판정 보고서(PASS/PARTIAL PASS/BLOCK)
+- 시간별 판정 보고서(PASS/PARTIAL PASS/BLOCK)
 - 시정조치 목록
 4. 검증 기준
 - 판정 근거 문서 링크 필수
 - BLOCK 건은 owner, due date, next update time 필수
+5. 진행 제어 기준
+- `PASS`: 다음 업무 진행 허용
+- `PARTIAL PASS`: 제한적 진행 허용(팀장 지정 범위)
+- `BLOCK`: 다음 업무 금지, blocker 해소 후 재검증
 
 ## 4) 즉시 실행 태스크 (오늘 기준)
 1. Research: 규제 매핑 문서에 4개 핵심 영역 매핑 표 추가
@@ -138,4 +143,3 @@ You own value translation from technical trust controls to buyer language. Updat
 
 ### Team Lead
 You own validation governance. Issue daily verdicts with evidence links and block unresolved scope drift without owner/due date.
-

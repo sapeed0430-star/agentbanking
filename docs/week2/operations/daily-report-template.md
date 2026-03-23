@@ -30,6 +30,28 @@
 - 
 ```
 
+## 1.1 Agent Hourly Checkpoint Template (Copy/Paste)
+
+```md
+# [Agent Name] Hourly Checkpoint - YYYY-MM-DD HH:00 (KST)
+
+## Current Task ID
+- 
+
+## Evidence Updated (file paths)
+- 
+
+## Validation Request To Team Lead
+- Requested Verdict: PASS / PARTIAL PASS / BLOCK
+- Why this should pass:
+
+## Blockers (if any)
+- 
+
+## Proposed Next Task (only after PASS)
+- 
+```
+
 ## 2) Team Lead Aggregation Template
 
 ```md
@@ -64,10 +86,31 @@
 - 
 ```
 
+## 2.1 Team Lead Hourly Validation Template (Copy/Paste)
+
+```md
+# Team Lead Hourly Validation - YYYY-MM-DD HH:00 (KST)
+
+## Agent Verdicts
+| Agent | Task ID | Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|
+| Research |  | PASS/PARTIAL/BLOCK | Yes/No |  |
+| Backend |  | PASS/PARTIAL/BLOCK | Yes/No |  |
+| Frontend |  | PASS/PARTIAL/BLOCK | Yes/No |  |
+| Design |  | PASS/PARTIAL/BLOCK | Yes/No |  |
+| Marketing |  | PASS/PARTIAL/BLOCK | Yes/No |  |
+
+## Blocking Actions
+- Owner:
+- Due:
+- Next update time:
+```
+
 ## 3) Submission Rule
-1. All agents submit by 18:00 KST.
-2. Team Lead publishes consolidated summary by 19:00 KST.
-3. Any Sev-0 or Sev-1 issue bypasses daily cycle and triggers immediate escalation.
+1. All agents submit hourly checkpoint by `:50` KST.
+2. Team Lead publishes hourly validation by `:00` KST.
+3. Any Sev-0 or Sev-1 issue bypasses hourly cycle and triggers immediate escalation.
+4. Next task execution is blocked unless Team Lead verdict is `PASS` (or scoped `PARTIAL PASS`).
 
 ## 4) Team Lead Validation Command
 1. Validate today:

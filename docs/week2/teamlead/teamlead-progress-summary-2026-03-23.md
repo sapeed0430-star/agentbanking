@@ -57,3 +57,8 @@
 1. Add staging integration tests for TSA/Rekor with real trust material.
 2. Add verifier-side tests for signature/timestamp/transparency correctness.
 3. Start frontend/design implementation for integrity failure operational UX.
+
+## Operating Cadence Update (Applied)
+1. Starting next cycle, Team Lead validation runs hourly.
+2. Agents submit by `:50` and receive verdict by `:00` (KST).
+3. No lane can start the next task without Team Lead `PASS` (or scoped `PARTIAL PASS`).

@@ -47,10 +47,11 @@
 
 ## 4) Team Operating Cadence
 
-1. Daily async standup by all agent owners.
-2. Twice-weekly risk review for security/compliance issues.
-3. Weekly demo with cross-functional sign-off.
-4. Weekly backlog reprioritization by team lead.
+1. Hourly validation loop: agent checkpoint by `:50`, Team Lead verdict by `:00` (KST).
+2. Daily async standup by all agent owners.
+3. Twice-weekly risk review for security/compliance issues.
+4. Weekly demo with cross-functional sign-off.
+5. Weekly backlog reprioritization by team lead.
 
 ## 5) Git/Release Readiness Checklist (Immediate)
 

@@ -26,3 +26,13 @@
 - 증명/감사 대응 가치 문구를 요금제 카피에 반영 필요
 5. Backend (follow-up)
 - TSA/Rekor 스테이징 엔드포인트 실연동 검증(인증서/공개키 포함) 필요
+
+## Next Cycle Parallel Gate Activation
+1. Execution mode: sub-agent parallel lanes
+2. Team Lead validation cycle: hourly (`:50` submit, `:00` verdict)
+3. Task progression lock:
+- Next task is allowed only after Team Lead `PASS`
+- `PARTIAL PASS` only allows scoped continuation
+- `BLOCK` requires blocker closure then re-validation
+4. Execution source:
+- `docs/week2/operations/subagent-parallel-cycle-plan-2026-03-23.md`

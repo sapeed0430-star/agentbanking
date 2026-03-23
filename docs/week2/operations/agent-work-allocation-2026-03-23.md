@@ -1,10 +1,11 @@
 # Agent Work Allocation (2026-03-23 to 2026-03-27, KST)
 
 ## Common Rule
-1. Daily sync: 10:00 KST
-2. Mid-day blocker check: 14:00 KST
-3. Daily report deadline: 18:00 KST
-4. Team lead summary: 19:00 KST
+1. Parallel execution: all domain agents run simultaneously in 1-hour cycles.
+2. Hourly checkpoint: each agent submits by `:50` KST.
+3. Team lead validation: verdict by `:00` KST every hour.
+4. Progression gate: no agent starts the next task until Team Lead verdict is `PASS` (or scoped `PARTIAL PASS`).
+5. `BLOCK` verdict freezes the agent lane until blocker owner and due time are recorded.
 
 ## Research Agent
 - Mission: regulatory and standards certainty for launch gate
@@ -63,10 +64,10 @@
 ## Team Lead Agent
 - Mission: enforce quality gates and unblock critical path
 - Tasks:
-  - Monitor KPI dashboard and gate status three times daily
+  - Monitor KPI dashboard and gate status hourly
   - Run gate approvals G1 to G6 and log decisions
   - Operate escalation workflow and close blockers within SLA
-- Deadline: Daily close by 19:00 KST, final week sign-off 2026-03-27 19:00 KST
+- Deadline: Hourly verdict cycle + daily close by 19:00 KST, final week sign-off 2026-03-27 19:00 KST
 - Deliverables:
   - `docs/week2/teamlead/kpi-dashboard-spec.md`
   - `docs/week2/teamlead/raci-approval-gates.md`
@@ -90,5 +91,4 @@ You own Week 2 design consistency. Update tokens and wireframes for list/detail/
 You own Week 2 ICP/pricing clarity. Refine segment priority and pricing CTA narrative and submit by 2026-03-27 15:00 KST.
 
 ### Team Lead Agent Prompt
-You own Week 2 delivery governance. Track KPIs, execute gates G1-G6, enforce SLA-based escalation, and publish daily summary by 19:00 KST.
-
+You own Week 2 delivery governance. Track KPIs hourly, execute gates G1-G6, enforce SLA-based escalation, and issue hourly PASS/PARTIAL/BLOCK verdicts. No agent may start next task without your validation pass.
