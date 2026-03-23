@@ -21,6 +21,7 @@ npm test
 npm start
 npm run keys:gen
 npm run verify:offline -- --receipt <receipt.json> --report <report.json>
+npm run mock:test
 ```
 
 ## Make targets

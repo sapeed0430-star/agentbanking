@@ -8,6 +8,7 @@
     "test": "node --test",
     "check:daily": "node scripts/check-daily-report.js",
     "verify:offline": "node scripts/verify-receipt-cli.js",
-    "keys:gen": "node scripts/generate-ed25519-keypair.js"
+    "keys:gen": "node scripts/generate-ed25519-keypair.js",
+    "mock:test": "node scripts/mock-service-runner.js"
   }
 }

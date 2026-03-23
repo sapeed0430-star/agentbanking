@@ -46,7 +46,7 @@
 
 ## Test Result
 - Command: `npm test`
-- Result: `PASS (19/19)`
+- Result: `PASS (23/23)`
 
 ## Remaining Risk (Gate Not Yet Closed)
 1. Production 인증서/공개키를 사용한 TSA/Rekor staging integration test가 아직 없음.
@@ -54,9 +54,9 @@
 3. Offline verifier는 현재 basic validation 중심이며 RFC3161/Rekor proof의 완전 검증은 후속 필요.
 
 ## Team Lead Direction (Next)
-1. Add staging integration tests for TSA/Rekor with real trust material.
-2. Add verifier-side tests for signature/timestamp/transparency correctness.
-3. Start frontend/design implementation for integrity failure operational UX.
+1. Execute TSA/Rekor staging tests with real trust material and fill evidence template.
+2. Advance key-management hardening (JWKS/rotation/revocation operational policy).
+3. Complete week11 mock service test report and week12 pilot readiness package.
 
 ## Operating Cadence Update (Applied)
 1. Starting next cycle, Team Lead validation runs hourly.

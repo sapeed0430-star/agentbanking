@@ -4,7 +4,9 @@ import { extname, join, normalize } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { digestCanonicalJson } from './src/audit/canonical.js';
+import { createCertificateIssuer } from './src/audit/certificate-issuer.js';
 import { createEvidenceStore } from './src/audit/evidence-store.js';
+import { createKeyManager } from './src/audit/key-manager.js';
 import { verifyReceiptOffline } from './src/audit/offline-verify.js';
 import { createReceiptIssuer } from './src/audit/receipt-issuer.js';
 import { createAuditRuntime } from './src/audit/runtime.js';
@@ -59,6 +61,12 @@ function isUri(value) {
 function authTokenValid(req) {
   const authHeader = req.headers.authorization;
   return isNonEmptyString(authHeader) && authHeader.startsWith('Bearer ');
+}
+
+function adminTokenValid(req) {
+  const adminToken = req.headers['x-admin-token'];
+  const expected = process.env.AUDIT_ADMIN_TOKEN || 'local-admin-token';
+  return isNonEmptyString(adminToken) && adminToken === expected;
 }
 
 function parseJsonBody(req) {
@@ -117,17 +125,116 @@ export function createAppServer({
   root = ROOT,
   auditRuntime = createAuditRuntime(),
   evidenceStore = createEvidenceStore(),
+  keyManager = createKeyManager(),
   verifierEngine = createVerifierEngine(),
   receiptIssuer = createReceiptIssuer({ retentionYears: RETENTION_YEARS }),
+  certificateIssuer = createCertificateIssuer(),
 } = {}) {
   const receipts = new Map();
   const reports = new Map();
+  const certificates = new Map();
   const requestToReceipt = new Map();
 
   return createServer(async (req, res) => {
     const url = new URL(req.url || '/', `http://${req.headers.host || `localhost:${PORT}`}`);
     const path = url.pathname;
     const now = new Date();
+
+    if (req.method === 'GET' && path === '/.well-known/jwks.json') {
+      return json(res, 200, keyManager.getJwks());
+    }
+
+    if (req.method === 'POST' && path === '/admin/keys/rotate') {
+      if (!authTokenValid(req) || !adminTokenValid(req)) {
+        return json(
+          res,
+          401,
+          errorResponse(
+            'UNAUTHORIZED',
+            'Missing or invalid admin credentials.',
+            'authz',
+            false,
+            'high',
+            {},
+            'Provide Bearer token and valid x-admin-token.'
+          )
+        );
+      }
+      const rotated = keyManager.rotate();
+      return json(res, 200, {
+        status: 'ok',
+        ...rotated,
+        jwks_keys: keyManager.getJwks().keys.length,
+      });
+    }
+
+    if (req.method === 'POST' && path === '/admin/keys/revoke') {
+      if (!authTokenValid(req) || !adminTokenValid(req)) {
+        return json(
+          res,
+          401,
+          errorResponse(
+            'UNAUTHORIZED',
+            'Missing or invalid admin credentials.',
+            'authz',
+            false,
+            'high',
+            {},
+            'Provide Bearer token and valid x-admin-token.'
+          )
+        );
+      }
+      let body;
+      try {
+        body = await parseJsonBody(req);
+      } catch {
+        return json(
+          res,
+          400,
+          errorResponse(
+            'INVALID_REQUEST',
+            'Invalid JSON payload.',
+            'validation',
+            false,
+            'medium',
+            {},
+            'Send valid revoke payload.'
+          )
+        );
+      }
+      if (!isNonEmptyString(body.kid)) {
+        return json(
+          res,
+          400,
+          errorResponse(
+            'INVALID_REQUEST',
+            'kid is required for key revocation.',
+            'validation',
+            false,
+            'medium',
+            {},
+            'Provide key id to revoke.'
+          )
+        );
+      }
+      const revoked = keyManager.revoke(body.kid);
+      if (!revoked.ok) {
+        return json(
+          res,
+          409,
+          errorResponse(
+            'INVALID_REQUEST',
+            revoked.reason,
+            'conflict',
+            false,
+            'medium',
+            { kid: body.kid },
+            'Revoke only non-current, existing keys.'
+          )
+        );
+      }
+      return json(res, 200, revoked);
+    }
 
     if (req.method === 'POST' && path === '/verify') {
       if (!authTokenValid(req)) {
@@ -353,9 +460,15 @@ export function createAppServer({
         transparencyProof,
         evidenceRefs: body.evidence_refs,
       });
+      const certificate = certificateIssuer.buildCertificate({
+        receipt,
+        auditReport,
+        issuedAt,
+      });
 
       receipts.set(receiptId, receipt);
       reports.set(reportId, auditReport);
+      certificates.set(receiptId, certificate);
       requestToReceipt.set(body.request_id, receiptId);
 
       return json(res, 201, {
@@ -542,6 +655,66 @@ export function createAppServer({
       }
 
       return json(res, 200, receipt);
+    }
+
+    if (req.method === 'GET' && path.startsWith('/certificates/')) {
+      if (!authTokenValid(req)) {
+        return json(
+          res,
+          401,
+          errorResponse(
+            'UNAUTHORIZED',
+            'Missing or invalid Authorization header.',
+            'authz',
+            true,
+            'medium',
+            { header: 'authorization' },
+            'Send a valid Bearer token and retry.'
+          )
+        );
+      }
+      const receiptId = path.split('/').filter(Boolean)[1];
+      const receipt = receipts.get(receiptId);
+      const certificate = certificates.get(receiptId);
+      if (!receipt || !certificate) {
+        return json(
+          res,
+          404,
+          errorResponse(
+            'RECEIPT_NOT_FOUND',
+            'Certificate not found.',
+            'not_found',
+            false,
+            'low',
+            { receipt_id: receiptId },
+            'Check receipt_id and retry.'
+          )
+        );
+      }
+
+      const headerOperatorId = req.headers['x-operator-id'];
+      if (!isNonEmptyString(headerOperatorId) || headerOperatorId !== receipt.operator_id) {
+        return json(
+          res,
+          403,
+          errorResponse(
+            'FORBIDDEN',
+            'Operator is not allowed to access this certificate.',
+            'authz',
+            false,
+            'medium',
+            {
+              request_id: receipt.request_id,
+              agent_id: receipt.agent_id,
+              operator_id: receipt.operator_id,
+              header_operator_id: headerOperatorId || null,
+            },
+            'Use credentials scoped to the certificate owner.'
+          )
+        );
+      }
+
+      return json(res, 200, certificate);
     }
 
     if (req.method === 'GET' && path.startsWith('/reports/')) {

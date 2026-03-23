@@ -6,6 +6,18 @@ info:
 servers:
   - url: https://api.agentbanking.dev
 paths:
+  /.well-known/jwks.json:
+    get:
+      operationId: getJwks
+      summary: Retrieve active public signing keys.
+      tags: [Keys]
+      responses:
+        '200':
+          description: JWKS document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwksResponse'
   /verify:
     post:
       operationId: createVerification
@@ -163,6 +175,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /certificates/{receiptId}:
+    get:
+      operationId: getCertificateByReceiptId
+      summary: Retrieve certificate derived from receipt.
+      tags: [Certificates]
+      parameters:
+        - in: path
+          name: receiptId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Certificate found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Operator not allowed to access this certificate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Certificate not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
     VerifyRequest:
@@ -256,6 +305,61 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OfflineVerifyCheck'
+    JwkKey:
+      type: object
+      required: [kty, crv, x, kid]
+      properties:
+        kty:
+          type: string
+          example: OKP
+        crv:
+          type: string
+          example: Ed25519
+        x:
+          type: string
+        kid:
+          type: string
+        use:
+          type: string
+          example: sig
+        alg:
+          type: string
+          example: EdDSA
+    JwksResponse:
+      type: object
+      required: [keys]
+      properties:
+        keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/JwkKey'
+    Certificate:
+      type: object
+      required:
+        - certificate_id
+        - type
+        - issuer
+        - issuanceDate
+        - credentialSubject
+        - proof
+      properties:
+        certificate_id:
+          type: string
+        type:
+          type: array
+          items:
+            type: string
+        issuer:
+          type: string
+        issuanceDate:
+          type: string
+          format: date-time
+        credentialSubject:
+          type: object
+          additionalProperties: true
+        proof:
+          type: object
+          additionalProperties: true
     Receipt:
       type: object
       required:

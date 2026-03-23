@@ -6,6 +6,10 @@ import { digestCanonicalJson } from '../src/audit/canonical.js';
 import { validateJsonSchema } from '../src/audit/schema-validator.js';
 
 const AUTH = { authorization: 'Bearer local-dev-token' };
+const ADMIN_AUTH = {
+  authorization: 'Bearer local-dev-token',
+  'x-admin-token': 'local-admin-token',
+};
 const receiptSchema = JSON.parse(
   readFileSync(new URL('../docs/week1/backend/receipt-1.0.0.schema.json', import.meta.url), 'utf8')
 );
@@ -271,4 +275,77 @@ test('POST /verify returns 503 when proof adapter is unavailable', async (t) => 
   assert.equal(error.code, 'PROOF_SERVICE_UNAVAILABLE');
   assert.equal(error.details.stage, 'signer');
   assert.equal(error.details.signer_mode, 'local-ed25519');
+});
+
+test('GET /.well-known/jwks.json returns public keys', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const res = await fetch(`${baseUrl}/.well-known/jwks.json`);
+  assert.equal(res.status, 200);
+  const jwks = await res.json();
+  assert.ok(Array.isArray(jwks.keys));
+  assert.ok(jwks.keys.length >= 1);
+  assert.equal(jwks.keys[0].kty, 'OKP');
+  assert.equal(jwks.keys[0].crv, 'Ed25519');
+});
+
+test('admin key rotate and revoke flow', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const jwksBefore = await fetch(`${baseUrl}/.well-known/jwks.json`);
+  const before = await jwksBefore.json();
+  const previousKid = before.keys[0].kid;
+
+  const rotate = await fetch(`${baseUrl}/admin/keys/rotate`, {
+    method: 'POST',
+    headers: ADMIN_AUTH,
+  });
+  assert.equal(rotate.status, 200);
+  const rotateBody = await rotate.json();
+  assert.equal(rotateBody.previous_kid, previousKid);
+  assert.ok(rotateBody.current_kid);
+
+  const revoke = await fetch(`${baseUrl}/admin/keys/revoke`, {
+    method: 'POST',
+    headers: {
+      ...ADMIN_AUTH,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ kid: previousKid }),
+  });
+  assert.equal(revoke.status, 200);
+  const revokeBody = await revoke.json();
+  assert.equal(revokeBody.ok, true);
+});
+
+test('GET /certificates/{receiptId} returns certificate for owner', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const payload = verifyPayload({ request_id: 'req-cert-001' });
+  const created = await postVerify(baseUrl, payload);
+  assert.equal(created.status, 201);
+  const createdBody = await created.json();
+
+  const certRes = await fetch(`${baseUrl}/certificates/${createdBody.receipt.receipt_id}`, {
+    headers: {
+      ...AUTH,
+      'x-operator-id': payload.operator_id,
+    },
+  });
+  assert.equal(certRes.status, 200);
+  const cert = await certRes.json();
+  assert.equal(cert.credentialSubject.receipt_id, createdBody.receipt.receipt_id);
+  assert.equal(cert.credentialSubject.report_id, createdBody.receipt.report_id);
 });
