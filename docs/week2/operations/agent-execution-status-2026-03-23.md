@@ -3,12 +3,12 @@
 ## Status Summary
 | Agent | Assigned Scope | Today Check Result | Evidence |
 |---|---|---|---|
-| Research | 규제/표준 매핑 정합성 강화 | PARTIAL | `docs/program/detailed-plan-product-architecture-integrity-receipt.md` |
+| Research | 규제/표준 매핑 정합성 강화 | PARTIAL | `docs/week1/research/regulatory-mapping-v1.md` |
 | Backend | API/스키마/무결성 처리 구현 | PASS | `server.js`, `scripts/verify-receipt-cli.js`, `scripts/generate-ed25519-keypair.js`, `src/audit/*`, `test/auditApi.test.js`, `test/offlineVerify.test.js`, `test/offlineVerifyEd25519.test.js`, `test/transparencyAdapter.test.js`, `test/timestampAdapter.test.js`, `docs/week2/backend/rfc3161-rekor-staging-playbook.md` (`19/19` pass) |
-| Frontend | 오류코드 UI 상태 패널 | PARTIAL | `docs/week2/frontend/error-code-ui-mapping-contract.md` |
-| Design | 무결성 상태 시각 가이드 | PARTIAL | 기존 와이어/토큰 문서 기준, 금일 코드 반영 없음 |
-| Marketing | ICP/요금/가치 메시지 | PARTIAL | 기존 one-pager 초안 기준, 금일 업데이트 없음 |
-| Team Lead | 게이트 판정/차단항목 관리 | PASS | `docs/program/daily-tracking/2026-03-23.md`, `docs/week2/teamlead/teamlead-progress-summary-2026-03-23.md` |
+| Frontend | 오류코드 UI 상태 패널 | PARTIAL | `docs/week1/frontend/receipt-detail-mockup.html` |
+| Design | 무결성 상태 시각 가이드 | PARTIAL | `docs/week1/design/wireframes.md` |
+| Marketing | ICP/요금/가치 메시지 | PARTIAL | `docs/week1/marketing/icp-pricing-onepager.md` |
+| Team Lead | 게이트 판정/차단항목 관리 | PASS | `docs/week2/teamlead/hourly-validation-cycle-2026-03-23.md`, `docs/week2/teamlead/teamlead-progress-summary-2026-03-23.md` |
 
 ## Backend Task Completion (Requested 1->3)
 1. `Receipt schema contract test` -> `DONE`
@@ -36,3 +36,15 @@
 - `BLOCK` requires blocker closure then re-validation
 4. Execution source:
 - `docs/week2/operations/subagent-parallel-cycle-plan-2026-03-23.md`
+
+## Hourly Cycle Snapshot (2026-03-23 22:00 KST)
+1. PASS lane
+- Backend
+2. PARTIAL PASS lanes
+- Research
+- Frontend
+- Design
+- Marketing
+3. Next-task unlock status
+- Backend: unlocked
+- Other lanes: scoped continuation only (full next-task locked)

@@ -62,3 +62,12 @@
 1. Starting next cycle, Team Lead validation runs hourly.
 2. Agents submit by `:50` and receive verdict by `:00` (KST).
 3. No lane can start the next task without Team Lead `PASS` (or scoped `PARTIAL PASS`).
+
+## First Hourly Cycle Result (2026-03-23 22:00 KST)
+1. Backend lane: `PASS` (next task unlocked)
+2. Research/Frontend/Design/Marketing lanes: `PARTIAL PASS`
+3. Team Lead control action:
+- non-PASS lanes are restricted to corrective sub-tasks only
+- full next-task start remains locked until re-validation PASS
+4. Evidence:
+- `docs/week2/teamlead/hourly-validation-cycle-2026-03-23.md`

@@ -16,6 +16,14 @@
         --ok: #15803d;
         --warn: #b45309;
         --danger: #b91c1c;
+        --critical-bg: #fee2e2;
+        --critical-fg: #7f1d1d;
+        --high-bg: #ffedd5;
+        --high-fg: #9a3412;
+        --medium-bg: #fef3c7;
+        --medium-fg: #854d0e;
+        --low-bg: #dcfce7;
+        --low-fg: #166534;
         --stroke: #cbd5e1;
         --shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
       }
@@ -145,6 +153,11 @@
         color: #92400e;
       }
 
+      .pill.fail {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
       .kv {
         display: grid;
         grid-template-columns: 160px 1fr;
@@ -181,6 +194,86 @@
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
+      }
+
+      .error-panel {
+        margin-top: 18px;
+        border: 1px solid #fca5a5;
+        background: #fff1f2;
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .error-row {
+        display: grid;
+        grid-template-columns: 130px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px dashed #fecaca;
+        font-size: 13px;
+      }
+
+      .error-row:last-child {
+        border-bottom: none;
+      }
+
+      .severity-set {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin: 8px 0 2px;
+      }
+
+      .sev {
+        border-radius: 999px;
+        padding: 3px 9px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .sev.critical {
+        background: var(--critical-bg);
+        color: var(--critical-fg);
+      }
+
+      .sev.high {
+        background: var(--high-bg);
+        color: var(--high-fg);
+      }
+
+      .sev.medium {
+        background: var(--medium-bg);
+        color: var(--medium-fg);
+      }
+
+      .sev.low {
+        background: var(--low-bg);
+        color: var(--low-fg);
+      }
+
+      .guide {
+        margin-top: 14px;
+        border: 1px solid var(--stroke);
+        border-radius: 12px;
+        padding: 12px;
+        background: #f8fafc;
+      }
+
+      .guide h4 {
+        margin: 0 0 8px;
+        font-size: 14px;
+      }
+
+      .guide-grid {
+        display: grid;
+        gap: 8px;
+      }
+
+      .guide-item {
+        border-left: 3px solid var(--brand);
+        padding-left: 8px;
+        font-size: 13px;
       }
 
       .btn {
@@ -238,6 +331,34 @@
           grid-template-columns: 1fr;
         }
       }
+
+      @media (max-width: 360px) {
+        .content {
+          padding: 12px;
+        }
+
+        .topbar {
+          padding: 12px;
+          gap: 8px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .card {
+          padding: 12px;
+        }
+
+        .kv {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        .error-row {
+          grid-template-columns: 1fr;
+          gap: 4px;
+          justify-items: start;
+        }
+      }
     </style>
   </head>
   <body>
@@ -271,6 +392,7 @@
             <h2>Verification Summary</h2>
             <span class="pill pass">PASS</span>
             <span class="pill warn">1 warning</span>
+            <span class="pill fail">422 sample</span>
 
             <div class="kv"><div class="k">Agent ID</div><div>agt-prod-kr-001</div></div>
             <div class="kv"><div class="k">Operator</div><div>operator-alpha</div></div>
@@ -278,6 +400,32 @@
             <div class="kv"><div class="k">Issued At</div><div>2026-03-23T11:12:03Z</div></div>
             <div class="kv"><div class="k">Report Digest</div><div class="mono">sha-256: d68c...d2aa</div></div>
             <div class="kv"><div class="k">Signature</div><div class="mono">EdDSA / kid: key-prod-2026q1</div></div>
+            <div class="kv"><div class="k">correlation_id</div><div class="mono">b8b47f40-bf89-4db2-8d7f-a8dfd45fe11e</div></div>
+
+            <div class="error-panel">
+              <h3>Integrity Failure Panel (422)</h3>
+              <div class="severity-set">
+                <span class="sev critical">CRITICAL</span>
+                <span class="sev high">HIGH</span>
+                <span class="sev medium">MEDIUM</span>
+                <span class="sev low">LOW</span>
+              </div>
+              <div class="error-row">
+                <div class="k">Error Code</div>
+                <div class="mono">DIGEST_MISMATCH</div>
+                <button class="btn secondary" style="padding: 6px 8px">Copy Code</button>
+              </div>
+              <div class="error-row">
+                <div class="k">Remediation</div>
+                <div>Recalculate digest and re-upload evidence snapshot before retry.</div>
+                <span class="sev high">non-retryable now</span>
+              </div>
+              <div class="error-row">
+                <div class="k">correlation_id</div>
+                <div class="mono">3f41a85e-2f6e-4f67-a6b5-0170a2f541ef</div>
+                <button class="btn secondary" style="padding: 6px 8px">Copy correlation_id</button>
+              </div>
+            </div>
 
             <h3 style="margin-top: 16px">Evidence References</h3>
             <table>
@@ -334,6 +482,23 @@
               <button class="btn primary">Download Receipt JSON</button>
               <button class="btn secondary">Copy Verify Command</button>
               <button class="btn alert">Open Full Audit Report</button>
+            </div>
+
+            <div class="guide">
+              <h4>Operator Action Guidance</h4>
+              <div class="guide-grid">
+                <div class="guide-item">
+                  <strong>Retryable:</strong> `TIMESTAMP_PROOF_INVALID`, `TRANSPARENCY_INCLUSION_MISSING`
+                  -> Retry once after proof service health check.
+                </div>
+                <div class="guide-item">
+                  <strong>Non-retryable:</strong> `DIGEST_MISMATCH`, `SIGNATURE_VERIFICATION_FAILED`
+                  -> Stop retry, open incident and attach evidence/correlation_id.
+                </div>
+                <div class="guide-item">
+                  <strong>Escalation trigger:</strong> `critical` severity or repeated `high` within one hour.
+                </div>
+              </div>
             </div>
           </div>
         </section>
