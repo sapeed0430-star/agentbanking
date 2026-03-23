@@ -34,9 +34,11 @@ AgentBanking issues tamper-evident Receipt/Certificate artifacts for autonomous 
 
 | Plan | Target ICP | Included | Price Draft | Trust-Focused CTA |
 | --- | --- | --- | --- |
-| Starter | Segment 1 | 50k verifications/mo, basic receipt, 3 users | USD 499/mo + overage | "Start publishing investor-facing verification receipts this month." |
-| Growth | Segment 2 | 500k verifications/mo, RFC3161, evidence vault, 10 users | USD 2,500/mo + overage | "Standardize audit evidence packages across teams and reviewers." |
-| Regulated | Segment 3 | 2M verifications/mo, transparency proofs, legal hold, SSO, 99.95 SLA | USD 12,000/mo + overage | "Deploy enterprise trust controls with dedicated governance support." |
+| Starter | Segment 1 | 50k verifications/mo, basic receipt, 3 users | USD 499/mo + overage | "Publish LP-ready Receipt evidence for each key strategy run." |
+| Growth | Segment 2 | 500k verifications/mo, RFC3161, evidence vault, 10 users | USD 2,500/mo + overage | "Automate reviewer-ready Receipt/Certificate bundles across teams." |
+| Regulated | Segment 3 | 2M verifications/mo, transparency proofs, legal hold, SSO, 99.95 SLA | USD 12,000/mo + overage | "Defend examiner and legal reviews with tamper-evident Certificate proof trails." |
+
+Compliance note near CTA: These CTAs describe evidence workflow outcomes and do not guarantee regulatory approval or exam outcomes.
 
 ## Overage and Add-ons
 
@@ -50,6 +52,11 @@ AgentBanking issues tamper-evident Receipt/Certificate artifacts for autonomous 
 1. "Every verification run can be packaged as reviewer-ready evidence."
 2. "From agent output to signed Receipt/Certificate artifacts in one pipeline."
 3. "Show integrity with verifiable proofs, not screenshots."
+
+## Enterprise Buyer Objection and Response
+
+- Objection: "Our legal/compliance team will still ask for source-level proof, not just a dashboard export."
+- Response: "Each event can be delivered as linked Receipt/Certificate evidence with digest, signature, timestamp, and transparency references for independent review."
 
 ## Compliance Wording Guardrail
 

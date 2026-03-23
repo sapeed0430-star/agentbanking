@@ -4,8 +4,11 @@ import { extname, join, normalize } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { digestCanonicalJson } from './src/audit/canonical.js';
+import { createEvidenceStore } from './src/audit/evidence-store.js';
 import { verifyReceiptOffline } from './src/audit/offline-verify.js';
+import { createReceiptIssuer } from './src/audit/receipt-issuer.js';
 import { createAuditRuntime } from './src/audit/runtime.js';
+import { createVerifierEngine } from './src/audit/verifier-engine.js';
 
 const PORT = process.env.PORT || 3000;
 const ROOT = process.cwd();
@@ -51,12 +54,6 @@ function isUri(value) {
   } catch {
     return false;
   }
-}
-
-function addYearsIso(now, years) {
-  const next = new Date(now);
-  next.setUTCFullYear(next.getUTCFullYear() + years);
-  return next.toISOString();
 }
 
 function authTokenValid(req) {
@@ -116,55 +113,13 @@ function validateVerifyRequest(body) {
   return null;
 }
 
-function mapIntegrityReason(reasonCode) {
-  const mapping = {
-    SIGNATURE_INVALID: {
-      code: 'SIGNATURE_VERIFICATION_FAILED',
-      check: 'signature',
-      retryable: false,
-      severity: 'critical',
-      message: 'JWS signature verification failed.',
-    },
-    DIGEST_MISMATCH: {
-      code: 'DIGEST_MISMATCH',
-      check: 'digest',
-      retryable: false,
-      severity: 'critical',
-      message: 'Report/evidence digest mismatch detected.',
-    },
-    TIMESTAMP_TOKEN_INVALID: {
-      code: 'TIMESTAMP_PROOF_INVALID',
-      check: 'timestamp_proof',
-      retryable: false,
-      severity: 'high',
-      message: 'RFC3161 timestamp token is invalid.',
-    },
-    TIMESTAMP_TIME_SKEW: {
-      code: 'TIMESTAMP_PROOF_INVALID',
-      check: 'timestamp_proof',
-      retryable: true,
-      severity: 'medium',
-      message: 'Timestamp clock skew exceeded allowed range.',
-    },
-    TRANSPARENCY_INCLUSION_MISSING: {
-      code: 'TRANSPARENCY_PROOF_INVALID',
-      check: 'transparency_proof',
-      retryable: true,
-      severity: 'high',
-      message: 'Transparency inclusion proof is missing.',
-    },
-    TRANSPARENCY_ROOT_MISMATCH: {
-      code: 'TRANSPARENCY_PROOF_INVALID',
-      check: 'transparency_proof',
-      retryable: false,
-      severity: 'critical',
-      message: 'Transparency root hash mismatch detected.',
-    },
-  };
-  return mapping[reasonCode] || null;
-}
-
-export function createAppServer({ root = ROOT, auditRuntime = createAuditRuntime() } = {}) {
+export function createAppServer({
+  root = ROOT,
+  auditRuntime = createAuditRuntime(),
+  evidenceStore = createEvidenceStore(),
+  verifierEngine = createVerifierEngine(),
+  receiptIssuer = createReceiptIssuer({ retentionYears: RETENTION_YEARS }),
+} = {}) {
   const receipts = new Map();
   const reports = new Map();
   const requestToReceipt = new Map();
@@ -271,56 +226,70 @@ export function createAppServer({ root = ROOT, auditRuntime = createAuditRuntime
         );
       }
 
-      const forcedReason = isNonEmptyString(body.integrity_failure_reason)
-        ? body.integrity_failure_reason
-        : null;
-      if (forcedReason) {
-        const mapped = mapIntegrityReason(forcedReason);
-        if (mapped) {
-          return json(res, 422, {
-            ...errorResponse(
-              mapped.code,
-              mapped.message,
-              'integrity',
-              mapped.retryable,
-              mapped.severity,
-              {
-                check: mapped.check,
-                reason_code: forcedReason,
-                request_id: body.request_id,
-                agent_id: body.agent_id,
-                operator_id: body.operator_id,
-              },
-              'Review integrity evidence and re-submit only if remediation is complete.'
-            ),
-            integrity_result: {
-              verification_result: 'fail',
-              failed_checks: [
-                {
-                  check: mapped.check,
-                  reason_code: forcedReason,
-                  message: mapped.message,
-                  severity: mapped.severity,
-                  retryable: mapped.retryable,
-                  evidence_uri: body.evidence_refs[0].uri,
-                  observed_at: now.toISOString(),
-                },
-              ],
+      const issuedAt = now.toISOString();
+      const requestPayloadDigest = {
+        alg: 'sha-256',
+        value: digestCanonicalJson(body, 'sha-256'),
+      };
+      const evidenceRecord = evidenceStore.recordRequestEvidence({
+        requestId: body.request_id,
+        agentId: body.agent_id,
+        operatorId: body.operator_id,
+        policyVersion: body.policy_version,
+        payloadDigest: requestPayloadDigest,
+        evidenceRefs: body.evidence_refs,
+        receivedAt: issuedAt,
+      });
+      const verification = verifierEngine.evaluate({
+        request: body,
+        evidenceRecord,
+        observedAt: issuedAt,
+      });
+      if (verification.verification_result === 'fail' && verification.integrity_failure) {
+        const failed = verification.integrity_failure;
+        return json(res, 422, {
+          ...errorResponse(
+            failed.code,
+            failed.message,
+            'integrity',
+            failed.retryable,
+            failed.severity,
+            {
+              check: failed.check,
+              reason_code: failed.reason_code,
+              request_id: body.request_id,
+              agent_id: body.agent_id,
+              operator_id: body.operator_id,
             },
-          });
-        }
+            'Review integrity evidence and re-submit only if remediation is complete.'
+          ),
+          integrity_result: {
+            verification_result: 'fail',
+            failed_checks: [
+              {
+                check: failed.check,
+                reason_code: failed.reason_code,
+                message: failed.message,
+                severity: failed.severity,
+                retryable: failed.retryable,
+                evidence_uri: body.evidence_refs[0].uri,
+                observed_at: failed.observed_at,
+              },
+            ],
+          },
+        });
       }
-
       const reportId = `rpt_${now.getTime()}_${randomUUID().slice(0, 8)}`;
       const receiptId = randomUUID();
-      const auditReport = {
-        report_id: reportId,
-        summary: 'Verification passed with baseline integrity checks.',
-        findings: [],
-      };
+      const auditReport = receiptIssuer.buildAuditReport({
+        reportId,
+        request: body,
+        issuedAt,
+        verification,
+        evidenceRecord,
+      });
       const reportDigest = digestCanonicalJson(auditReport, 'sha-256');
       const baseUrl = `http://${req.headers.host || `localhost:${PORT}`}`;
-      const issuedAt = now.toISOString();
       const digestPayload = {
         alg: 'sha-256',
         value: reportDigest,
@@ -371,28 +340,19 @@ export function createAppServer({ root = ROOT, auditRuntime = createAuditRuntime
         );
       }
 
-      const receipt = {
-        receipt_id: receiptId,
-        report_id: reportId,
-        request_id: body.request_id,
-        agent_id: body.agent_id,
-        operator_id: body.operator_id,
-        schema_version: '1.0.0',
-        issued_at: issuedAt,
-        verification_result: 'pass',
-        policy_version: body.policy_version,
-        report_digest: digestPayload,
+      const receipt = receiptIssuer.buildReceipt({
+        receiptId,
+        reportId,
+        request: body,
+        baseUrl,
+        issuedAt,
+        reportDigest: digestPayload,
+        verificationResult: verification.verification_result,
         signature,
-        timestamp_proof: timestampProof,
-        transparency_proof: transparencyProof,
-        evidence_refs: body.evidence_refs,
-        retention_until: addYearsIso(now, RETENTION_YEARS),
-        verification_endpoint: `${baseUrl}/receipts/${receiptId}/verify`,
-        links: {
-          verify_url: `${baseUrl}/receipts/${receiptId}/verify`,
-          report_url: `${baseUrl}/reports/${reportId}`,
-        },
-      };
+        timestampProof,
+        transparencyProof,
+        evidenceRefs: body.evidence_refs,
+      });
 
       receipts.set(receiptId, receipt);
       reports.set(reportId, auditReport);

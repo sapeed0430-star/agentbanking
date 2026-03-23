@@ -1,7 +1,7 @@
 # Regulatory Mapping v1 + Standards Adoption Table
 
 ## Scope
-This document maps initial compliance obligations for an autonomous investment agent audit service that issues tamper-evident receipts and audit reports.
+This document maps initial compliance obligations for an autonomous investment agent audit service that issues tamper-evident receipts and audit reports. It is an implementation aid for compliance operations and does not by itself constitute legal certification or regulatory approval.
 
 ## Regulatory Mapping v1
 
@@ -45,11 +45,23 @@ This document maps initial compliance obligations for an autonomous investment a
 3. Define legal hold API contract and runbook.
 4. Define external auditor export format (JSONL + signature manifest).
 
-## Unresolved Regulatory Items (Owner + Due)
+## Unresolved Regulatory Items (Owner + Due + Next Update)
 
-| Item | Owner | Due Date (KST) | Notes |
-| --- | --- | --- | --- |
-| SEC/FINRA record-class retention matrix (field-by-field) finalization | Research + Compliance | 2026-03-25 | Required before G2 freeze sign-off |
-| TSA primary/backup provider legal acceptability check | Research + Backend | 2026-03-26 | Must include contract/SLA evidence |
-| Rekor public transparency vs tenant-isolated log decision | Research + Team Lead | 2026-03-26 | Include risk acceptance memo |
-| KR/EU data residency control mapping for evidence URIs | Research + Security | 2026-03-27 | PII export path and deletion policy alignment |
+| Item | Owner | Due Date (KST) | Next Update (KST) | Notes |
+| --- | --- | --- | --- | --- |
+| SEC/FINRA record-class retention matrix (field-by-field) finalization | Research Agent (Primary), Compliance Lead (Co-owner) | 2026-03-25 | 2026-03-24 09:00 KST | Required before G2 freeze sign-off |
+| TSA primary/backup provider legal acceptability check | Research Agent (Primary), Backend Agent (Co-owner) | 2026-03-26 | 2026-03-24 10:00 KST | Must include contract/SLA evidence |
+| Rekor public transparency vs tenant-isolated log decision | Research Agent (Primary), Team Lead Agent (Approver) | 2026-03-26 | 2026-03-24 10:00 KST | Include risk acceptance memo |
+| KR/EU data residency control mapping for evidence URIs | Research Agent (Primary), Security Owner (Co-owner) | 2026-03-27 | 2026-03-24 11:00 KST | PII export path and deletion policy alignment |
+
+## Hourly Gate Evidence (For Team Lead Validation)
+
+Required evidence links for hourly gate submission (`:50` checkpoint):
+1. Regulatory mapping source: `docs/week1/research/regulatory-mapping-v1.md`
+2. Team lead hourly verdict log: `docs/week2/teamlead/hourly-validation-cycle-2026-03-23.md`
+3. Parallel cycle plan and lane task IDs: `docs/week2/operations/subagent-parallel-cycle-plan-2026-03-23.md`
+4. Agent status board: `docs/week2/operations/agent-execution-status-2026-03-23.md`
+
+## Compliance Positioning Guardrail
+
+This mapping is designed to support compliance review workflows and traceability of technical controls. Final legal interpretation, supervisory acceptance, and filing obligations remain subject to legal/compliance authority review.

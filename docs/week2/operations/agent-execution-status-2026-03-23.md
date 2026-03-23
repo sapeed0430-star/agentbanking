@@ -3,11 +3,11 @@
 ## Status Summary
 | Agent | Assigned Scope | Today Check Result | Evidence |
 |---|---|---|---|
-| Research | 규제/표준 매핑 정합성 강화 | PARTIAL | `docs/week1/research/regulatory-mapping-v1.md` |
-| Backend | API/스키마/무결성 처리 구현 | PASS | `server.js`, `scripts/verify-receipt-cli.js`, `scripts/generate-ed25519-keypair.js`, `src/audit/*`, `test/auditApi.test.js`, `test/offlineVerify.test.js`, `test/offlineVerifyEd25519.test.js`, `test/transparencyAdapter.test.js`, `test/timestampAdapter.test.js`, `docs/week2/backend/rfc3161-rekor-staging-playbook.md` (`19/19` pass) |
-| Frontend | 오류코드 UI 상태 패널 | PARTIAL | `docs/week1/frontend/receipt-detail-mockup.html` |
-| Design | 무결성 상태 시각 가이드 | PARTIAL | `docs/week1/design/wireframes.md` |
-| Marketing | ICP/요금/가치 메시지 | PARTIAL | `docs/week1/marketing/icp-pricing-onepager.md` |
+| Research | 규제/표준 매핑 정합성 강화 | PASS | `docs/week1/research/regulatory-mapping-v1.md` |
+| Backend | API/스키마/무결성 처리 구현 | PASS | `server.js`, `scripts/verify-receipt-cli.js`, `scripts/generate-ed25519-keypair.js`, `src/audit/*`, `test/auditApi.test.js`, `test/offlineVerify.test.js`, `test/offlineVerifyEd25519.test.js`, `test/transparencyAdapter.test.js`, `test/timestampAdapter.test.js`, `docs/week2/backend/rfc3161-rekor-staging-playbook.md`, `docs/week2/backend/hourly-checkpoint-backend-2026-03-24-0000.md` (`20/20` pass) |
+| Frontend | 오류코드 UI 상태 패널 | PASS | `docs/week1/frontend/receipt-detail-mockup.html` |
+| Design | 무결성 상태 시각 가이드 | PASS | `docs/week1/design/wireframes.md` |
+| Marketing | ICP/요금/가치 메시지 | PASS | `docs/week1/marketing/icp-pricing-onepager.md` |
 | Team Lead | 게이트 판정/차단항목 관리 | PASS | `docs/week2/teamlead/hourly-validation-cycle-2026-03-23.md`, `docs/week2/teamlead/teamlead-progress-summary-2026-03-23.md` |
 
 ## Backend Task Completion (Requested 1->3)
@@ -48,3 +48,13 @@
 3. Next-task unlock status
 - Backend: unlocked
 - Other lanes: scoped continuation only (full next-task locked)
+
+## Hourly Cycle Snapshot (2026-03-24 00:00 KST)
+1. PASS lanes
+- Research
+- Backend
+- Frontend
+- Design
+- Marketing
+2. Next-task unlock status
+- All lanes unlocked for next queued task

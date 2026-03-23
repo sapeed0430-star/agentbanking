@@ -202,20 +202,29 @@
         background: #fff1f2;
         border-radius: 12px;
         padding: 12px;
+        overflow-x: hidden;
       }
 
       .error-row {
         display: grid;
-        grid-template-columns: 130px 1fr auto;
+        grid-template-columns: 130px minmax(0, 1fr) auto;
         gap: 8px;
         align-items: center;
         padding: 6px 0;
         border-bottom: 1px dashed #fecaca;
         font-size: 13px;
+        min-width: 0;
       }
 
       .error-row:last-child {
         border-bottom: none;
+      }
+
+      .error-row .mono,
+      .error-row > div {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        word-break: break-word;
       }
 
       .severity-set {
@@ -301,6 +310,52 @@
         border: 1px solid #fed7aa;
       }
 
+      .copy-wrap {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-end;
+      }
+
+      .copy-btn {
+        padding: 6px 8px;
+      }
+
+      .copy-btn[data-state="idle"]::after {
+        content: " (idle)";
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .copy-btn[data-state="copied"]::after {
+        content: " (copied)";
+        font-size: 11px;
+        color: var(--ok);
+      }
+
+      .copy-tooltip {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .state-badge {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 9px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .state-badge.retryable {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .state-badge.non-retryable {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+
       table {
         width: 100%;
         border-collapse: collapse;
@@ -358,6 +413,15 @@
           gap: 4px;
           justify-items: start;
         }
+
+        .copy-wrap {
+          width: 100%;
+          align-items: flex-start;
+        }
+
+        .copy-btn {
+          width: 100%;
+        }
       }
     </style>
   </head>
@@ -413,17 +477,39 @@
               <div class="error-row">
                 <div class="k">Error Code</div>
                 <div class="mono">DIGEST_MISMATCH</div>
-                <button class="btn secondary" style="padding: 6px 8px">Copy Code</button>
+                <div class="copy-wrap">
+                  <button class="btn secondary copy-btn" data-state="idle" title="Copy error code">
+                    Copy Code
+                  </button>
+                  <span class="copy-tooltip">Tooltip: Copied to clipboard.</span>
+                </div>
               </div>
               <div class="error-row">
                 <div class="k">Remediation</div>
                 <div>Recalculate digest and re-upload evidence snapshot before retry.</div>
-                <span class="sev high">non-retryable now</span>
+                <span class="state-badge non-retryable">non-retryable</span>
+              </div>
+              <div class="error-row">
+                <div class="k">Retry Policy</div>
+                <div>Proof service outage is retryable, digest/signature mismatch is non-retryable.</div>
+                <div class="copy-wrap">
+                  <span class="state-badge retryable">retryable</span>
+                  <span class="state-badge non-retryable">non-retryable</span>
+                </div>
               </div>
               <div class="error-row">
                 <div class="k">correlation_id</div>
                 <div class="mono">3f41a85e-2f6e-4f67-a6b5-0170a2f541ef</div>
-                <button class="btn secondary" style="padding: 6px 8px">Copy correlation_id</button>
+                <div class="copy-wrap">
+                  <button
+                    class="btn secondary copy-btn"
+                    data-state="copied"
+                    title="Copy correlation_id"
+                  >
+                    Copy correlation_id
+                  </button>
+                  <span class="copy-tooltip">Tooltip: correlation_id copied.</span>
+                </div>
               </div>
             </div>
 

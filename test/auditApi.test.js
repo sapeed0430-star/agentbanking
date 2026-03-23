@@ -75,6 +75,8 @@ test('POST /verify issues receipt and audit report', async (t) => {
   assert.ok(body.receipt.verification_endpoint.includes('/receipts/'));
   assert.equal(body.audit_report.report_id, body.receipt.report_id);
   assert.equal(body.receipt.report_digest.value, digestCanonicalJson(body.audit_report, 'sha-256'));
+  assert.equal(body.audit_report.evidence_store.request_id, payload.request_id);
+  assert.equal(body.audit_report.evidence_store.evidence_count, 1);
 
   const schemaResult = validateJsonSchema(receiptSchema, body.receipt);
   assert.equal(schemaResult.valid, true, schemaResult.errors.join('\n'));
@@ -117,6 +119,24 @@ test('POST /verify returns 422 integrity failure payload', async (t) => {
   assert.equal(body.retryable, false);
   assert.equal(body.integrity_result.verification_result, 'fail');
   assert.equal(body.integrity_result.failed_checks[0].reason_code, 'DIGEST_MISMATCH');
+});
+
+test('POST /verify returns warning receipt for draft policy version', async (t) => {
+  const server = createAppServer();
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const payload = verifyPayload({
+    request_id: 'req-warning-001',
+    policy_version: 'draft-2026.03',
+  });
+  const res = await postVerify(baseUrl, payload);
+  assert.equal(res.status, 201);
+  const body = await res.json();
+  assert.equal(body.receipt.verification_result, 'warning');
+  assert.equal(body.audit_report.findings[0].code, 'POLICY_DRAFT_VERSION');
 });
 
 test('GET /receipts/{id} returns receipt when operator matches', async (t) => {
