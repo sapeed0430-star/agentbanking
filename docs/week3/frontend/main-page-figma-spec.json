@@ -1,0 +1,620 @@
+{
+  "meta": {
+    "id": "F-FIGMA-1200",
+    "name": "Main Page Concept",
+    "project": "agentbanking",
+    "date": "2026-03-24",
+    "status": "Figma import/recreation spec",
+    "fallback": true,
+    "source": "Generated for Figma MCP-unavailable workflow"
+  },
+  "designIntent": {
+    "thesis": "A premium editorial security homepage that turns verification into a calm, legible story.",
+    "audience": ["product", "operations", "compliance"],
+    "primaryAction": "Start verification",
+    "secondaryAction": "Review receipt"
+  },
+  "tokens": {
+    "color": {
+      "bgCanvas": "#07111F",
+      "bgSurface": "#0E1A2C",
+      "bgSurfaceElevated": "#14253E",
+      "lineDefault": "#28415F",
+      "textPrimary": "#F4F8FF",
+      "textSecondary": "#A7B8CE",
+      "textMuted": "#6E839C",
+      "accentPrimary": "#63EAD7",
+      "accentSecondary": "#F5B94C",
+      "accentRose": "#FF7A94",
+      "accentSuccess": "#8AF0A8",
+      "accentLink": "#9BC4FF",
+      "heroGlow": ["rgba(99, 234, 215, 0.18)", "rgba(155, 196, 255, 0.12)", "rgba(245, 185, 76, 0.10)"]
+    },
+    "type": {
+      "display": {
+        "family": "Fraunces, Georgia, serif",
+        "size": 64,
+        "lineHeight": 68,
+        "weight": 700,
+        "tracking": -1.5
+      },
+      "heading": {
+        "family": "Space Grotesk, Avenir Next, system-ui, sans-serif",
+        "size": 28,
+        "lineHeight": 34,
+        "weight": 600,
+        "tracking": -0.4
+      },
+      "body": {
+        "family": "Manrope, Inter, system-ui, sans-serif",
+        "size": 16,
+        "lineHeight": 26,
+        "weight": 400,
+        "tracking": 0
+      },
+      "label": {
+        "family": "Manrope, Inter, system-ui, sans-serif",
+        "size": 12,
+        "lineHeight": 16,
+        "weight": 700,
+        "tracking": 1.4,
+        "case": "uppercase"
+      },
+      "mono": {
+        "family": "IBM Plex Mono, SFMono-Regular, Menlo, monospace",
+        "size": 13,
+        "lineHeight": 20,
+        "weight": 500,
+        "tracking": 0.2
+      }
+    },
+    "space": {
+      "4": 4,
+      "8": 8,
+      "12": 12,
+      "16": 16,
+      "20": 20,
+      "24": 24,
+      "32": 32,
+      "40": 40,
+      "48": 48,
+      "64": 64,
+      "80": 80,
+      "96": 96
+    },
+    "radius": {
+      "sm": 12,
+      "md": 16,
+      "lg": 24,
+      "xl": 32
+    },
+    "shadow": {
+      "card": "0 24px 60px rgba(0, 0, 0, 0.28)",
+      "float": "0 18px 40px rgba(25, 72, 110, 0.18)"
+    },
+    "motion": {
+      "fast": 120,
+      "base": 180,
+      "slow": 280,
+      "stagger": 90,
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+    }
+  },
+  "breakpoints": [
+    {
+      "name": "desktop",
+      "frameWidth": 1440,
+      "frameHeight": 3200,
+      "columns": 12,
+      "margin": 88,
+      "gutter": 24,
+      "contentWidth": 1264,
+      "sectionSpacing": 96
+    },
+    {
+      "name": "tablet",
+      "frameWidth": 1024,
+      "frameHeight": 3360,
+      "columns": 8,
+      "margin": 32,
+      "gutter": 20,
+      "contentWidth": 960,
+      "sectionSpacing": 64
+    },
+    {
+      "name": "mobile",
+      "frameWidth": 375,
+      "frameHeight": 3560,
+      "columns": 4,
+      "margin": 20,
+      "gutter": 16,
+      "contentWidth": 335,
+      "sectionSpacing": 48
+    }
+  ],
+  "components": [
+    {
+      "name": "TopNav",
+      "id": "cmp-top-nav",
+      "purpose": "Sticky header with brand, nav links, and CTA.",
+      "variants": ["desktop", "mobile"],
+      "tokens": {
+        "height": 88,
+        "paddingX": 24,
+        "border": "1px solid #28415F",
+        "background": "rgba(14, 26, 44, 0.68)"
+      },
+      "layers": ["brand", "links", "actions"]
+    },
+    {
+      "name": "PrimaryButton",
+      "id": "cmp-primary-button",
+      "purpose": "Primary CTA in hero and footer.",
+      "variants": ["solid", "ghost"],
+      "tokens": {
+        "height": 48,
+        "paddingX": 18,
+        "radius": 14,
+        "fill": "#63EAD7",
+        "text": "#07111F"
+      },
+      "layers": ["label", "iconOptional"]
+    },
+    {
+      "name": "MetricCard",
+      "id": "cmp-metric-card",
+      "purpose": "Compact KPI card used in trust strip and summary blocks.",
+      "variants": ["default", "success", "warning"],
+      "tokens": {
+        "minWidth": 200,
+        "padding": 20,
+        "radius": 20,
+        "stroke": "#28415F"
+      },
+      "layers": ["value", "label", "delta"]
+    },
+    {
+      "name": "PipelineStep",
+      "id": "cmp-pipeline-step",
+      "purpose": "Step card for the proof pipeline.",
+      "variants": ["default", "active"],
+      "tokens": {
+        "minWidth": 260,
+        "padding": 24,
+        "radius": 24,
+        "indicatorSize": 12
+      },
+      "layers": ["stepIndex", "title", "description", "statusChip"]
+    },
+    {
+      "name": "FeatureCard",
+      "id": "cmp-feature-card",
+      "purpose": "Three-up capability card for the main content section.",
+      "variants": ["default", "spotlight"],
+      "tokens": {
+        "padding": 24,
+        "radius": 24,
+        "minHeight": 220
+      },
+      "layers": ["eyebrow", "title", "body", "meta"]
+    },
+    {
+      "name": "ProofPanel",
+      "id": "cmp-proof-panel",
+      "purpose": "Hero-side audit card that summarizes receipt, status, and evidence.",
+      "variants": ["desktop", "mobileStack"],
+      "tokens": {
+        "padding": 24,
+        "radius": 28,
+        "border": "1px solid #28415F",
+        "background": "linear-gradient(180deg, rgba(20, 37, 62, 0.96), rgba(14, 26, 44, 0.92))"
+      },
+      "layers": ["receiptHeader", "statusRow", "evidenceList", "footerNote"]
+    },
+    {
+      "name": "WireframeFrame",
+      "id": "cmp-wireframe-frame",
+      "purpose": "Low-fidelity preview of desktop and mobile layouts.",
+      "variants": ["desktop", "mobile"],
+      "tokens": {
+        "padding": 24,
+        "radius": 24,
+        "stroke": "#36506F",
+        "fill": "rgba(255, 255, 255, 0.02)"
+      },
+      "layers": ["label", "skeletonBlocks", "notes"]
+    },
+    {
+      "name": "FooterCTA",
+      "id": "cmp-footer-cta",
+      "purpose": "Final conversion block with documentation link.",
+      "variants": ["desktop", "mobile"],
+      "tokens": {
+        "padding": 32,
+        "radius": 28,
+        "background": "linear-gradient(135deg, rgba(99, 234, 215, 0.14), rgba(155, 196, 255, 0.10))"
+      },
+      "layers": ["title", "body", "actions"]
+    }
+  ],
+  "frames": [
+    {
+      "name": "Main Page / Desktop",
+      "id": "frame-desktop",
+      "size": {
+        "width": 1440,
+        "height": 3200
+      },
+      "grid": {
+        "columns": 12,
+        "margin": 88,
+        "gutter": 24,
+        "alignment": "stretch"
+      },
+      "background": "color.bgCanvas",
+      "sections": [
+        {
+          "id": "desktop-header",
+          "name": "Header",
+          "bounds": {
+            "x": 88,
+            "y": 32,
+            "w": 1264,
+            "h": 88
+          },
+          "component": "TopNav",
+          "layout": "horizontal",
+          "nodes": [
+            { "id": "brand", "type": "logo", "text": "agentbanking" },
+            { "id": "nav-links", "type": "textGroup", "items": ["Product", "Proof Flow", "Evidence", "Docs"] },
+            { "id": "nav-actions", "type": "buttonGroup", "items": ["Sign in", "Start verification"] }
+          ]
+        },
+        {
+          "id": "desktop-hero",
+          "name": "Hero",
+          "bounds": {
+            "x": 88,
+            "y": 152,
+            "w": 1264,
+            "h": 696
+          },
+          "layout": "two-column",
+          "columns": [
+            {
+              "id": "hero-copy",
+              "width": 692,
+              "layout": "vertical",
+              "gap": 24,
+              "nodes": [
+                { "id": "hero-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1200" },
+                { "id": "hero-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
+                { "id": "hero-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
+                { "id": "hero-actions", "type": "buttonRow", "items": ["Start verification", "View receipt"] },
+                { "id": "hero-badges", "type": "chipRow", "items": ["Signer: local-ed25519", "Timestamp: rfc3161", "Transparency: rekor"] }
+              ]
+            },
+            {
+              "id": "hero-panel",
+              "width": 508,
+              "component": "ProofPanel",
+              "layout": "vertical",
+              "nodes": [
+                { "id": "receipt-header", "type": "text", "style": "heading", "text": "Receipt preview" },
+                { "id": "receipt-id", "type": "text", "style": "mono", "text": "receipt_0184A9F2" },
+                { "id": "status-row", "type": "statusRow", "items": ["PASS", "3 checks", "0 unresolved"] },
+                { "id": "evidence-list", "type": "list", "items": ["Policy digest matched", "Signature verified", "Timestamp anchor located", "Transparency proof attached"] },
+                { "id": "panel-footer", "type": "text", "style": "mono", "text": "Generated 12:43 KST / verifiable offline" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "desktop-trust-strip",
+          "name": "Trust Strip",
+          "bounds": {
+            "x": 88,
+            "y": 892,
+            "w": 1264,
+            "h": 160
+          },
+          "layout": "horizontal",
+          "nodes": [
+            { "id": "trust-card-1", "type": "component", "component": "MetricCard", "title": "99.98%", "label": "verification uptime" },
+            { "id": "trust-card-2", "type": "component", "component": "MetricCard", "title": "<120ms", "label": "median receipt render" },
+            { "id": "trust-card-3", "type": "component", "component": "MetricCard", "title": "4 modes", "label": "sign, timestamp, transparency, offline" }
+          ]
+        },
+        {
+          "id": "desktop-pipeline",
+          "name": "Proof Flow",
+          "bounds": {
+            "x": 88,
+            "y": 1096,
+            "w": 1264,
+            "h": 420
+          },
+          "layout": "horizontal",
+          "nodes": [
+            { "id": "step-1", "type": "component", "component": "PipelineStep", "index": 1, "title": "Policy gate", "description": "Validate the request against the expected operating rules.", "state": "active" },
+            { "id": "step-2", "type": "component", "component": "PipelineStep", "index": 2, "title": "Evidence capture", "description": "Attach inputs, digests, and supporting references.", "state": "default" },
+            { "id": "step-3", "type": "component", "component": "PipelineStep", "index": 3, "title": "Verification run", "description": "Check signatures, timestamps, and transparency proofs.", "state": "default" },
+            { "id": "step-4", "type": "component", "component": "PipelineStep", "index": 4, "title": "Signed receipt", "description": "Return a compact artifact that can be replayed later.", "state": "default" }
+          ]
+        },
+        {
+          "id": "desktop-features",
+          "name": "Capabilities",
+          "bounds": {
+            "x": 88,
+            "y": 1576,
+            "w": 1264,
+            "h": 560
+          },
+          "layout": "three-column",
+          "nodes": [
+            {
+              "id": "feature-1",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Receipts",
+              "title": "Receipts are legible and exportable.",
+              "body": "Make the receipt the source of truth for each verification, with clear digest and status metadata.",
+              "meta": "Includes receipt ID, evidence references, and verification outcome."
+            },
+            {
+              "id": "feature-2",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Offline",
+              "title": "Verification can be replayed without the live service.",
+              "body": "Use the same proof layout to explain what was checked even when the network is unavailable.",
+              "meta": "Optimized for incident review and field debugging."
+            },
+            {
+              "id": "feature-3",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Audit",
+              "title": "The UI reads like an operations tool, not a brochure.",
+              "body": "Surface health, trust material, and failure mode cues in the same visual language as the product.",
+              "meta": "Helps compliance and engineering share one page."
+            }
+          ]
+        },
+        {
+          "id": "desktop-ops",
+          "name": "Operations Snapshot",
+          "bounds": {
+            "x": 88,
+            "y": 2208,
+            "w": 1264,
+            "h": 360
+          },
+          "layout": "split",
+          "nodes": [
+            {
+              "id": "ops-panel-left",
+              "type": "frame",
+              "title": "System posture",
+              "items": ["Signer mode: local-ed25519", "Timestamp mode: rfc3161", "Transparency mode: rekor", "Fallback state: ready"]
+            },
+            {
+              "id": "ops-panel-right",
+              "type": "frame",
+              "title": "Design notes",
+              "items": ["Use an elevated card to imply live status.", "Keep the metric row concise.", "Use one accent color per semantic purpose."]
+            }
+          ]
+        },
+        {
+          "id": "desktop-wireframes",
+          "name": "Wireframe Gallery",
+          "bounds": {
+            "x": 88,
+            "y": 2632,
+            "w": 1264,
+            "h": 416
+          },
+          "layout": "horizontal",
+          "nodes": [
+            {
+              "id": "desktop-wireframe",
+              "type": "component",
+              "component": "WireframeFrame",
+              "variant": "desktop",
+              "label": "Desktop wire",
+              "notes": "Two-column hero, metric strip, three cards, footer CTA"
+            },
+            {
+              "id": "mobile-wireframe",
+              "type": "component",
+              "component": "WireframeFrame",
+              "variant": "mobile",
+              "label": "Mobile wire",
+              "notes": "Stacked hero, full-width buttons, vertical proof flow"
+            }
+          ]
+        }
+      ],
+      "layerOrder": [
+        "desktop-header",
+        "desktop-hero",
+        "desktop-trust-strip",
+        "desktop-pipeline",
+        "desktop-features",
+        "desktop-ops",
+        "desktop-wireframes"
+      ]
+    },
+    {
+      "name": "Main Page / Mobile",
+      "id": "frame-mobile",
+      "size": {
+        "width": 375,
+        "height": 3560
+      },
+      "grid": {
+        "columns": 4,
+        "margin": 20,
+        "gutter": 16,
+        "alignment": "stretch"
+      },
+      "background": "color.bgCanvas",
+      "sections": [
+        {
+          "id": "mobile-header",
+          "name": "Header",
+          "bounds": {
+            "x": 20,
+            "y": 24,
+            "w": 335,
+            "h": 92
+          },
+          "component": "TopNav",
+          "layout": "stacked",
+          "nodes": [
+            { "id": "mobile-brand", "type": "logo", "text": "agentbanking" },
+            { "id": "mobile-action", "type": "button", "text": "Start verification" }
+          ]
+        },
+        {
+          "id": "mobile-hero",
+          "name": "Hero",
+          "bounds": {
+            "x": 20,
+            "y": 144,
+            "w": 335,
+            "h": 720
+          },
+          "layout": "vertical",
+          "nodes": [
+            { "id": "mobile-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1200" },
+            { "id": "mobile-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
+            { "id": "mobile-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
+            { "id": "mobile-actions", "type": "buttonColumn", "items": ["Start verification", "View receipt"] },
+            { "id": "mobile-badges", "type": "chipWrap", "items": ["Signer: local-ed25519", "Timestamp: rfc3161", "Transparency: rekor"] },
+            { "id": "mobile-proof-panel", "type": "component", "component": "ProofPanel", "variant": "mobileStack", "title": "Receipt preview", "status": "PASS" }
+          ]
+        },
+        {
+          "id": "mobile-trust-strip",
+          "name": "Trust Strip",
+          "bounds": {
+            "x": 20,
+            "y": 892,
+            "w": 335,
+            "h": 252
+          },
+          "layout": "vertical",
+          "nodes": [
+            { "id": "mobile-card-1", "type": "component", "component": "MetricCard", "title": "99.98%", "label": "verification uptime" },
+            { "id": "mobile-card-2", "type": "component", "component": "MetricCard", "title": "<120ms", "label": "median receipt render" },
+            { "id": "mobile-card-3", "type": "component", "component": "MetricCard", "title": "4 modes", "label": "sign, timestamp, transparency, offline" }
+          ]
+        },
+        {
+          "id": "mobile-pipeline",
+          "name": "Proof Flow",
+          "bounds": {
+            "x": 20,
+            "y": 1180,
+            "w": 335,
+            "h": 720
+          },
+          "layout": "vertical",
+          "nodes": [
+            { "id": "mobile-step-1", "type": "component", "component": "PipelineStep", "index": 1, "title": "Policy gate", "description": "Validate the request against the expected operating rules." },
+            { "id": "mobile-step-2", "type": "component", "component": "PipelineStep", "index": 2, "title": "Evidence capture", "description": "Attach inputs, digests, and supporting references." },
+            { "id": "mobile-step-3", "type": "component", "component": "PipelineStep", "index": 3, "title": "Verification run", "description": "Check signatures, timestamps, and transparency proofs." },
+            { "id": "mobile-step-4", "type": "component", "component": "PipelineStep", "index": 4, "title": "Signed receipt", "description": "Return a compact artifact that can be replayed later." }
+          ]
+        },
+        {
+          "id": "mobile-features",
+          "name": "Capabilities",
+          "bounds": {
+            "x": 20,
+            "y": 1968,
+            "w": 335,
+            "h": 900
+          },
+          "layout": "vertical",
+          "nodes": [
+            {
+              "id": "mobile-feature-1",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Receipts",
+              "title": "Receipts are legible and exportable.",
+              "body": "Make the receipt the source of truth for each verification, with clear digest and status metadata."
+            },
+            {
+              "id": "mobile-feature-2",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Offline",
+              "title": "Verification can be replayed without the live service.",
+              "body": "Use the same proof layout to explain what was checked even when the network is unavailable."
+            },
+            {
+              "id": "mobile-feature-3",
+              "type": "component",
+              "component": "FeatureCard",
+              "eyebrow": "Audit",
+              "title": "The UI reads like an operations tool, not a brochure.",
+              "body": "Surface health, trust material, and failure mode cues in the same visual language as the product."
+            }
+          ]
+        },
+        {
+          "id": "mobile-ops",
+          "name": "Operations Snapshot",
+          "bounds": {
+            "x": 20,
+            "y": 2920,
+            "w": 335,
+            "h": 296
+          },
+          "layout": "vertical",
+          "nodes": [
+            { "id": "mobile-ops-left", "type": "frame", "title": "System posture", "items": ["Signer mode: local-ed25519", "Timestamp mode: rfc3161", "Transparency mode: rekor", "Fallback state: ready"] },
+            { "id": "mobile-ops-right", "type": "frame", "title": "Design notes", "items": ["Use one accent color per semantic purpose.", "Keep buttons full-width.", "Stack proof panels beneath CTA."] }
+          ]
+        },
+        {
+          "id": "mobile-footer",
+          "name": "CTA Footer",
+          "bounds": {
+            "x": 20,
+            "y": 3264,
+            "w": 335,
+            "h": 240
+          },
+          "component": "FooterCTA",
+          "nodes": [
+            { "id": "mobile-footer-title", "type": "text", "text": "Turn proof into a product surface." },
+            { "id": "mobile-footer-body", "type": "text", "text": "Keep verification visible from the first screen to the last receipt." },
+            { "id": "mobile-footer-actions", "type": "buttonColumn", "items": ["Start verification", "Open docs"] }
+          ]
+        }
+      ],
+      "layerOrder": [
+        "mobile-header",
+        "mobile-hero",
+        "mobile-trust-strip",
+        "mobile-pipeline",
+        "mobile-features",
+        "mobile-ops",
+        "mobile-footer"
+      ]
+    }
+  ],
+  "figmaImportNotes": [
+    "Use this JSON as the source of truth if the Figma MCP is unavailable.",
+    "Build reusable components first, then place the desktop and mobile frames.",
+    "Keep the desktop frame on a dark canvas with a subtle radial glow background.",
+    "Name sections exactly as provided so the markdown, JSON, and HTML stay aligned.",
+    "Treat the wireframe gallery as a QA check for responsive layout parity."
+  ]
+}

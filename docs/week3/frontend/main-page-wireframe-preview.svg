@@ -1,0 +1,264 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1600" viewBox="0 0 1440 1600" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">F-FIGMA-1200 Main Page Wireframe Preview</title>
+  <desc id="desc">Dark 1440px desktop wireframe showing TopNav, Hero, Proof Flow, Capability Cards, Operations, and Footer CTA sections.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#06101D"/>
+      <stop offset="100%" stop-color="#07111F"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(250 180) rotate(35) scale(420 240)">
+      <stop offset="0%" stop-color="#63EAD7" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#63EAD7" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1180 210) rotate(-25) scale(420 260)">
+      <stop offset="0%" stop-color="#9BC4FF" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#9BC4FF" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 H 0 V 40" stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000000" flood-opacity="0.28"/>
+    </filter>
+    <style>
+      .frame { fill: rgba(14,26,44,0.82); stroke: #28415F; stroke-width: 1.5; rx: 24; }
+      .frame-strong { fill: rgba(20,37,62,0.95); stroke: #3A5575; stroke-width: 1.5; rx: 28; }
+      .label { font-family: Inter, system-ui, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; fill: #A7B8CE; }
+      .heading { font-family: Inter, system-ui, sans-serif; font-size: 26px; font-weight: 700; fill: #F4F8FF; }
+      .body { font-family: Inter, system-ui, sans-serif; font-size: 16px; fill: #A7B8CE; }
+      .mono { font-family: Menlo, Monaco, Consolas, monospace; font-size: 13px; fill: #6E839C; }
+      .chip { fill: rgba(255,255,255,0.04); stroke: #28415F; stroke-width: 1; rx: 999; }
+      .chipText { font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #A7B8CE; }
+      .solidBtn { fill: #63EAD7; rx: 14; }
+      .ghostBtn { fill: rgba(255,255,255,0.02); stroke: #28415F; stroke-width: 1.2; rx: 14; }
+      .buttonTextDark { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #07111F; }
+      .buttonTextLight { font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #F4F8FF; }
+      .sectionTitle { font-family: Inter, system-ui, sans-serif; font-size: 18px; font-weight: 700; fill: #F4F8FF; }
+      .small { font-family: Inter, system-ui, sans-serif; font-size: 12px; fill: #6E839C; }
+      .line { stroke: #28415F; stroke-width: 1.2; }
+      .lineSoft { stroke: #3A5575; stroke-width: 1; stroke-dasharray: 6 6; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1600" fill="url(#bg)"/>
+  <rect width="1440" height="1600" fill="url(#grid)"/>
+  <rect width="1440" height="1600" fill="url(#glowA)"/>
+  <rect width="1440" height="1600" fill="url(#glowB)"/>
+
+  <!-- Page shell -->
+  <g filter="url(#shadow)">
+    <rect x="64" y="48" width="1312" height="1504" rx="36" fill="rgba(9,16,28,0.5)" stroke="#1F3550"/>
+  </g>
+
+  <!-- TopNav -->
+  <g transform="translate(88 80)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="88" rx="24"/>
+    <rect x="20" y="22" width="42" height="42" rx="13" fill="url(#glowA)" stroke="#63EAD7" stroke-opacity="0.55"/>
+    <text x="76" y="42" class="sectionTitle">agentbanking</text>
+    <text x="76" y="62" class="small">trust console and receipt flow</text>
+
+    <g transform="translate(350 28)">
+      <text x="0" y="18" class="small">Product</text>
+      <text x="86" y="18" class="small">Proof Flow</text>
+      <text x="192" y="18" class="small">Evidence</text>
+      <text x="282" y="18" class="small">Docs</text>
+    </g>
+
+    <g transform="translate(1078 21)">
+      <rect class="ghostBtn" x="0" y="0" width="72" height="46"/>
+      <text x="20" y="29" class="buttonTextLight">Sign in</text>
+      <rect class="solidBtn" x="84" y="0" width="150" height="46" rx="14"/>
+      <text x="100" y="29" class="buttonTextDark">Start verification</text>
+    </g>
+  </g>
+
+  <!-- Hero -->
+  <g transform="translate(88 196)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="308" rx="32"/>
+
+    <g transform="translate(32 32)">
+      <text class="label" x="0" y="0">Trust console / live proof surface</text>
+      <text class="heading" x="0" y="68">Every agent action leaves a verifiable receipt.</text>
+      <rect x="0" y="90" width="642" height="84" rx="18" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text class="body" x="18" y="124">A premium landing page for the audit stack. The design keeps receipts, signature</text>
+      <text class="body" x="18" y="147">status, timestamp anchors, and transparency proofs in one calm story.</text>
+
+      <g transform="translate(0 190)">
+        <rect class="solidBtn" x="0" y="0" width="158" height="48"/>
+        <text x="22" y="30" class="buttonTextDark">Start verification</text>
+        <rect class="ghostBtn" x="170" y="0" width="118" height="48"/>
+        <text x="191" y="30" class="buttonTextLight">View receipt</text>
+      </g>
+
+      <g transform="translate(0 255)">
+        <rect class="chip" x="0" y="0" width="178" height="34"/>
+        <rect class="chip" x="188" y="0" width="168" height="34"/>
+        <rect class="chip" x="366" y="0" width="162" height="34"/>
+        <text class="chipText" x="16" y="22">Signer: local-ed25519</text>
+        <text class="chipText" x="204" y="22">Timestamp: rfc3161</text>
+        <text class="chipText" x="384" y="22">Transparency: rekor</text>
+      </g>
+    </g>
+
+    <g transform="translate(784 32)">
+      <rect x="0" y="0" width="448" height="244" rx="28" fill="rgba(20,37,62,0.96)" stroke="#3A5575"/>
+      <text class="label" x="24" y="34">Receipt preview</text>
+      <rect x="364" y="20" width="60" height="28" rx="999" fill="rgba(138,240,168,0.14)"/>
+      <text x="378" y="39" style="font-family:Inter,sans-serif;font-size:12px;font-weight:700;fill:#8AF0A8;">PASS</text>
+
+      <g transform="translate(24 60)">
+        <rect x="0" y="0" width="400" height="34" rx="12" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+        <text class="mono" x="14" y="22">receipt_0184A9F2</text>
+        <text class="small" x="278" y="22">Generated 12:43 KST</text>
+      </g>
+
+      <g transform="translate(24 106)">
+        <rect x="0" y="0" width="400" height="34" rx="12" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+        <text class="mono" x="14" y="22">sha-256: 9f2c…a7b1</text>
+        <text class="small" x="278" y="22">Policy + evidence matched</text>
+      </g>
+
+      <g transform="translate(24 152)">
+        <rect x="0" y="0" width="400" height="34" rx="12" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+        <text class="mono" x="14" y="22">Signature, timestamp, transparency</text>
+        <text class="small" x="278" y="22">3 checks passed</text>
+      </g>
+
+      <g transform="translate(24 198)">
+        <rect x="0" y="0" width="400" height="24" rx="12" fill="none"/>
+        <text class="small" x="0" y="18">Offline verification ready. Same result without the live service.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Trust metrics strip -->
+  <g transform="translate(88 536)">
+    <rect class="frame" x="0" y="0" width="1264" height="144" rx="26"/>
+    <g transform="translate(24 24)">
+      <rect x="0" y="0" width="388" height="96" rx="20" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text x="18" y="36" style="font-family:Fraunces,serif;font-size:34px;font-weight:700;fill:#F4F8FF;">99.98%</text>
+      <text x="18" y="62" class="small">verification uptime target</text>
+      <text x="18" y="82" class="small">for the trust surface and receipt endpoint</text>
+
+      <rect x="406" y="0" width="388" height="96" rx="20" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text x="424" y="36" style="font-family:Fraunces,serif;font-size:34px;font-weight:700;fill:#F4F8FF;">&lt;120ms</text>
+      <text x="424" y="62" class="small">median receipt panel render</text>
+      <text x="424" y="82" class="small">and status refresh on a warm session</text>
+
+      <rect x="812" y="0" width="388" height="96" rx="20" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text x="830" y="36" style="font-family:Fraunces,serif;font-size:34px;font-weight:700;fill:#F4F8FF;">4 modes</text>
+      <text x="830" y="62" class="small">sign, timestamp, transparency</text>
+      <text x="830" y="82" class="small">and offline replay shown as first-class states</text>
+    </g>
+  </g>
+
+  <!-- Proof Flow -->
+  <g transform="translate(88 712)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="276" rx="30"/>
+    <text class="label" x="32" y="34">Proof flow</text>
+    <text class="sectionTitle" x="32" y="68">A four-step story from policy gate to signed receipt.</text>
+    <text class="body" x="748" y="38">The page reads like a system diagram but keeps the prose human.</text>
+    <text class="body" x="748" y="60">Both product and ops can follow the flow quickly.</text>
+
+    <g transform="translate(32 94)">
+      <rect class="frame" x="0" y="0" width="284" height="152" rx="24"/>
+      <circle cx="28" cy="28" r="14" fill="#63EAD7" fill-opacity="0.16" stroke="#63EAD7"/>
+      <text x="24" y="33" style="font-family:Menlo,monospace;font-size:12px;font-weight:700;fill:#63EAD7;">1</text>
+      <text x="24" y="68" class="sectionTitle">Policy gate</text>
+      <text x="24" y="98" class="body">Validate the request against the</text>
+      <text x="24" y="120" class="body">operating rules before issuance.</text>
+    </g>
+
+    <g transform="translate(336 94)">
+      <rect class="frame" x="0" y="0" width="284" height="152" rx="24"/>
+      <circle cx="28" cy="28" r="14" fill="#63EAD7" fill-opacity="0.10" stroke="#63EAD7" stroke-opacity="0.35"/>
+      <text x="24" y="33" style="font-family:Menlo,monospace;font-size:12px;font-weight:700;fill:#63EAD7;">2</text>
+      <text x="24" y="68" class="sectionTitle">Evidence capture</text>
+      <text x="24" y="98" class="body">Attach inputs, digests, and</text>
+      <text x="24" y="120" class="body">supporting references while fresh.</text>
+    </g>
+
+    <g transform="translate(640 94)">
+      <rect class="frame" x="0" y="0" width="284" height="152" rx="24"/>
+      <circle cx="28" cy="28" r="14" fill="#63EAD7" fill-opacity="0.10" stroke="#63EAD7" stroke-opacity="0.35"/>
+      <text x="24" y="33" style="font-family:Menlo,monospace;font-size:12px;font-weight:700;fill:#63EAD7;">3</text>
+      <text x="24" y="68" class="sectionTitle">Verification run</text>
+      <text x="24" y="98" class="body">Confirm signatures, timestamps,</text>
+      <text x="24" y="120" class="body">and transparency proofs in one place.</text>
+    </g>
+
+    <g transform="translate(944 94)">
+      <rect class="frame" x="0" y="0" width="284" height="152" rx="24"/>
+      <circle cx="28" cy="28" r="14" fill="#63EAD7" fill-opacity="0.10" stroke="#63EAD7" stroke-opacity="0.35"/>
+      <text x="24" y="33" style="font-family:Menlo,monospace;font-size:12px;font-weight:700;fill:#63EAD7;">4</text>
+      <text x="24" y="68" class="sectionTitle">Signed receipt</text>
+      <text x="24" y="98" class="body">Return a compact artifact that</text>
+      <text x="24" y="120" class="body">can be replayed later offline.</text>
+    </g>
+  </g>
+
+  <!-- Capability Cards -->
+  <g transform="translate(88 1020)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="292" rx="30"/>
+    <text class="label" x="32" y="34">Capabilities</text>
+    <text class="sectionTitle" x="32" y="68">Three surfaces that turn proof into something readable.</text>
+    <text class="body" x="748" y="38">Dense enough to feel operational, but still elegant.</text>
+    <text class="body" x="748" y="60">Designed for product, compliance, and engineering.</text>
+
+    <g transform="translate(32 96)">
+      <rect class="frame" x="0" y="0" width="384" height="160" rx="24"/>
+      <text class="label" x="20" y="30">Receipts</text>
+      <text class="sectionTitle" x="20" y="64">Receipts are legible and exportable.</text>
+      <text class="body" x="20" y="96">Make the receipt the source of truth for each verification.</text>
+      <text class="small" x="20" y="126">Includes receipt ID, evidence references, and outcome state.</text>
+    </g>
+
+    <g transform="translate(440 96)">
+      <rect class="frame" x="0" y="0" width="384" height="160" rx="24"/>
+      <text class="label" x="20" y="30">Offline</text>
+      <text class="sectionTitle" x="20" y="64">Verification can be replayed offline.</text>
+      <text class="body" x="20" y="96">Use the same proof layout when the network is unavailable.</text>
+      <text class="small" x="20" y="126">Optimized for incident review and field debugging.</text>
+    </g>
+
+    <g transform="translate(848 96)">
+      <rect class="frame" x="0" y="0" width="384" height="160" rx="24"/>
+      <text class="label" x="20" y="30">Audit</text>
+      <text class="sectionTitle" x="20" y="64">The UI reads like an operations tool.</text>
+      <text class="body" x="20" y="96">Surface health, trust material, and failure cues together.</text>
+      <text class="small" x="20" y="126">One page for engineering, compliance, and leadership.</text>
+    </g>
+  </g>
+
+  <!-- Operations -->
+  <g transform="translate(88 1340)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="180" rx="30"/>
+    <text class="label" x="32" y="34">Operations</text>
+    <text class="sectionTitle" x="32" y="68">Keep the page useful when the system is under stress.</text>
+    <text class="body" x="748" y="38">Lower half shifts from marketing to status and design intent.</text>
+    <text class="body" x="748" y="60">That keeps implementation and review aligned.</text>
+
+    <g transform="translate(32 92)">
+      <rect x="0" y="0" width="560" height="60" rx="20" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text class="mono" x="20" y="24">Signer mode: local-ed25519</text>
+      <text class="mono" x="20" y="44">Timestamp mode: rfc3161 / Transparency mode: rekor / Fallback state: ready</text>
+    </g>
+
+    <g transform="translate(616 92)">
+      <rect x="0" y="0" width="616" height="60" rx="20" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
+      <text class="mono" x="20" y="24">Use one accent color per semantic purpose.</text>
+      <text class="mono" x="20" y="44">Keep the proof panel elevated and reduce motion when needed.</text>
+    </g>
+  </g>
+
+  <!-- Footer CTA -->
+  <g transform="translate(88 1542)">
+    <rect class="frame-strong" x="0" y="0" width="1264" height="84" rx="26"/>
+    <text class="sectionTitle" x="32" y="34">Turn proof into a product surface.</text>
+    <text class="body" x="32" y="58">Use the landing page to explain the trust model first, then let the receipt detail do the heavier work.</text>
+    <rect class="solidBtn" x="1012" y="18" width="152" height="48"/>
+    <text x="1034" y="48" class="buttonTextDark">Start verification</text>
+    <rect class="ghostBtn" x="1168" y="18" width="76" height="48"/>
+    <text x="1190" y="48" class="buttonTextLight">Docs</text>
+  </g>
+</svg>

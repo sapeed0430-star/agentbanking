@@ -109,21 +109,56 @@ npm run live-proof:capture
 - `timestamp` usually means TSA endpoint, trust chain, or network access is unavailable.
 - `transparency` usually means Rekor URL, public key, or network access is unavailable.
 
-## 7) Local Run Attempt
-I attempted one local run in this workspace with the real live-proof modes enabled but without configured TSA/Rekor endpoints.
+## 7) 12:00 Cycle Run Attempt
+I attempted the `B-LIVE-1200` live-proof cycle with real RFC3161 and Rekor endpoints in this workspace. The cycle had one completed failure and one interrupted retry.
 
+### 7.1) Endpoint List
+- TSA attempt 1: `https://freetsa.org/tsr`
+- TSA attempt 2: `http://timestamp.digicert.com`
+- Rekor: `https://rekor.sigstore.dev`
+
+### 7.2) 1st Attempt
 Command:
 ```bash
-AUDIT_TIMESTAMP_MODE=rfc3161 AUDIT_TRANSPARENCY_MODE=rekor node scripts/capture-live-proof-evidence.js
+AUDIT_SIGNER_MODE=local-ed25519 \
+AUDIT_TIMESTAMP_MODE=rfc3161 \
+AUDIT_RFC3161_ENDPOINT=https://freetsa.org/tsr \
+AUDIT_TRANSPARENCY_MODE=rekor \
+AUDIT_REKOR_BASE_URL=https://rekor.sigstore.dev \
+node scripts/capture-live-proof-evidence.js --output docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json
 ```
 
 Result:
-- The run failed at the `timestamp` stage.
-- Error code: `MISSING_TSA_ENDPOINT`
-- Message: `missing_tsa_endpoint`
-- Evidence file was still written to `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`.
+- Outcome: `FAIL`
+- Failed stage: `timestamp`
+- Error code: `TIMESTAMP_ERROR`
+- Message: `fetch failed`
+- Evidence file: `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`
 
-This is expected in an unconfigured environment and confirms the script records the failure stage and error details instead of stopping silently.
+### 7.3) 2nd Attempt
+Command:
+```bash
+AUDIT_SIGNER_MODE=local-ed25519 \
+AUDIT_TIMESTAMP_MODE=rfc3161 \
+AUDIT_RFC3161_ENDPOINT=http://timestamp.digicert.com \
+AUDIT_TRANSPARENCY_MODE=rekor \
+AUDIT_REKOR_BASE_URL=https://rekor.sigstore.dev \
+node scripts/capture-live-proof-evidence.js
+```
 
-## 8) Follow-up
-When TSA/Rekor staging access is available, rerun the same command with the live env vars populated and replace the failure record with a successful capture.
+Result:
+- Outcome: `INTERRUPTED`
+- The retry was started with the DigiCert TSA endpoint, but the run was user-stopped before completion.
+- No new evidence file was produced for the interrupted retry.
+
+### 7.4) Evidence Files
+- `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
+- `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`
+
+## 8) Follow-up for PASS
+To reach `PASS`, the next execution needs all of the following:
+1. A reachable TSA endpoint that returns a valid RFC3161 response over the current network path.
+2. A working TSA trust chain path in `AUDIT_RFC3161_CA_CERT_PATH` if verification is required.
+3. A reachable Rekor endpoint with a valid `AUDIT_REKOR_PUBLIC_KEY_PEM_B64`.
+4. One uninterrupted end-to-end run of `node scripts/capture-live-proof-evidence.js` that reaches both `timestamp` and `transparency` success.
+5. A resulting evidence JSON with `result.outcome=PASS` and populated `artifacts.timestamp_proof` and `artifacts.transparency_proof`.

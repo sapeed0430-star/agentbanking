@@ -1,0 +1,101 @@
+{
+  "evidence_type": "live-proof-capture",
+  "spec_version": "B-LIVE-1100",
+  "run_id": "9b7279b3-f6da-4ee2-b474-b33829844fe7",
+  "captured_at": "2026-03-23T15:48:08.959Z",
+  "output_path": "/Users/myungchoi/Documents/New project/docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json",
+  "config": {
+    "signer_mode": "local-ed25519",
+    "timestamp_mode": "rfc3161",
+    "transparency_mode": "rekor",
+    "proof_timeout_ms": 20000,
+    "tsa_endpoint": {
+      "origin": "https://freetsa.org",
+      "pathname": "/tsr"
+    },
+    "rekor_base_url": {
+      "origin": "https://rekor.sigstore.dev",
+      "pathname": "/"
+    },
+    "rekor_public_key_set": true,
+    "tsa_ca_cert_path": ""
+  },
+  "sample": {
+    "request": {
+      "request_id": "req-9b7279b3-f6da-4ee2-b474-b33829844fe7",
+      "agent_id": "agent-live-proof",
+      "operator_id": "operator-live-proof",
+      "policy_version": "policy-2026.03",
+      "strategy_hash": "strategy-9b7279b3",
+      "model_hash": "model-9b7279b3",
+      "evidence_refs": [
+        {
+          "kind": "input",
+          "uri": "https://evidence.agentbanking.dev/live-proof/9b7279b3-f6da-4ee2-b474-b33829844fe7",
+          "digest": {
+            "alg": "sha-256",
+            "value": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        }
+      ],
+      "proof_targets": [
+        "timestamp",
+        "transparency"
+      ],
+      "run_id": "9b7279b3-f6da-4ee2-b474-b33829844fe7"
+    },
+    "digest": {
+      "alg": "sha-256",
+      "value": "236d750316afe34ba7e7b2b9fec3a7bf65bd2ba99278842324974086b46c9424"
+    },
+    "receipt_id": "live-proof-9b7279b3-f6da-4ee2-b474-b33829844fe7",
+    "issued_at": "2026-03-23T15:48:08.959Z"
+  },
+  "steps": [
+    {
+      "stage": "signer",
+      "status": "success",
+      "duration_ms": 1.37,
+      "output": {
+        "format": "jws-compact",
+        "alg": "EdDSA",
+        "kid": "live-proof-worker-20260324",
+        "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImxpdmUtcHJvb2Ytd29ya2VyLTIwMjYwMzI0In0.eyJpc3MiOiJhZ2VudGJhbmtpbmctbG9jYWwtc2lnbmVyIiwiYXVkIjoicmVjZWlwdCIsInJlY2VpcHRfaWQiOiJsaXZlLXByb29mLTliNzI3OWIzLWY2ZGEtNGVlMi1iNDc0LWIzMzgyOTg0NGZlNyIsImRpZ2VzdCI6eyJhbGciOiJzaGEtMjU2IiwidmFsdWUiOiIyMzZkNzUwMzE2YWZlMzRiYTdlN2IyYjlmZWMzYTdiZjY1YmQyYmE5OTI3ODg0MjMyNDk3NDA4NmI0NmM5NDI0In0sImlhdCI6IjIwMjYtMDMtMjNUMTU6NDg6MDguOTU5WiIsImp0aSI6ImI1OTQwNmQ2LTlkYWEtNGQzNS05ZjBhLTU3NjQxZDliNjUyMCJ9.jwPmkU9zvrUkbxdgiZ1adjw7xqzMfOb41wepX8eCuBgdhRbp_ANgk__yiXkWteDBGArz_-ylsym2A1PmQoJbCw"
+      }
+    },
+    {
+      "stage": "timestamp",
+      "status": "failed",
+      "duration_ms": 333.08,
+      "error": {
+        "stage": "timestamp",
+        "error_code": "TIMESTAMP_ERROR",
+        "message": "fetch failed"
+      }
+    },
+    {
+      "stage": "transparency",
+      "status": "skipped",
+      "reason": "not_run_after_timestamp_failure"
+    }
+  ],
+  "artifacts": {
+    "signature": {
+      "format": "jws-compact",
+      "alg": "EdDSA",
+      "kid": "live-proof-worker-20260324",
+      "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImxpdmUtcHJvb2Ytd29ya2VyLTIwMjYwMzI0In0.eyJpc3MiOiJhZ2VudGJhbmtpbmctbG9jYWwtc2lnbmVyIiwiYXVkIjoicmVjZWlwdCIsInJlY2VpcHRfaWQiOiJsaXZlLXByb29mLTliNzI3OWIzLWY2ZGEtNGVlMi1iNDc0LWIzMzgyOTg0NGZlNyIsImRpZ2VzdCI6eyJhbGciOiJzaGEtMjU2IiwidmFsdWUiOiIyMzZkNzUwMzE2YWZlMzRiYTdlN2IyYjlmZWMzYTdiZjY1YmQyYmE5OTI3ODg0MjMyNDk3NDA4NmI0NmM5NDI0In0sImlhdCI6IjIwMjYtMDMtMjNUMTU6NDg6MDguOTU5WiIsImp0aSI6ImI1OTQwNmQ2LTlkYWEtNGQzNS05ZjBhLTU3NjQxZDliNjUyMCJ9.jwPmkU9zvrUkbxdgiZ1adjw7xqzMfOb41wepX8eCuBgdhRbp_ANgk__yiXkWteDBGArz_-ylsym2A1PmQoJbCw"
+    },
+    "timestamp_proof": null,
+    "transparency_proof": null
+  },
+  "result": {
+    "outcome": "FAIL",
+    "failed_stage": "timestamp",
+    "error": {
+      "stage": "timestamp",
+      "error_code": "TIMESTAMP_ERROR",
+      "message": "fetch failed"
+    }
+  }
+}

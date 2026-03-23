@@ -22,10 +22,18 @@
 | B-RUNTIME-1100 | Backend | `scripts/capture-runtime-proof.sh`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `Makefile` | PARTIAL | No | compose 미설치로 실패, node fallback은 `jwks=200`, `verify=201` 확인 |
 | R-PAY-1100 | Research | `docs/week2/research/payment-provider-scorecard-2026-03-24.md` | PASS | Yes | 국내 PG + 글로벌 MoR 점수화/권고안 확정 |
 
+## Task Gate Snapshot (12:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-LIVE-1200 | Backend | `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/live-proof-automation-2026-03-24.md` | BLOCK | No | RFC3161/Rekor 실연동 재시도 수행했으나 `timestamp` 단계 `fetch failed`로 PASS 미충족 |
+| B-RUNTIME-1200 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`, `scripts/capture-runtime-proof.sh` | PARTIAL | No | Docker 런타임 부재(`docker: command not found`), node fallback 경로는 정상 |
+| F-FIGMA-1200 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html` | PASS | Yes | 메인 페이지 구성/디자인 아이디어 및 피그마 전달용 스펙 완성 |
+
 ## Open Blockers
 1. Backend
 - Owner: Backend Agent
 - Due: 2026-03-24 12:00 KST
+- Due: 2026-03-24 13:00 KST
 - Required closure:
   - RFC3161 실연동 성공 증적 (`PASS` 결과)
   - Rekor 실연동 성공 증적 (`PASS` 결과)

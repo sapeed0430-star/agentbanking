@@ -9,6 +9,53 @@
   - `Y`: Research, Frontend, Design, Marketing
   - `N`: Backend
 
+## 12:00 KST Pre-Gate (Prepared)
+- Scope:
+  - `B-LIVE-1200`: RFC3161 + Rekor 실연동 증적(PASS 결과)
+  - `B-RUNTIME-1200`: Docker compose 실제 기동 증적
+  - `F-FIGMA-1200`: 메인 페이지 화면 구성 + 디자인 아이디어(피그마 전달용)
+- Decision rule:
+  - `PASS`만 `Next Task Allowed = Yes`
+  - evidence link가 없으면 자동 `BLOCK`
+  - 링크가 있어도 실행 로그/산출물/결과가 검증 불가하면 `BLOCK`
+- Required evidence:
+  - 각 태스크는 읽을 수 있는 링크가 있어야 하고, 결과가 `PASS` 또는 완전한 산출물 상태로 확인되어야 함
+  - `B-LIVE-1200`은 RFC3161 request/response, Rekor entry/inclusion/consistency, PASS 결과가 함께 보여야 함
+  - `B-RUNTIME-1200`은 compose 기동 로그와 실제 서비스가 올라왔다는 확인이 함께 보여야 함
+  - `F-FIGMA-1200`은 메인 페이지 구조와 디자인 방향이 Figma 전달용으로 확인되어야 함
+- Current posture:
+  - worker 결과 대기 중
+  - 최종 verdict는 증거 링크와 PASS 확인 후에만 반영
+  - `PASS`가 아니면 다음 태스크는 잠금 유지
+
+## 12:00 Final Gate Verdict
+- Cycle verdict: `1 PASS / 1 PARTIAL / 1 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `F-FIGMA-1200`
+  - `Locked`: `B-LIVE-1200`, `B-RUNTIME-1200`
+- Team Lead approval status:
+  - `Y`: `F-FIGMA-1200`
+  - `N`: `B-LIVE-1200`, `B-RUNTIME-1200`
+- Verdict details:
+  - `B-LIVE-1200` - `BLOCK`
+    - Evidence: `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`, `docs/week2/backend/live-proof-automation-2026-03-24.md`
+    - Reason: evidence exists, but `timestamp` fetch failed and the live RFC3161/Rekor proof does not satisfy PASS.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 13:00 KST`
+    - Next update time: `2026-03-24 13:00 KST`
+  - `B-RUNTIME-1200` - `PARTIAL`
+    - Evidence: `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`, `scripts/capture-runtime-proof.sh`
+    - Reason: runtime proof is partial-pass only; compose/runtime verification is present, but the bundle is not a full PASS.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 13:00 KST`
+    - Next update time: `2026-03-24 13:00 KST`
+  - `F-FIGMA-1200` - `PASS`
+    - Evidence: `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`
+    - Reason: main page composition and design ideas are complete and ready for Figma delivery.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
+
 ## Lane-by-Lane Verdict Rationale
 
 ### 1) Research - PASS

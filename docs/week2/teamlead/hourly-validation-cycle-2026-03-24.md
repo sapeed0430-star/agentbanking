@@ -80,13 +80,35 @@
 | Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ### Cycle: 2026-03-24 12:00 KST
+#### 12:00 Gate Criteria (Pre-defined)
+- Gate scope: `B-LIVE-1200`, `B-RUNTIME-1200`, `F-FIGMA-1200`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 검증 불가하면 `BLOCK`.
+- 판정 표기 규칙: 승인 기준 충족 + 필수증적 완비 + 재현 가능 결과 확인 = `PASS`; 그 외는 `BLOCK`.
+- Final gating rule: worker 결과가 `PASS`가 아니면 lane은 잠금 유지이며, 다음 태스크는 승인된 증적 번들 도착 전까지 시작 불가.
+
+##### 12:00 Task Definition Table
+| Task ID | Lane | 승인 기준 | 필수 증적 | 판정 룰 | Next Task Allowed |
+|---|---|---|---|---|---|
+| B-LIVE-1200 | Backend | RFC3161 + Rekor 실연동이 실제 `PASS` 결과로 재현되어야 한다. | 실행 명령/스크립트, stdout/stderr 로그, RFC3161 request/response 요약, Rekor entry/inclusion/consistency 결과, 성공 결과 링크 | 증거 링크 누락 또는 결과가 `PASS`가 아니면 `BLOCK`; 모두 충족 시 `PASS` | `PASS`만 `Yes` |
+| B-RUNTIME-1200 | Backend | Docker compose가 실제로 기동되고 서비스가 살아 있음을 확인할 수 있어야 한다. | `docker compose up` 로그, 컨테이너 상태/헬스체크, 포트 바인딩 또는 컨테이너 ID, 성공 확인 링크 | 증거 링크 누락 또는 compose 기동 확인 실패 시 `BLOCK`; 기동과 확인이 모두 보이면 `PASS` | `PASS`만 `Yes` |
+| F-FIGMA-1200 | Frontend | 메인 페이지 화면 구성과 디자인 아이디어가 Figma 전달용으로 정리되어야 한다. | 메인 페이지 레이아웃/섹션 정의, 핵심 시각 방향/디자인 아이디어, 전달용 메모 또는 링크, 확인 가능한 산출물 링크 | 증거 링크 누락 또는 전달용 산출물이 불명확하면 `BLOCK`; 메인 구성과 디자인 방향이 함께 확인되면 `PASS` | `PASS`만 `Yes` |
+
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+| Research | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Backend | B-LIVE-1200 / B-RUNTIME-1200 | `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`, `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`, `scripts/capture-runtime-proof.sh` | PARTIAL | No | Backend Agent | 2026-03-24 13:00 | 2026-03-24 13:00 | N | Rolls up one `BLOCK` live-proof task and one `PARTIAL` runtime-proof task; backend remains locked. |
+| Frontend | F-FIGMA-1200 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg` | PASS | Yes | - | - | - | Y | Main page composition and design ideas are ready for Figma handoff. |
+| Design | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+
+##### 12:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-LIVE-1200 | `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`, `docs/week2/backend/live-proof-automation-2026-03-24.md` | BLOCK | No | Backend Agent | 2026-03-24 13:00 | 2026-03-24 13:00 | N | FAIL evidence exists; timestamp fetch failed, so RFC3161/Rekor live proof does not satisfy PASS. |
+| B-RUNTIME-1200 | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`, `scripts/capture-runtime-proof.sh` | PARTIAL | No | Backend Agent | 2026-03-24 13:00 | 2026-03-24 13:00 | N | Runtime proof is partial-pass only; compose/runtime verification is present but not a full PASS. |
+| F-FIGMA-1200 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg` | PASS | Yes | - | - | - | Y | Main page structure and design ideas are complete for Figma delivery. |
 
 ### Cycle: 2026-03-24 13:00 KST
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
