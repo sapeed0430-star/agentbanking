@@ -276,3 +276,49 @@
 ### Frontend Lane Rationale
 - Figma handoff deliverables are aligned and complete enough for next-step approval.
 - The added handoff checklist keeps the layer naming, auto-layout, and export rules explicit.
+
+## 15:00 KST Pre-Gate (Prepared)
+- Scope:
+  - `B-LIVE-1500`: RFC3161 + Rekor live proof must complete with a readable PASS bundle.
+  - `B-RUNTIME-1500`: compose-first runtime proof must show a healthy service startup, or a fallback path must still be clearly marked as partial.
+  - `F-FIGMA-1500`: Figma handoff bundle must include concept, spec, preview, wireframe, and checklist.
+- Decision rule:
+  - `PASS`만 `Next Task Allowed = Yes`
+  - evidence link가 없으면 자동 `BLOCK`
+  - 링크가 있어도 필요한 결과가 검증되지 않으면 `BLOCK`
+  - compose fallback only remains `PARTIAL`, not `PASS`
+- Review checklist:
+  - each task has a readable evidence link
+  - each task shows the required artifact set
+  - non-PASS results must name blocker owner, due time, and next update time
+- Current posture:
+  - worker outputs have been reviewed against the latest backend/runtime/frontend evidence in the workspace
+  - final verdict is recorded below with strict PASS / PARTIAL / BLOCK rules
+
+## 15:00 Final Gate Verdict
+- Cycle verdict: `1 PASS / 1 PARTIAL / 1 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `F-FIGMA-1500`
+  - `Locked`: `B-LIVE-1500`, `B-RUNTIME-1500`
+- Team Lead approval status:
+  - `Y`: `F-FIGMA-1500`
+  - `N`: `B-LIVE-1500`, `B-RUNTIME-1500`
+- Verdict details:
+  - `B-LIVE-1500` - `BLOCK`
+    - Evidence: `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
+    - Reason: the live-proof bundle still fails at the timestamp stage, so a complete RFC3161/Rekor PASS bundle is not present.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 16:00 KST`
+    - Next update time: `2026-03-24 16:00 KST`
+  - `B-RUNTIME-1500` - `PARTIAL`
+    - Evidence: `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`
+    - Reason: compose-first runtime proof is still unavailable, but the node fallback reproduces `jwks=200` and `verify=201`, so the result stays partial rather than PASS.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 16:00 KST`
+    - Next update time: `2026-03-24 16:00 KST`
+  - `F-FIGMA-1500` - `PASS`
+    - Evidence: `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md`
+    - Reason: the main-page Figma handoff bundle is complete, readable, and ready for approval.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`

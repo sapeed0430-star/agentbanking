@@ -43,10 +43,17 @@
 | B-RUNTIME-1400 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | `brew install` 시도는 사용자 중단으로 미완료, compose-first PASS 미확보 |
 | F-FIGMA-1400 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `main-page-figma-spec.json`, `main-page-figma-preview.html`, `main-page-wireframe-preview.svg`, `figma-handoff-checklist-2026-03-24.md` | PASS | Yes | 피그마 제작 실행용 체크리스트/스펙 정합성 강화 완료 |
 
+## Task Gate Snapshot (15:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-LIVE-1500 | Backend | `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json` | BLOCK | No | timestamp 단계 실패 지속으로 RFC3161/Rekor PASS evidence bundle 미확보 |
+| B-RUNTIME-1500 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | compose-first 미확보, node fallback(`jwks=200`, `verify=201`)만 재현 |
+| F-FIGMA-1500 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `main-page-figma-spec.json`, `main-page-figma-preview.html`, `main-page-wireframe-preview.svg`, `figma-handoff-checklist-2026-03-24.md` | PASS | Yes | 피그마 handoff bundle 완결성 유지, 다음 태스크 진행 승인 |
+
 ## Open Blockers
 1. Backend
 - Owner: Backend Agent
-- Due: 2026-03-24 15:00 KST
+- Due: 2026-03-24 16:00 KST
 - Required closure:
   - RFC3161 실연동 성공 증적 (`PASS` 결과)
   - Rekor 실연동 성공 증적 (`PASS` 결과)

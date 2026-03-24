@@ -614,11 +614,12 @@
     "executionOrder": [
       "1. Confirm the concept doc and JSON spec match on id, section names, and component inventory.",
       "2. Set frame sizes, grids, margins, and section spacing from the breakpoint table.",
-      "3. Build reusable components first and verify variant coverage before placing content.",
-      "4. Assemble the desktop frame in order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, and footer CTA.",
-      "5. Mirror the same order on mobile and keep the proof panel directly under the hero CTA row.",
-      "6. Apply auto-layout, motion notes, export rules, and reduced-motion handling after layout is locked.",
-      "7. Run the final layer-name and parse checks before handoff."
+      "3. Complete the Build Run gate by confirming the section hierarchy, component inventory, and a clean local JSON parse before layout work begins.",
+      "4. Build reusable components first and verify variant coverage before placing content.",
+      "5. Assemble the desktop frame in order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, and footer CTA.",
+      "6. Mirror the same order on mobile and keep the proof panel directly under the hero CTA row.",
+      "7. Apply auto-layout, motion notes, export rules, and reduced-motion handling after layout is locked.",
+      "8. Run the final layer-name and parse checks before handoff."
     ],
     "layerNaming": {
       "frames": ["Main Page / Desktop", "Main Page / Mobile"],
@@ -660,12 +661,13 @@
       ]
     },
     "qaSignOff": {
-      "checks": [
-        "Desktop and mobile section order matches the concept doc and checklist.",
-        "Component instances use the documented names and variants without renaming.",
-        "The proof panel, CTA, and trust strip remain visually dominant and readable.",
-        "Reduced-motion guidance is noted, and the wireframe QA section confirms parity.",
-        "The JSON still parses cleanly after the final edit pass."
+      "checklistSection": "2. Build Run",
+      "validationCommand": "node -e \"JSON.parse(require('fs').readFileSync('docs/week3/frontend/main-page-figma-spec.json', 'utf8'))\"",
+      "doneCriteria": [
+        "F-FIGMA-1400 is confirmed across the concept doc, JSON spec, and checklist before layout work begins.",
+        "The component inventory, breakpoint table, and section order are read together and any naming deltas are resolved up front.",
+        "The JSON spec parses cleanly locally after every spec edit.",
+        "The build is only marked ready when the checklist, JSON qaSignOff, and layer naming all agree."
       ]
     },
     "export": {
