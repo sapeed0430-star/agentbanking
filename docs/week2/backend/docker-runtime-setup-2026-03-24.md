@@ -1,7 +1,7 @@
 # Docker Runtime Setup Notes - 2026-03-24
 
 ## Purpose
-Record the exact Docker/runtime availability checks for B-RUNTIME-1200 and the fastest fallback path when compose-first execution is blocked.
+Record the exact Docker/runtime availability checks for B-RUNTIME-1400 and the fastest fallback path when compose-first execution is blocked.
 
 ## Checks Performed
 
@@ -75,9 +75,27 @@ Result:
 - Colima is available as a Homebrew formula but is not installed.
 - `nerdctl` is available as a Homebrew formula but requires Linux, so it is not a practical macOS fallback for this host.
 
+### 4) Runtime installation attempt
+
+Command:
+```bash
+brew install colima docker docker-compose
+```
+
+Observed output:
+```text
+(interrupted by user before completion)
+```
+
+Result:
+- Installation was attempted, but the run was interrupted by the user before Homebrew completed.
+- Docker runtime installation success remains unconfirmed.
+- compose-first runtime proof could not be retried on top of a confirmed runtime.
+
 ## Blocking Cause
 - `scripts/capture-runtime-proof.sh` fails at the compose-first step with `docker: command not found`.
 - Because there is no Docker-compatible runtime installed, the compose proof cannot be completed from the current host state.
+- The later `brew install colima docker docker-compose` attempt did not complete, so the host runtime state is still unconfirmed.
 - The host has an install path through Homebrew, but the workspace itself is not a place to perform a host-level Docker Desktop or Colima installation.
 
 ## Immediately Executable Alternative
@@ -108,6 +126,11 @@ Latest run:
 runtime proof report written to /Users/myungchoi/Documents/New project/docs/week2/backend/runtime-proof-2026-03-24.md
 overall verdict: PARTIAL PASS
 ```
+
+Current B-RUNTIME-1400 basis:
+- `PARTIAL`
+- Compose-first evidence is still missing.
+- Node fallback remained valid, but Docker runtime installation did not finish, so the runtime state is not fully established.
 
 Reference:
 - [Runtime proof report](./runtime-proof-2026-03-24.md)

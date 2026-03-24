@@ -1,6 +1,6 @@
 {
   "meta": {
-    "id": "F-FIGMA-1300",
+    "id": "F-FIGMA-1400",
     "name": "Main Page Handoff Concept",
     "project": "agentbanking",
     "date": "2026-03-24",
@@ -287,7 +287,7 @@
               "layout": "vertical",
               "gap": 24,
               "nodes": [
-                { "id": "hero-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1300" },
+                { "id": "hero-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1400" },
                 { "id": "hero-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
                 { "id": "hero-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
                 { "id": "hero-actions", "type": "buttonRow", "items": ["Start verification", "View receipt"] },
@@ -489,7 +489,7 @@
           },
           "layout": "vertical",
           "nodes": [
-            { "id": "mobile-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1300" },
+            { "id": "mobile-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1400" },
             { "id": "mobile-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
             { "id": "mobile-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
             { "id": "mobile-actions", "type": "buttonColumn", "items": ["Start verification", "View receipt"] },
@@ -611,6 +611,15 @@
     }
   ],
   "handoff": {
+    "executionOrder": [
+      "1. Confirm the concept doc and JSON spec match on id, section names, and component inventory.",
+      "2. Set frame sizes, grids, margins, and section spacing from the breakpoint table.",
+      "3. Build reusable components first and verify variant coverage before placing content.",
+      "4. Assemble the desktop frame in order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, and footer CTA.",
+      "5. Mirror the same order on mobile and keep the proof panel directly under the hero CTA row.",
+      "6. Apply auto-layout, motion notes, export rules, and reduced-motion handling after layout is locked.",
+      "7. Run the final layer-name and parse checks before handoff."
+    ],
     "layerNaming": {
       "frames": ["Main Page / Desktop", "Main Page / Mobile"],
       "sections": [
@@ -648,6 +657,15 @@
         "Prefer horizontal layout only where the desktop reading order benefits from side-by-side comparison.",
         "Stack hero content, proof panels, and supporting cards on mobile.",
         "Avoid absolute positioning except for decoration layers and other non-content elements."
+      ]
+    },
+    "qaSignOff": {
+      "checks": [
+        "Desktop and mobile section order matches the concept doc and checklist.",
+        "Component instances use the documented names and variants without renaming.",
+        "The proof panel, CTA, and trust strip remain visually dominant and readable.",
+        "Reduced-motion guidance is noted, and the wireframe QA section confirms parity.",
+        "The JSON still parses cleanly after the final edit pass."
       ]
     },
     "export": {

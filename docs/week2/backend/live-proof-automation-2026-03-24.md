@@ -201,3 +201,31 @@ To reach `PASS`, the next execution needs all of the following:
 3. A reachable Rekor endpoint with a valid `AUDIT_REKOR_PUBLIC_KEY_PEM_B64`.
 4. One uninterrupted end-to-end run of `node scripts/capture-live-proof-evidence.js` that reaches both `timestamp` and `transparency` success.
 5. A resulting evidence JSON with `result.outcome=PASS` and populated `artifacts.timestamp_proof` and `artifacts.transparency_proof`.
+
+## 10) 14:00 Cycle Result
+The `B-LIVE-1400` live-proof retry was treated as `BLOCK` because DNS resolution for both required external endpoints failed before the capture script could complete a live proof run.
+
+### 10.1) DNS / Reachability Probes
+Command:
+```bash
+node -e "import dns from 'node:dns/promises'; try { const r=await dns.lookup('rekor.sigstore.dev',{all:true}); console.log(JSON.stringify(r,null,2)); } catch (e) { console.error(e.code || e.message); process.exit(1); }"
+curl -fsS --max-time 12 https://rekor.sigstore.dev/api/v1/log/publicKey
+node -e "import dns from 'node:dns/promises'; try { const r=await dns.lookup('freetsa.org',{all:true}); console.log(JSON.stringify(r,null,2)); } catch (e) { console.error(e.code || e.message); process.exit(1); }"
+curl -fsS --max-time 12 https://freetsa.org/tsr
+```
+Result:
+- `rekor.sigstore.dev` DNS probe: `ENOTFOUND`
+- `rekor.sigstore.dev` HTTP probe: `curl: (6) Could not resolve host: rekor.sigstore.dev`
+- `freetsa.org` DNS probe: `ENOTFOUND`
+- `freetsa.org` HTTP probe: `curl: (6) Could not resolve host: freetsa.org`
+
+### 10.2) Evidence Status
+- No new evidence JSON was generated for the `B-LIVE-1400` retry.
+- Existing evidence files remain:
+  - `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
+  - `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`
+
+### 10.3) Current Verdict
+- `BLOCK`
+- Reason: the current environment cannot resolve `rekor.sigstore.dev` or `freetsa.org`, so endpoint reachability is not established and `node scripts/capture-live-proof-evidence.js` cannot complete the timestamp and transparency stages.
+- Consequence: no `PASS` evidence bundle exists yet for `B-LIVE-1400`.

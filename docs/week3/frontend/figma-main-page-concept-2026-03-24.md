@@ -1,4 +1,4 @@
-# F-FIGMA-1300 Main Page Handoff Concept - 2026-03-24
+# F-FIGMA-1400 Main Page Handoff Concept - 2026-03-24
 
 ## 1. Concept Summary
 - Product context: Agentbanking trust and proof workspace, now being prepared for Figma build and handoff.
@@ -6,7 +6,7 @@
 - Visual direction: dark editorial dashboard with luminous proof accents.
 - Primary user: product, ops, and compliance teams who need to understand what was verified, when it happened, and where evidence lives.
 - Core promise: every agent action can be traced to a receipt, a verification status, and a reproducible evidence trail.
-- Handoff goal: make the page easy to recreate in Figma with clear names, component variants, and export-safe structure.
+- Handoff goal: make the page easy to recreate in Figma with clear names, component variants, execution order, and export-safe structure.
 
 ## 2. IA Section Structure
 1. Global header
@@ -40,12 +40,12 @@
 - Offline verification
 - Audit-ready exports
 
-6. Operations panel
+6. Operations Snapshot
 - Health, latency, and failure-mode snapshot
 - Delivery and monitoring notes
 - Recovery and fallback behavior
 
-7. CTA footer
+7. Footer CTA
 - Final call to action
 - Documentation link
 - Contact or demo request link
@@ -171,15 +171,15 @@
 [Trust strip ---------------------------------------------------------]
 [Proof flow: 1 | 2 | 3 | 4 -----------------------------------------]
 [Capability cards: Receipts | Offline verify | Export ----------------]
-[Operations panel ----------------------------------------------------]
-[Final CTA -----------------------------------------------------------]
+[Operations Snapshot -------------------------------------------------]
+[Footer CTA ----------------------------------------------------------]
 ```
 
 ### Desktop composition notes
 - Hero uses a 2-column split with the proof panel taking the visual right side.
 - The proof strip is narrow and should sit between the hero and the deeper content.
 - Capability cards should align in a 3-up row so the reader can scan them quickly.
-- The operations panel acts like a dashboard snapshot and should feel denser than the marketing cards.
+- The operations snapshot acts like a dashboard snapshot and should feel denser than the marketing cards.
 
 ## 9. Mobile Wireframe
 ```text
@@ -198,9 +198,8 @@
 [Capability card 1]
 [Capability card 2]
 [Capability card 3]
-[Operations panel]
-[Final CTA]
-[Footer]
+[Operations Snapshot]
+[Footer CTA]
 ```
 
 ### Mobile composition notes
@@ -210,12 +209,15 @@
 - The proof panel should sit directly below the CTA row so the trust story remains immediate.
 
 ## 10. Figma Build Guidance
-1. Create two top-level frames named `Main Page / Desktop` and `Main Page / Mobile`.
-2. Apply the grid and spacing tokens before placing content.
-3. Build the `TopNav`, `PrimaryButton`, `MetricCard`, `PipelineStep`, and `FeatureCard` as reusable components.
-4. Use auto-layout for all content groups except background decoration layers.
-5. Name every section by function, not by position, so future edits remain readable.
-6. If the Figma MCP or import bridge is unavailable, use this document and the JSON spec as the source of truth.
+1. Confirm the source of truth first by checking this concept doc and the JSON spec side by side, and verify `F-FIGMA-1400` before starting layout.
+2. Create two top-level frames named `Main Page / Desktop` and `Main Page / Mobile`.
+3. Apply the grid, spacing, and breakpoint tokens before placing any content.
+4. Build the reusable components first: `TopNav`, `PrimaryButton`, `MetricCard`, `PipelineStep`, `FeatureCard`, `ProofPanel`, `WireframeFrame`, and `FooterCTA`.
+5. Assemble the desktop frame in the documented order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, and footer CTA.
+6. Mirror the same section order on mobile, stacking the proof panel directly under the hero CTA row and preserving the same reading order.
+7. Use auto-layout for every content group except background decoration layers, and keep the 8 px spacing rhythm intact.
+8. Validate names, variants, and section order against the JSON spec before exporting any previews or handoff assets.
+9. Keep live text editable, then verify reduced-motion notes and export naming before sign-off.
 
 ### Hand-off naming pattern
 - `Frame / Section / Subsection` for top-level structure.
@@ -223,7 +225,15 @@
 - `State / Role / Metric` for chip, badge, and KPI labels.
 - Keep visible labels short, but preserve longer descriptive notes in secondary text or component descriptions.
 
-## 11. Acceptance Checklist
+## 11. QA Sign-Off Criteria
+- [ ] Desktop and mobile frames use the exact section names listed in the JSON spec.
+- [ ] All documented component variants are present and used where expected.
+- [ ] The proof panel, CTA, and trust strip remain visually clear at both breakpoints.
+- [ ] The wireframe QA section confirms responsive parity without introducing overlap or clipping.
+- [ ] Reduced-motion behavior is explicitly documented in the handoff notes.
+- [ ] The JSON spec still parses cleanly after the final edit pass.
+
+## 12. Acceptance Checklist
 - [x] IA sections defined
 - [x] Layout grid and breakpoints defined
 - [x] Typographic tokens defined

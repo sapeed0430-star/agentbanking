@@ -239,3 +239,40 @@
   1. RFC3161 실연동 성공 증적 1건 이상 (요청 digest, TSA 응답, verify 결과)
   2. Rekor 실연동 성공 증적 1건 이상 (entry 생성, inclusion/consistency 확인)
   3. Docker compose 실제 기동 캡처 또는 동등 실행환경 로그
+
+## 5) 14:00 Final Gate Verdict
+- Cycle verdict: `1 PASS / 1 PARTIAL / 1 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `F-FIGMA-1400`
+  - `Locked`: `B-LIVE-1400`, `B-RUNTIME-1400`
+- Team Lead approval status:
+  - `Y`: `F-FIGMA-1400`
+  - `N`: `B-LIVE-1400`, `B-RUNTIME-1400`
+- Verdict details:
+  - `B-LIVE-1400` - `BLOCK`
+    - Evidence: `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`, `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
+    - Reason: latest 14:00 live-proof retry still ends in `FAIL` at `timestamp`; DNS reachability for the TSA/Rekor path is unresolved, so no PASS evidence bundle is available.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 15:00 KST`
+    - Next update time: `2026-03-24 15:00 KST`
+  - `B-RUNTIME-1400` - `PARTIAL`
+    - Evidence: `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`
+    - Reason: compose-first still fails because Docker is unavailable, and the runtime install attempt was interrupted before success could be confirmed; node fallback reproduces `jwks=200` and `verify=201`, so the worker result remains `PARTIAL PASS` rather than full PASS.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 15:00 KST`
+    - Next update time: `2026-03-24 15:00 KST`
+  - `F-FIGMA-1400` - `PASS`
+    - Evidence: `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md`
+    - Reason: the handoff bundle is aligned for Figma delivery, with checklist, spec, preview, and wireframe all present.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
+
+### Backend Lane Rationale
+- Live proof remains `BLOCK` because the evidence bundle still fails at the timestamp stage.
+- Runtime proof remains `PARTIAL` because compose-first execution is unavailable, even though the node fallback verifies the endpoints.
+- Lane stays locked until a full `PASS` bundle arrives for both backend tasks.
+
+### Frontend Lane Rationale
+- Figma handoff deliverables are aligned and complete enough for next-step approval.
+- The added handoff checklist keeps the layer naming, auto-layout, and export rules explicit.
