@@ -51,9 +51,34 @@ Result:
 - No Docker Desktop, Colima, or Podman app bundle is installed in `/Applications`.
 - Homebrew exists, so runtime installation would need a separate host-level install step outside this workspace sandbox.
 
+### 3) Homebrew installability snapshot
+
+Command:
+```bash
+brew info --cask docker 2>/dev/null | sed -n '1,120p' || true
+brew info colima 2>/dev/null | sed -n '1,120p' || true
+brew info nerdctl 2>/dev/null | sed -n '1,120p' || true
+```
+
+Observed output:
+```text
+docker-desktop: 4.60.1,218372 (auto_updates)
+Not installed
+colima: stable 0.10.0, HEAD
+Not installed
+nerdctl: stable 2.2.1, HEAD
+Not installed
+```
+
+Result:
+- Docker Desktop is available as a Homebrew cask but is not installed.
+- Colima is available as a Homebrew formula but is not installed.
+- `nerdctl` is available as a Homebrew formula but requires Linux, so it is not a practical macOS fallback for this host.
+
 ## Blocking Cause
 - `scripts/capture-runtime-proof.sh` fails at the compose-first step with `docker: command not found`.
 - Because there is no Docker-compatible runtime installed, the compose proof cannot be completed from the current host state.
+- The host has an install path through Homebrew, but the workspace itself is not a place to perform a host-level Docker Desktop or Colima installation.
 
 ## Immediately Executable Alternative
 Use the node fallback that is already validated by the runtime proof script:

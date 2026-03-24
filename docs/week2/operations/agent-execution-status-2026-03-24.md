@@ -29,11 +29,18 @@
 | B-RUNTIME-1200 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md`, `scripts/capture-runtime-proof.sh` | PARTIAL | No | Docker 런타임 부재(`docker: command not found`), node fallback 경로는 정상 |
 | F-FIGMA-1200 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html` | PASS | Yes | 메인 페이지 구성/디자인 아이디어 및 피그마 전달용 스펙 완성 |
 
+## Task Gate Snapshot (13:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-LIVE-1300 | Backend | `.keys` ed25519 keypair 생성, `docs/week2/backend/live-proof-automation-2026-03-24.md` | BLOCK | No | 외부 DNS 해석 실패(`rekor.sigstore.dev`, `freetsa.org`)로 live proof 본실행 미완료 |
+| B-RUNTIME-1300 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | Docker 런타임 미설치 지속, node fallback은 정상 |
+| F-FIGMA-1300 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `main-page-figma-spec.json`, `main-page-figma-preview.html`, `main-page-wireframe-preview.svg`, `figma-handoff-checklist-2026-03-24.md` | PASS | Yes | 피그마 핸드오프 번들 고도화 완료 |
+
 ## Open Blockers
 1. Backend
 - Owner: Backend Agent
 - Due: 2026-03-24 12:00 KST
-- Due: 2026-03-24 13:00 KST
+- Due: 2026-03-24 14:00 KST
 - Required closure:
   - RFC3161 실연동 성공 증적 (`PASS` 결과)
   - Rekor 실연동 성공 증적 (`PASS` 결과)

@@ -1,11 +1,12 @@
-# F-FIGMA-1200 Main Page Concept - 2026-03-24
+# F-FIGMA-1300 Main Page Handoff Concept - 2026-03-24
 
 ## 1. Concept Summary
-- Product context: Agentbanking trust and proof workspace.
+- Product context: Agentbanking trust and proof workspace, now being prepared for Figma build and handoff.
 - Design thesis: make verification feel calm, premium, and operationally credible.
 - Visual direction: dark editorial dashboard with luminous proof accents.
 - Primary user: product, ops, and compliance teams who need to understand what was verified, when it happened, and where evidence lives.
 - Core promise: every agent action can be traced to a receipt, a verification status, and a reproducible evidence trail.
+- Handoff goal: make the page easy to recreate in Figma with clear names, component variants, and export-safe structure.
 
 ## 2. IA Section Structure
 1. Global header
@@ -48,6 +49,12 @@
 - Final call to action
 - Documentation link
 - Contact or demo request link
+
+8. Handoff checklist
+- Layer naming and section hierarchy
+- Component variants and state coverage
+- Auto-layout and spacing rules
+- Export and QA rules
 
 ## 3. Layout Grid and Breakpoints
 | Breakpoint | Frame | Columns | Margin | Gutter | Content Width | Notes |
@@ -210,6 +217,12 @@
 5. Name every section by function, not by position, so future edits remain readable.
 6. If the Figma MCP or import bridge is unavailable, use this document and the JSON spec as the source of truth.
 
+### Hand-off naming pattern
+- `Frame / Section / Subsection` for top-level structure.
+- `Component / Variant` for reusable parts.
+- `State / Role / Metric` for chip, badge, and KPI labels.
+- Keep visible labels short, but preserve longer descriptive notes in secondary text or component descriptions.
+
 ## 11. Acceptance Checklist
 - [x] IA sections defined
 - [x] Layout grid and breakpoints defined
@@ -218,3 +231,6 @@
 - [x] Interaction and motion rules defined
 - [x] Desktop and mobile wireframes defined
 - [x] Figma import fallback ready
+- [x] Handoff checklist defined
+- [x] Layer naming and variant rules documented
+- [x] Export rules documented

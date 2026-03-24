@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1600" viewBox="0 0 1440 1600" fill="none" role="img" aria-labelledby="title desc">
-  <title id="title">F-FIGMA-1200 Main Page Wireframe Preview</title>
-  <desc id="desc">Dark 1440px desktop wireframe showing TopNav, Hero, Proof Flow, Capability Cards, Operations, and Footer CTA sections.</desc>
+  <title id="title">F-FIGMA-1300 Main Page Wireframe Preview</title>
+  <desc id="desc">Dark 1440px desktop wireframe showing the handoff hierarchy for TopNav, Hero, Proof Flow, Capability Cards, Operations, and Footer CTA sections.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#06101D"/>
@@ -55,7 +55,7 @@
     <rect class="frame-strong" x="0" y="0" width="1264" height="88" rx="24"/>
     <rect x="20" y="22" width="42" height="42" rx="13" fill="url(#glowA)" stroke="#63EAD7" stroke-opacity="0.55"/>
     <text x="76" y="42" class="sectionTitle">agentbanking</text>
-    <text x="76" y="62" class="small">trust console and receipt flow</text>
+    <text x="76" y="62" class="small">trust console and handoff flow</text>
 
     <g transform="translate(350 28)">
       <text x="0" y="18" class="small">Product</text>
@@ -77,7 +77,7 @@
     <rect class="frame-strong" x="0" y="0" width="1264" height="308" rx="32"/>
 
     <g transform="translate(32 32)">
-      <text class="label" x="0" y="0">Trust console / live proof surface</text>
+      <text class="label" x="0" y="0">00 / Trust console / live proof surface</text>
       <text class="heading" x="0" y="68">Every agent action leaves a verifiable receipt.</text>
       <rect x="0" y="90" width="642" height="84" rx="18" fill="rgba(255,255,255,0.02)" stroke="#28415F"/>
       <text class="body" x="18" y="124">A premium landing page for the audit stack. The design keeps receipts, signature</text>
@@ -155,7 +155,7 @@
   <!-- Proof Flow -->
   <g transform="translate(88 712)">
     <rect class="frame-strong" x="0" y="0" width="1264" height="276" rx="30"/>
-    <text class="label" x="32" y="34">Proof flow</text>
+    <text class="label" x="32" y="34">01 / Proof Flow</text>
     <text class="sectionTitle" x="32" y="68">A four-step story from policy gate to signed receipt.</text>
     <text class="body" x="748" y="38">The page reads like a system diagram but keeps the prose human.</text>
     <text class="body" x="748" y="60">Both product and ops can follow the flow quickly.</text>
@@ -200,7 +200,7 @@
   <!-- Capability Cards -->
   <g transform="translate(88 1020)">
     <rect class="frame-strong" x="0" y="0" width="1264" height="292" rx="30"/>
-    <text class="label" x="32" y="34">Capabilities</text>
+    <text class="label" x="32" y="34">02 / Capability Cards</text>
     <text class="sectionTitle" x="32" y="68">Three surfaces that turn proof into something readable.</text>
     <text class="body" x="748" y="38">Dense enough to feel operational, but still elegant.</text>
     <text class="body" x="748" y="60">Designed for product, compliance, and engineering.</text>
@@ -233,7 +233,7 @@
   <!-- Operations -->
   <g transform="translate(88 1340)">
     <rect class="frame-strong" x="0" y="0" width="1264" height="180" rx="30"/>
-    <text class="label" x="32" y="34">Operations</text>
+    <text class="label" x="32" y="34">03 / Operations</text>
     <text class="sectionTitle" x="32" y="68">Keep the page useful when the system is under stress.</text>
     <text class="body" x="748" y="38">Lower half shifts from marketing to status and design intent.</text>
     <text class="body" x="748" y="60">That keeps implementation and review aligned.</text>
@@ -254,7 +254,7 @@
   <!-- Footer CTA -->
   <g transform="translate(88 1542)">
     <rect class="frame-strong" x="0" y="0" width="1264" height="84" rx="26"/>
-    <text class="sectionTitle" x="32" y="34">Turn proof into a product surface.</text>
+    <text class="sectionTitle" x="32" y="34">05 / Turn proof into a product surface.</text>
     <text class="body" x="32" y="58">Use the landing page to explain the trust model first, then let the receipt detail do the heavier work.</text>
     <rect class="solidBtn" x="1012" y="18" width="152" height="48"/>
     <text x="1034" y="48" class="buttonTextDark">Start verification</text>

@@ -111,13 +111,27 @@
 | F-FIGMA-1200 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg` | PASS | Yes | - | - | - | Y | Main page structure and design ideas are complete for Figma delivery. |
 
 ### Cycle: 2026-03-24 13:00 KST
+#### 13:00 Gate Criteria (Final Decision)
+- Gate scope: `B-LIVE-1300`, `B-RUNTIME-1300`, `F-FIGMA-1300`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 13:00 기준으로 검증되지 않으면 `BLOCK`.
+- Final gating rule: every non-`PASS` verdict must record blocker owner, blocker due time, and next update time.
+
+##### 13:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-LIVE-1300 | `docs/week2/backend/live-proof-automation-2026-03-24.md` | BLOCK | No | Backend Agent | 2026-03-24 14:00 | 2026-03-24 14:00 | N | `.keys` generation PASS was confirmed, but Rekor/Freetsa DNS resolution failed and the live proof 본실행 did not complete, so no PASS evidence bundle exists. |
+| B-RUNTIME-1300 | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | Backend Agent | 2026-03-24 14:00 | 2026-03-24 14:00 | N | Runtime proof report records `PARTIAL PASS`: compose-first failed on missing Docker, but node fallback reproduced `jwks=200` and `verify=201`. |
+| F-FIGMA-1300 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Main-page concept, spec, preview, wireframe, and handoff checklist are all present for Figma delivery. |
+
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+| Research | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Backend | B-LIVE-1300 / B-RUNTIME-1300 | `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | Backend Agent | 2026-03-24 14:00 | 2026-03-24 14:00 | N | One backend task is `BLOCK` and one is `PARTIAL`; the lane stays locked until a full PASS bundle arrives. |
+| Frontend | F-FIGMA-1300 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Main-page figma handoff is complete enough for next-step approval. |
+| Design | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ### Cycle: 2026-03-24 14:00 KST
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |

@@ -155,7 +155,46 @@ Result:
 - `docs/week2/backend/evidence/live-proof-2026-03-23T15-14-40-412Z.json`
 - `docs/week2/backend/evidence/live-proof-2026-03-23T15-48-08-3NZ.json`
 
-## 8) Follow-up for PASS
+## 8) 13:00 Cycle Update
+The `B-LIVE-1300` cycle was started to continue the live-proof attempt, but the full end-to-end run is still `PENDING` because the live network path cannot resolve the required external endpoints from this workspace.
+
+### 8.1) Material Preparation
+- `PASS`: local Ed25519 keypair generation completed successfully.
+- Generated files:
+  - `.keys/live-proof-ed25519-private.pem`
+  - `.keys/live-proof-ed25519-public.pem`
+- Rekor public-key material was also generated from the keypair command as `rekor_public_key_pem_b64`.
+
+### 8.2) DNS / Reachability Probes
+Command:
+```bash
+curl -fsSL --max-time 15 https://rekor.sigstore.dev/api/v1/log/publicKey | sed -n '1,40p'
+```
+Result:
+- `FAIL`
+- Error: `curl: (6) Could not resolve host: rekor.sigstore.dev`
+
+Command:
+```bash
+curl -fsSL --max-time 15 https://freetsa.org/tsr -o /tmp/freetsa-probe.out && echo probe_ok
+```
+Result:
+- `FAIL`
+- Error: `curl: (6) Could not resolve host: freetsa.org`
+
+### 8.3) Live Proof Execution Status
+- `PENDING`: `npm run live-proof:capture` 본실행 미완료
+- Reason: Rekor and Freetsa DNS resolution failed, so endpoint reachability could not be established from the current environment.
+- Consequence: no new `B-LIVE-1300` evidence JSON was produced in this turn.
+
+### 8.4) PASS Conditions
+To move `B-LIVE-1300` to `PASS`, the workspace still needs:
+1. Normal DNS resolution for the live endpoints.
+2. Successful reachability to the TSA endpoint and Rekor endpoint from the current network path.
+3. A single uninterrupted `npm run live-proof:capture` execution that completes `signer`, `timestamp`, and `transparency` stages.
+4. A resulting evidence JSON with `result.outcome=PASS` and populated proof artifacts.
+
+## 9) Follow-up for PASS
 To reach `PASS`, the next execution needs all of the following:
 1. A reachable TSA endpoint that returns a valid RFC3161 response over the current network path.
 2. A working TSA trust chain path in `AUDIT_RFC3161_CA_CERT_PATH` if verification is required.

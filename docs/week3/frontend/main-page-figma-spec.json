@@ -1,10 +1,10 @@
 {
   "meta": {
-    "id": "F-FIGMA-1200",
-    "name": "Main Page Concept",
+    "id": "F-FIGMA-1300",
+    "name": "Main Page Handoff Concept",
     "project": "agentbanking",
     "date": "2026-03-24",
-    "status": "Figma import/recreation spec",
+    "status": "Figma production handoff spec",
     "fallback": true,
     "source": "Generated for Figma MCP-unavailable workflow"
   },
@@ -255,7 +255,7 @@
       "sections": [
         {
           "id": "desktop-header",
-          "name": "Header",
+          "name": "Global Header",
           "bounds": {
             "x": 88,
             "y": 32,
@@ -272,7 +272,7 @@
         },
         {
           "id": "desktop-hero",
-          "name": "Hero",
+          "name": "Hero / Receipt Story",
           "bounds": {
             "x": 88,
             "y": 152,
@@ -287,7 +287,7 @@
               "layout": "vertical",
               "gap": 24,
               "nodes": [
-                { "id": "hero-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1200" },
+                { "id": "hero-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1300" },
                 { "id": "hero-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
                 { "id": "hero-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
                 { "id": "hero-actions", "type": "buttonRow", "items": ["Start verification", "View receipt"] },
@@ -311,7 +311,7 @@
         },
         {
           "id": "desktop-trust-strip",
-          "name": "Trust Strip",
+          "name": "Trust Metrics Strip",
           "bounds": {
             "x": 88,
             "y": 892,
@@ -344,7 +344,7 @@
         },
         {
           "id": "desktop-features",
-          "name": "Capabilities",
+          "name": "Capability Cards",
           "bounds": {
             "x": 88,
             "y": 1576,
@@ -409,7 +409,7 @@
         },
         {
           "id": "desktop-wireframes",
-          "name": "Wireframe Gallery",
+          "name": "Wireframe QA",
           "bounds": {
             "x": 88,
             "y": 2632,
@@ -423,7 +423,7 @@
               "type": "component",
               "component": "WireframeFrame",
               "variant": "desktop",
-              "label": "Desktop wire",
+              "label": "Desktop hierarchy",
               "notes": "Two-column hero, metric strip, three cards, footer CTA"
             },
             {
@@ -431,7 +431,7 @@
               "type": "component",
               "component": "WireframeFrame",
               "variant": "mobile",
-              "label": "Mobile wire",
+              "label": "Mobile hierarchy",
               "notes": "Stacked hero, full-width buttons, vertical proof flow"
             }
           ]
@@ -464,7 +464,7 @@
       "sections": [
         {
           "id": "mobile-header",
-          "name": "Header",
+          "name": "Global Header",
           "bounds": {
             "x": 20,
             "y": 24,
@@ -480,7 +480,7 @@
         },
         {
           "id": "mobile-hero",
-          "name": "Hero",
+          "name": "Hero / Receipt Story",
           "bounds": {
             "x": 20,
             "y": 144,
@@ -489,7 +489,7 @@
           },
           "layout": "vertical",
           "nodes": [
-            { "id": "mobile-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1200" },
+            { "id": "mobile-kicker", "type": "text", "style": "label", "text": "TRUST CONSOLE / F-FIGMA-1300" },
             { "id": "mobile-title", "type": "text", "style": "display", "text": "Every agent action leaves a verifiable receipt." },
             { "id": "mobile-body", "type": "text", "style": "body", "text": "A calm, premium landing page for the audit stack: see what was checked, where the evidence sits, and how to replay the result offline." },
             { "id": "mobile-actions", "type": "buttonColumn", "items": ["Start verification", "View receipt"] },
@@ -499,7 +499,7 @@
         },
         {
           "id": "mobile-trust-strip",
-          "name": "Trust Strip",
+          "name": "Trust Metrics Strip",
           "bounds": {
             "x": 20,
             "y": 892,
@@ -532,7 +532,7 @@
         },
         {
           "id": "mobile-features",
-          "name": "Capabilities",
+          "name": "Capability Cards",
           "bounds": {
             "x": 20,
             "y": 1968,
@@ -584,7 +584,7 @@
         },
         {
           "id": "mobile-footer",
-          "name": "CTA Footer",
+          "name": "Footer CTA",
           "bounds": {
             "x": 20,
             "y": 3264,
@@ -610,11 +610,70 @@
       ]
     }
   ],
+  "handoff": {
+    "layerNaming": {
+      "frames": ["Main Page / Desktop", "Main Page / Mobile"],
+      "sections": [
+        "Global Header",
+        "Hero / Receipt Story",
+        "Trust Metrics Strip",
+        "Proof Flow",
+        "Capability Cards",
+        "Operations Snapshot",
+        "Wireframe QA",
+        "Footer CTA"
+      ],
+      "componentInstances": [
+        "TopNav / desktop",
+        "TopNav / mobile",
+        "PrimaryButton / solid",
+        "PrimaryButton / ghost",
+        "MetricCard / default",
+        "MetricCard / success",
+        "MetricCard / warning",
+        "PipelineStep / active",
+        "FeatureCard / spotlight",
+        "ProofPanel / desktop",
+        "ProofPanel / mobileStack",
+        "WireframeFrame / desktop",
+        "WireframeFrame / mobile",
+        "FooterCTA / desktop",
+        "FooterCTA / mobile"
+      ]
+    },
+    "autoLayout": {
+      "rules": [
+        "Use auto-layout for all content groups that contain text, buttons, chips, and cards.",
+        "Keep the spacing system on 8 px increments.",
+        "Prefer horizontal layout only where the desktop reading order benefits from side-by-side comparison.",
+        "Stack hero content, proof panels, and supporting cards on mobile.",
+        "Avoid absolute positioning except for decoration layers and other non-content elements."
+      ]
+    },
+    "export": {
+      "rules": [
+        "Export wireframe previews as SVG for structure review.",
+        "Keep live text editable inside Figma; do not flatten copy into outlines.",
+        "Export vectors as SVG and use PNG only for quick review assets when needed.",
+        "Name export assets so they map back to the frame and section tree without translation."
+      ]
+    },
+    "variants": {
+      "TopNav": ["desktop", "mobile"],
+      "PrimaryButton": ["solid", "ghost"],
+      "MetricCard": ["default", "success", "warning"],
+      "PipelineStep": ["default", "active"],
+      "FeatureCard": ["default", "spotlight"],
+      "ProofPanel": ["desktop", "mobileStack"],
+      "WireframeFrame": ["desktop", "mobile"],
+      "FooterCTA": ["desktop", "mobile"]
+    }
+  },
   "figmaImportNotes": [
     "Use this JSON as the source of truth if the Figma MCP is unavailable.",
     "Build reusable components first, then place the desktop and mobile frames.",
     "Keep the desktop frame on a dark canvas with a subtle radial glow background.",
-    "Name sections exactly as provided so the markdown, JSON, and HTML stay aligned.",
-    "Treat the wireframe gallery as a QA check for responsive layout parity."
+    "Name sections exactly as provided so the markdown, JSON, HTML, and handoff checklist stay aligned.",
+    "Treat the wireframe QA frame as a check for responsive layout parity."
   ]
 }
