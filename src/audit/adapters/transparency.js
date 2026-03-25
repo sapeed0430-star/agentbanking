@@ -68,6 +68,59 @@ function makeTransportError(stage, errorCode, message, extra = {}) {
   return err;
 }
 
+function decodeBase64Url(value) {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = normalized.length % 4 === 0 ? '' : '='.repeat(4 - (normalized.length % 4));
+  return Buffer.from(`${normalized}${padding}`, 'base64');
+}
+
+function buildRekorProposedEntry({ receiptId, reportDigest, signature, publicKeyPemB64 }) {
+  const signatureValue = safeString(signature?.value);
+  const jwsParts = signatureValue.split('.');
+
+  if (jwsParts.length === 3 && jwsParts[0] && jwsParts[1] && jwsParts[2]) {
+    const signingInput = `${jwsParts[0]}.${jwsParts[1]}`;
+    const signatureBytes = decodeBase64Url(jwsParts[2]);
+    return {
+      apiVersion: '0.0.1',
+      kind: 'rekord',
+      spec: {
+        data: {
+          content: Buffer.from(signingInput, 'utf8').toString('base64'),
+        },
+        signature: {
+          content: signatureBytes.toString('base64'),
+          format: 'x509',
+          publicKey: {
+            content: publicKeyPemB64,
+          },
+        },
+      },
+    };
+  }
+
+  const algorithm = reportDigest.alg.replace('-', '');
+  const signatureContent = Buffer.from(signatureValue || `receipt:${receiptId}`).toString('base64');
+  return {
+    apiVersion: '0.0.1',
+    kind: 'hashedrekord',
+    spec: {
+      data: {
+        hash: {
+          algorithm,
+          value: reportDigest.value,
+        },
+      },
+      signature: {
+        content: signatureContent,
+        publicKey: {
+          content: publicKeyPemB64,
+        },
+      },
+    },
+  };
+}
+
 function normalizeEndpointSummary(endpoint) {
   if (!endpoint) return null;
   try {
@@ -148,27 +201,12 @@ class RekorTransparencyLogAdapter {
     }
 
     const endpoint = `${this.baseUrl.replace(/\/+$/, '')}/api/v1/log/entries`;
-    const algorithm = reportDigest.alg.replace('-', '');
-    const signatureContent = Buffer.from(signature?.value || `receipt:${receiptId}`).toString('base64');
-
-    const body = {
-      apiVersion: '0.0.1',
-      kind: 'hashedrekord',
-      spec: {
-        data: {
-          hash: {
-            algorithm,
-            value: reportDigest.value,
-          },
-        },
-        signature: {
-          content: signatureContent,
-          publicKey: {
-            content: this.publicKeyPemB64,
-          },
-        },
-      },
-    };
+    const body = buildRekorProposedEntry({
+      receiptId,
+      reportDigest,
+      signature,
+      publicKeyPemB64: this.publicKeyPemB64,
+    });
 
     let response;
     try {
@@ -188,10 +226,19 @@ class RekorTransparencyLogAdapter {
     }
 
     if (!response.ok) {
+      let responseBody = '';
+      try {
+        responseBody = (await response.text()).trim();
+      } catch {
+        responseBody = '';
+      }
+      const errorMessage = responseBody
+        ? `rekor endpoint returned ${response.status}: ${responseBody.slice(0, 400)}`
+        : `rekor endpoint returned ${response.status}`;
       throw makeTransportError(
         'transparency',
         classifyStandardCode(undefined, response.status),
-        `rekor endpoint returned ${response.status}`,
+        errorMessage,
         {
           target: 'transparency',
           endpoint,

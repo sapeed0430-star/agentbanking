@@ -205,13 +205,27 @@
 | F-FIGMA-1600 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Figma handoff bundle is complete enough for approval and next-step work. |
 
 ### Cycle: 2026-03-24 17:00 KST
+#### 17:00 Gate Criteria (Final Decision)
+- Gate scope: `B-LIVE-1700`, `B-RUNTIME-1700`, `F-FIGMA-1700`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 검증되지 않으면 `BLOCK`.
+- 판정 표기 규칙: 승인 기준 충족 + 필수증적 완비 + 재현 가능 결과 확인 = `PASS`; 그 외는 `PARTIAL` 또는 `BLOCK`.
+
+##### 17:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-LIVE-1700 | `docs/week2/backend/evidence/live-proof-2026-03-25T12-45-21-514Z.json` | PASS | Yes | - | - | - | Y | Latest live-proof evidence bundle reports PASS for the RFC3161/Rekor live path and satisfies gate requirements. |
+| B-RUNTIME-1700 | `docs/week2/backend/runtime-proof-2026-03-24.md` | PASS | Yes | - | - | - | Y | Runtime proof is accepted as PASS at this gate based on the approved report evidence. |
+| F-FIGMA-1700 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Existing handoff bundle remains complete and approved for Figma delivery. |
+
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+| Research | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Backend | B-LIVE-1700 / B-RUNTIME-1700 | `docs/week2/backend/evidence/live-proof-2026-03-25T12-45-21-514Z.json`, `docs/week2/backend/runtime-proof-2026-03-24.md` | PASS | Yes | - | - | - | Y | Both backend gate tasks are PASS with approved evidence; lane is unlocked. |
+| Frontend | F-FIGMA-1700 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Existing Figma handoff bundle remains valid at 17:00. |
+| Design | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ### Cycle: 2026-03-24 18:00 KST
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |

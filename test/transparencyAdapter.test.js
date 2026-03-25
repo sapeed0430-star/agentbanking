@@ -17,13 +17,15 @@ function startMockRekorServer(handler) {
   });
 }
 
-test('rekor adapter parses log entry response', async (t) => {
+test('rekor adapter parses log entry response with rekord payload for jws signatures', async (t) => {
   const { server, port } = await startMockRekorServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/api/v1/log/entries') {
       const chunks = [];
       for await (const chunk of req) chunks.push(chunk);
       const body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-      assert.equal(body.kind, 'hashedrekord');
+      assert.equal(body.kind, 'rekord');
+      assert.equal(typeof body.spec?.data?.content, 'string');
+      assert.equal(typeof body.spec?.signature?.content, 'string');
 
       const payload = {
         entry123: {
@@ -66,6 +68,57 @@ test('rekor adapter parses log entry response', async (t) => {
   assert.equal(proof.tree_size, 7);
   assert.equal(proof.inclusion_proof.length, 2);
   assert.equal(proof.root_hash, 'f'.repeat(64));
+});
+
+test('rekor adapter uses hashedrekord fallback for opaque signatures', async (t) => {
+  const { server, port } = await startMockRekorServer(async (req, res) => {
+    if (req.method === 'POST' && req.url === '/api/v1/log/entries') {
+      const chunks = [];
+      for await (const chunk of req) chunks.push(chunk);
+      const body = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+      assert.equal(body.kind, 'hashedrekord');
+      assert.equal(body.spec?.data?.hash?.algorithm, 'sha256');
+      assert.equal(body.spec?.data?.hash?.value, 'd'.repeat(64));
+
+      const payload = {
+        entry456: {
+          logID: 'rekor-test-log',
+          body: Buffer.from('rekor-entry-body').toString('base64'),
+          verification: {
+            inclusionProof: {
+              rootHash: 'e'.repeat(64),
+              treeSize: 9,
+              hashes: ['c'.repeat(64)],
+            },
+          },
+        },
+      };
+      res.writeHead(201, { 'content-type': 'application/json' });
+      res.end(JSON.stringify(payload));
+      return;
+    }
+    res.writeHead(404);
+    res.end();
+  });
+  t.after(() => server.close());
+
+  const adapter = createTransparencyAdapter({
+    mode: 'rekor',
+    baseUrl: `http://127.0.0.1:${port}`,
+    publicKeyPemB64: Buffer.from('-----BEGIN PUBLIC KEY-----\nMIIBfallback\n-----END PUBLIC KEY-----').toString(
+      'base64'
+    ),
+  });
+
+  const proof = await adapter.appendProof({
+    receiptId: 'receipt-opaque',
+    reportDigest: { alg: 'sha-256', value: 'd'.repeat(64) },
+    signature: { value: 'opaque-signature' },
+  });
+
+  assert.equal(proof.entry_id, 'entry456');
+  assert.equal(proof.tree_size, 9);
+  assert.equal(proof.root_hash, 'e'.repeat(64));
 });
 
 test('rekor adapter throws when public key is missing', async () => {

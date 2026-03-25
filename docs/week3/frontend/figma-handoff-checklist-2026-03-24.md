@@ -13,6 +13,8 @@ Use this checklist when recreating the main page in Figma or preparing the file 
 - [ ] `F-FIGMA-1400` is confirmed across the concept doc, JSON spec, and checklist before layout work begins.
 - [ ] The component inventory, breakpoint table, and section order are read together and any naming deltas are resolved up front.
 - [ ] `node -e "JSON.parse(require('fs').readFileSync('docs/week3/frontend/main-page-figma-spec.json', 'utf8'))"` completes without errors after every spec edit.
+- [ ] Build Run/Code handoff keeps 17:00 gate `PASS` only after backend live/runtime `PASS` dependency is consumed by frontend checks.
+- [ ] Cross-team handoff notes explicitly record backend live/runtime `PASS` dependency consumed status before final sign-off.
 - [ ] The build is ready to hand off only when the checklist, JSON `handoff.qaSignOff`, and layer naming all agree.
 
 ## 3. Execution Order

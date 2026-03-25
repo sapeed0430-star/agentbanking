@@ -1,107 +1,67 @@
 # Docker Runtime Setup Notes - 2026-03-24
 
 ## Purpose
-Record the exact Docker/runtime diagnostics used for B-RUNTIME-1500 and the concrete blocker when compose-first proof cannot complete.
+Record the runtime setup state and proof conditions for backend runtime validation.
 
 ## Current Result
-- `make runtime-proof` now prints staged diagnostics before the proof attempt.
-- On this host, the Docker CLI is missing, so the compose-first path cannot start.
-- The node fallback is also blocked in this sandbox because the process cannot bind `127.0.0.1:3210`.
-- Current verdict: `BLOCK`
+- Colima + Docker CLI + Docker Compose installation is complete.
+- `AUDIT_ADMIN_TOKEN` and `RUNTIME_PROOF_AUTH_TOKEN` are configured with strong token values.
+- Runtime proof command succeeded: `STAGING_API_PORT=3210 bash scripts/capture-runtime-proof.sh`
+- Current verdict: `PASS`
 
-## Diagnostics Run
+## Verified Facts
 
-### 1) Runtime proof target
+### 1) Runtime stack availability
+Result:
+- `docker` is available on `PATH`.
+- Docker daemon is reachable through Colima.
+- `docker compose` plugin is available.
 
+### 2) Proof run with strong auth tokens
 Command:
 ```bash
-make runtime-proof
+STAGING_API_PORT=3210 bash scripts/capture-runtime-proof.sh
 ```
 
-Observed output:
-```text
-RUNTIME_DIAG docker=DOCKER_MISSING note=(not found)
-RUNTIME_DIAG daemon=SKIPPED note=(skipped)
-RUNTIME_DIAG compose=SKIPPED note=(skipped)
-RUNTIME_DIAG fallback=FALLBACK_ONLY note=node:events:486
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EPERM: operation not permitted 127.0.0.1:3210
-...
-runtime proof report written to /Users/myungchoi/Documents/New project/docs/week2/backend/runtime-proof-2026-03-24.md
-overall verdict: BLOCK
-```
+Conditions:
+- `AUDIT_ADMIN_TOKEN`: strong token configured
+- `RUNTIME_PROOF_AUTH_TOKEN`: strong token configured
 
 Result:
-- The runtime proof target now exposes the diagnostic codes directly.
-- `DOCKER_MISSING` is the first blocker.
-- The fallback path reaches a local bind failure and cannot complete the proof.
+- Runtime proof completed with overall `PASS`.
 
-### 2) Docker CLI availability
-
-Command:
-```bash
-command -v docker || true
-docker --version 2>/dev/null || true
-```
-
-Observed output:
-```text
-docker: command not found
-```
-
+### 3) Execution path
 Result:
-- Docker is not installed or not on `PATH`.
-- This maps to `DOCKER_MISSING`.
-
-### 3) Local bind probe
-
-Command:
-```bash
-node -e 'require("http").createServer((req,res)=>res.end("ok")).listen(3210,"127.0.0.1",()=>console.log("up"))'
-```
-
-Observed output:
-```text
-Error: listen EPERM: operation not permitted 127.0.0.1:3210
-```
-
-Result:
-- Even a minimal localhost server cannot bind in this sandbox.
-- This is the concrete blocker for the node fallback and maps to `FALLBACK_ONLY` plus a sandbox-level port restriction.
+- compose-first path succeeded.
+- fallback path was not needed.
 
 ## Diagnostic Codes and Actions
 
 ### `RUNTIME_OK`
 - Meaning: the stage passed and the next stage may run.
-- Action: continue to the compose-first proof and record the generated evidence.
+- Action: continue and preserve proof evidence.
 
 ### `DOCKER_MISSING`
 - Meaning: `docker` is not on `PATH`.
-- Action: install or relink Docker, then rerun `make runtime-proof`.
+- Action: install or relink Docker, then rerun proof.
 
 ### `DAEMON_DOWN`
-- Meaning: the Docker CLI exists, but the daemon is not reachable.
-- Action: start Colima or Docker Desktop, then rerun `docker info` and `make runtime-proof`.
+- Meaning: Docker CLI exists, but daemon is unreachable.
+- Action: start Colima or Docker Desktop, then rerun proof.
 
 ### `COMPOSE_MISSING`
-- Meaning: `docker` works, but `docker compose` is unavailable.
-- Action: install the compose plugin or `docker-compose`, then rerun the proof.
+- Meaning: Docker works, but compose plugin is unavailable.
+- Action: install compose plugin, then rerun proof.
 
 ### `FALLBACK_ONLY`
-- Meaning: compose-first evidence could not be captured, so fallback evidence was used or attempted.
-- Action: keep the proof partial until compose-first output is available.
+- Meaning: compose-first proof could not be captured, so fallback was used.
+- Action: treat as partial and recapture compose-first evidence.
 
 ## Captured Result
 - Runtime proof report: [runtime-proof-2026-03-24.md](./runtime-proof-2026-03-24.md)
-- Verdict: `BLOCK`
-- Concrete blocker: Docker missing, plus sandbox port binding denied on `127.0.0.1:3210`
+- Verdict: `PASS`
+- Path status: compose-first success, fallback not needed
 
 ## Notes
-- The proof report now captures:
-  - staged diagnostic lines
-  - compose attempt status
-  - fallback status
-  - bind probe output
-- If this is rerun on a host with Docker available, the expected next step is `RUNTIME_OK` for the Docker CLI/daemon/compose checks and then a compose-first PASS.
+- This document supersedes the previous `BLOCK` state tied to missing Docker/bind restrictions.
+- Latest recorded state reflects a successful compose-first runtime proof.

@@ -241,7 +241,7 @@ AUDIT_TIMESTAMP_MODE=rfc3161 \
 AUDIT_RFC3161_ENDPOINT=https://freetsa.org/tsr \
 AUDIT_TRANSPARENCY_MODE=rekor \
 AUDIT_REKOR_BASE_URL=https://rekor.sigstore.dev \
-AUDIT_REKOR_PUBLIC_KEY_PEM_B64="$(curl -fsSL --max-time 20 https://rekor.sigstore.dev/api/v1/log/publicKey | base64 | tr -d '\n')" \
+AUDIT_REKOR_PUBLIC_KEY_PEM_B64="$(cat .keys/live-proof-ed25519-public.pem | base64 | tr -d '\n')" \
 npm run live-proof:capture -- --output docs/week2/backend/evidence/live-proof-<timestamp>.json
 ```
 
@@ -276,3 +276,32 @@ Each preflight check reports:
 - Check `preflight.checks[0]` for the TSA path first.
 - Check `preflight.checks[1]` for the Rekor path second.
 - If `preflight.status=FAIL`, the live stages are skipped on purpose so the evidence keeps the first failing condition.
+
+## 12) 2026-03-25 PASS Update
+The latest live-proof capture completed with end-to-end `PASS`.
+
+### 12.1) PASS Evidence
+- `docs/week2/backend/evidence/live-proof-2026-03-25T12-45-21-514Z.json`
+
+### 12.2) Stage Results
+- `result.outcome=PASS`
+- `preflight.status=PASS`
+- `steps[1].stage=timestamp`, `steps[1].status=success`
+- `steps[2].stage=transparency`, `steps[2].status=success`
+
+### 12.3) Failure Cause Clarification
+Previous `transparency` failures were caused by using the wrong key material for `AUDIT_REKOR_PUBLIC_KEY_PEM_B64`.
+- Wrong input: Rekor log public key (`/api/v1/log/publicKey`)
+- Correct input: signer public key (`.keys/live-proof-ed25519-public.pem`) encoded in base64
+
+### 12.4) Correct Execution Example
+```bash
+AUDIT_SIGNER_MODE=local-ed25519 \
+AUDIT_SIGNER_PRIVATE_KEY_PEM="$(cat .keys/live-proof-ed25519-private.pem)" \
+AUDIT_TIMESTAMP_MODE=rfc3161 \
+AUDIT_RFC3161_ENDPOINT=https://freetsa.org/tsr \
+AUDIT_TRANSPARENCY_MODE=rekor \
+AUDIT_REKOR_BASE_URL=https://rekor.sigstore.dev \
+AUDIT_REKOR_PUBLIC_KEY_PEM_B64="$(cat .keys/live-proof-ed25519-public.pem | base64 | tr -d '\n')" \
+npm run live-proof:capture -- --output docs/week2/backend/evidence/live-proof-2026-03-25T12-45-21-514Z.json
+```
