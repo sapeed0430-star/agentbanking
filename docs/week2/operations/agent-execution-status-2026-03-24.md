@@ -64,8 +64,15 @@
 | B-RUNTIME-1700 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PASS | Yes | Docker+Colima+compose 환경에서 compose-first runtime proof PASS |
 | F-FIGMA-1700 | Frontend | `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | backend PASS dependency consumed 포함해 handoff 체크리스트 정합성 유지 |
 
+## Task Gate Snapshot (18:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-AUTO-1800 | Backend | `scripts/run-proof-suite.sh`, `Makefile`, `.env.example`, `docs/week2/backend/evidence/live-proof-2026-03-25T13-21-39Z.json` | PASS | Yes | live/runtime PASS 경로를 단일 명령(`make proof-suite`)으로 표준화 |
+| B-DOC-1800 | Backend | `docs/week2/backend/proof-suite-runbook-2026-03-25.md` | PASS | Yes | 운영 자동화 런북과 환경변수 정책 정리 완료 |
+| F-HANDOFF-1800 | Frontend | `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | backend PASS dependency consumed 항목 반영으로 cross-team handoff 정합성 확보 |
+
 ## Open Blockers
-- None (all 17:00 blockers closed by PASS evidence)
+- None (17:00/18:00 gate 모두 PASS)
 
 ## Gate Control Rule Confirmation
 1. `PASS`만 `Next Task Allowed=Yes`

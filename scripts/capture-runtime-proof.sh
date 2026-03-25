@@ -538,14 +538,21 @@ fi
 
 node_fallback_command_text="PORT=${ACTIVE_FALLBACK_PORT} node \"$TMP_DIR/node-fallback.mjs\""
 fallback_health_note="health=not_started"
+fallback_result="FAIL"
 if [[ "$NODE_STARTED" -eq 1 ]]; then
   if [[ "$NODE_HEALTH_OK" -eq 1 ]]; then
     fallback_health_note="health=process_up"
+    if [[ "$VERIFY_CODE" == "201" ]]; then
+      fallback_result="PASS"
+    fi
   else
     fallback_health_note="health=unready"
   fi
+elif [[ "${FALLBACK_STATUS:-}" == "RUNTIME_OK" ]]; then
+  fallback_health_note="health=not_needed"
+  fallback_result="SKIPPED"
 fi
-fallback_section="- Node fallback | \`${node_fallback_command_text}\` | $([[ "$NODE_STARTED" -eq 1 && "$NODE_HEALTH_OK" -eq 1 && "$VERIFY_CODE" == "201" ]] && echo PASS || echo FAIL) | ${fallback_health_note}, jwks=${JWKS_CODE:-n/a}, verify=${VERIFY_CODE:-n/a}, code=${FALLBACK_STATUS:-FALLBACK_ONLY}"
+fallback_section="- Node fallback | \`${node_fallback_command_text}\` | ${fallback_result} | ${fallback_health_note}, jwks=${JWKS_CODE:-n/a}, verify=${VERIFY_CODE:-n/a}, code=${FALLBACK_STATUS:-FALLBACK_ONLY}"
 
 JWKS_SUMMARY="$(jwks_summary "$JWKS_BODY" 2>/dev/null || true)"
 if [[ -z "$JWKS_SUMMARY" ]]; then

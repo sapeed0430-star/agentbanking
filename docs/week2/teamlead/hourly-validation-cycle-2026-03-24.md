@@ -228,13 +228,36 @@
 | Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ### Cycle: 2026-03-24 18:00 KST
+#### 18:00 Gate Criteria (Pre-Gate: Post-Unlock Stabilization)
+- Gate objective: `post-unlock stabilization`.
+- Gate scope: `B-AUTO-1800`, `B-DOC-1800`, `F-HANDOFF-1800`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 검증되지 않으면 `BLOCK`.
+- 판정 표기 규칙: 승인 기준 충족 + 필수증적 완비 + 재현 가능 결과 확인 = `PASS`; 일부 충족은 `PARTIAL`; 그 외는 `BLOCK`.
+- Current posture: 17:00 해제(unlock) 이후 안정화 단계로 전환했으며, 최신 worker evidence를 바탕으로 18:00 final verdict를 아래에 확정 반영한다.
+
+##### 18:00 Task Definition Table
+| Task ID | Lane | 승인 기준 | 필수 증적 | 판정 룰 | Next Task Allowed |
+|---|---|---|---|---|---|
+| B-AUTO-1800 | Backend | 운영 자동화 스크립트가 단일 실행 흐름으로 점검/수집/요약을 재현 가능하게 수행해야 한다. | 스크립트 경로, 실행 명령, stdout/stderr 로그, 생성 산출물 링크(요약 리포트/로그 번들), 재실행 절차 | 링크 누락/재현 불가/핵심 결과 누락 시 `BLOCK`; 일부 증적만 충족 시 `PARTIAL`; 전체 충족 시 `PASS` | `PASS`만 `Yes` |
+| B-DOC-1800 | Backend | 운영 런북이 최신 운영 절차 기준으로 정리되고, 장애 대응/롤백/검증 절차가 읽기 가능해야 한다. | 런북 문서 링크, 업데이트 섹션 목록(운영 절차/장애 대응/롤백/검증), 변경 이력 또는 타임스탬프 | 링크 누락 또는 핵심 섹션 미완성 시 `BLOCK`; 일부 섹션만 검증되면 `PARTIAL`; 전체 섹션 검증 가능하면 `PASS` | `PASS`만 `Yes` |
+| F-HANDOFF-1800 | Frontend | 크로스팀 handoff 체크리스트가 최신 상태로 확인되고 인수 항목이 누락 없이 정리되어야 한다. | 체크리스트 문서 링크, 담당/상태/의존성 표기, 확인 완료 항목 표시 또는 보류 사유 | 링크 누락/확인 상태 불명확 시 `BLOCK`; 일부 항목만 확인되면 `PARTIAL`; 전체 항목 확인 시 `PASS` | `PASS`만 `Yes` |
+
+##### 18:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-AUTO-1800 | `scripts/run-proof-suite.sh`, `Makefile`, `.env.example`, `docs/week2/backend/evidence/live-proof-2026-03-25T13-21-39Z.json`, runtime report PASS | PASS | Yes | - | - | - | Y | Proof suite automation run is accepted as overall PASS with live-proof PASS evidence and runtime report PASS. |
+| B-DOC-1800 | `docs/week2/backend/proof-suite-runbook-2026-03-25.md` | PASS | Yes | - | - | - | Y | Runbook update is present and accepted for post-unlock operations documentation readiness. |
+| F-HANDOFF-1800 | `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Cross-team handoff checklist confirmation is complete and approved. |
+
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
 |---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+| Research | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Backend | B-AUTO-1800 / B-DOC-1800 | `scripts/run-proof-suite.sh`, `Makefile`, `.env.example`, `docs/week2/backend/evidence/live-proof-2026-03-25T13-21-39Z.json`, `docs/week2/backend/proof-suite-runbook-2026-03-25.md`, runtime report PASS | PASS | Yes | - | - | - | Y | Both stabilization tasks (`B-AUTO-1800`, `B-DOC-1800`) are PASS with approved evidence; backend lane remains unlocked. |
+| Frontend | F-HANDOFF-1800 | `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Handoff checklist confirmation is PASS and frontend lane is approved to proceed. |
+| Design | - | - | - | - | - | - | - | - | Not in scope for this gate. |
+| Marketing | - | - | - | - | - | - | - | - | Not in scope for this gate. |
 
 ## 4) Team Lead Governance Notes
 - Gate decision order: Research -> Backend -> Frontend -> Design -> Marketing.

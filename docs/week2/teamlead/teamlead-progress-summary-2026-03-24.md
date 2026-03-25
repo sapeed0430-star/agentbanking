@@ -397,3 +397,53 @@
     - Blocker owner: `-`
     - Blocker due: `-`
     - Next update time: `-`
+
+## 18:00 KST Pre-Gate (Prepared: Post-Unlock Stabilization)
+- Scope:
+  - `B-AUTO-1800`: 운영 자동화 스크립트 안정화/재현성 확인
+  - `B-DOC-1800`: 운영 런북 정리 상태 확인
+  - `F-HANDOFF-1800`: 크로스팀 handoff 체크리스트 확인
+- Decision rule:
+  - `PASS`만 `Next Task Allowed = Yes`
+  - evidence link가 없으면 자동 `BLOCK`
+  - 링크가 있어도 실행 로그/산출물/결과가 검증되지 않으면 `BLOCK`
+  - 일부만 충족하면 `PARTIAL`, 완전 충족 시 `PASS`
+- Current posture:
+  - 17:00 unlock 이후 운영 안정화(post-unlock stabilization) 목적의 게이트로 전환
+  - latest worker evidence 수신 및 검토 완료
+  - final verdict를 아래에 확정 반영
+
+### 18:00 Pre-Gate Planning Table
+| Task ID | Lane | Goal | Required Evidence | Status (This Turn) |
+|---|---|---|---|---|
+| B-AUTO-1800 | Backend | 운영 자동화 스크립트를 단일 실행 흐름으로 재현 가능하게 검증 | 스크립트 경로, 실행 명령, stdout/stderr, 산출물 링크, 재실행 절차 | `Prepared` |
+| B-DOC-1800 | Backend | 운영 런북을 최신 운영/장애대응/롤백/검증 절차 기준으로 정리 | 런북 문서 링크, 섹션 업데이트 내역, 변경 시각 또는 이력 | `Prepared` |
+| F-HANDOFF-1800 | Frontend | 크로스팀 handoff 체크리스트의 담당/의존성/완료 상태 확인 | 체크리스트 링크, 담당/상태 표기, 완료 또는 보류 사유 | `Prepared` |
+
+## 18:00 Final Gate Verdict
+- Cycle verdict: `3 PASS / 0 PARTIAL / 0 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `B-AUTO-1800`, `B-DOC-1800`, `F-HANDOFF-1800`
+  - `Locked`: `-`
+- Team Lead approval status:
+  - `Y`: `B-AUTO-1800`, `B-DOC-1800`, `F-HANDOFF-1800`
+  - `N`: `-`
+- Verdict details:
+  - `B-AUTO-1800` - `PASS`
+    - Evidence: `scripts/run-proof-suite.sh`, `Makefile`, `.env.example`, `docs/week2/backend/evidence/live-proof-2026-03-25T13-21-39Z.json`, runtime report PASS
+    - Reason: proof-suite 자동화 실행이 overall PASS로 확인되었고, live-proof 결과와 runtime report가 모두 PASS로 검증되었다.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
+  - `B-DOC-1800` - `PASS`
+    - Evidence: `docs/week2/backend/proof-suite-runbook-2026-03-25.md`
+    - Reason: 운영 런북 정리 산출물이 확인되어 post-unlock 운영 기준 문서화 요건을 충족했다.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
+  - `F-HANDOFF-1800` - `PASS`
+    - Evidence: `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md`
+    - Reason: 크로스팀 handoff 체크리스트 확인이 완료되어 인수 기준을 충족했다.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`
