@@ -77,3 +77,27 @@ PROOF_SUITE_REKOR_KEY_SOURCE=env \
 AUDIT_REKOR_PUBLIC_KEY_PEM_B64="$(base64 < .keys/live-proof-ed25519-public.pem | tr -d '\n')" \
 make proof-suite
 ```
+
+## CI 연동 (GitHub Actions)
+- Workflow 파일: `.github/workflows/proof-suite-ci.yml`
+- 기본 구조:
+  1. `unit-tests` (항상 실행)
+  2. `proof-suite` (수동 실행 또는 `ENABLE_PROOF_SUITE=true`일 때 실행)
+- `proof-suite` job 동작:
+  - CI용 signer keypair 생성
+  - `scripts/run-proof-suite.sh` 실행
+  - 실패 여부와 관계없이 증적 업로드
+
+### CI에서 주입 가능한 값
+- `secrets.AUDIT_ADMIN_TOKEN`
+- `secrets.RUNTIME_PROOF_AUTH_TOKEN`
+- `vars.AUDIT_RFC3161_ENDPOINT`
+- `vars.AUDIT_REKOR_BASE_URL`
+
+값이 비어 있으면 workflow 내부 기본값을 사용한다.
+
+### 업로드 산출물
+- `proof-suite.log`
+- `ci-keygen.json`
+- `docs/week2/backend/evidence/live-proof-*.json`
+- `docs/week2/backend/runtime-proof-2026-03-24.md`

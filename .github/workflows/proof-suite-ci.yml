@@ -1,0 +1,86 @@
+name: Proof Suite CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run tests
+        run: npm test
+
+  proof-suite:
+    name: Proof Suite
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.ENABLE_PROOF_SUITE == 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate CI signer key pair
+        run: |
+          mkdir -p .keys
+          node scripts/generate-ed25519-keypair.js --private .keys/ci-live-proof-private.pem --public .keys/ci-live-proof-public.pem | tee ci-keygen.json
+
+      - name: Run proof suite
+        env:
+          AUDIT_ADMIN_TOKEN: ${{ secrets.AUDIT_ADMIN_TOKEN }}
+          RUNTIME_PROOF_AUTH_TOKEN: ${{ secrets.RUNTIME_PROOF_AUTH_TOKEN }}
+          AUDIT_RFC3161_ENDPOINT: ${{ vars.AUDIT_RFC3161_ENDPOINT }}
+          AUDIT_REKOR_BASE_URL: ${{ vars.AUDIT_REKOR_BASE_URL }}
+        run: |
+          set -euo pipefail
+
+          export AUDIT_ADMIN_TOKEN="${AUDIT_ADMIN_TOKEN:-ci-proof-admin-token-2026-very-strong}"
+          export RUNTIME_PROOF_AUTH_TOKEN="${RUNTIME_PROOF_AUTH_TOKEN:-$AUDIT_ADMIN_TOKEN}"
+          export AUDIT_RFC3161_ENDPOINT="${AUDIT_RFC3161_ENDPOINT:-https://freetsa.org/tsr}"
+          export AUDIT_REKOR_BASE_URL="${AUDIT_REKOR_BASE_URL:-https://rekor.sigstore.dev}"
+          export AUDIT_SIGNER_PRIVATE_KEY_PATH=".keys/ci-live-proof-private.pem"
+          export AUDIT_SIGNER_PUBLIC_KEY_PATH=".keys/ci-live-proof-public.pem"
+          export PROOF_SUITE_REKOR_KEY_SOURCE="signer-public-key-path"
+          export STAGING_API_PORT=3210
+
+          bash scripts/run-proof-suite.sh 2>&1 | tee proof-suite.log
+
+      - name: Upload proof artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: proof-suite-artifacts-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            ci-keygen.json
+            proof-suite.log
+            docs/week2/backend/evidence/live-proof-*.json
+            docs/week2/backend/runtime-proof-2026-03-24.md
