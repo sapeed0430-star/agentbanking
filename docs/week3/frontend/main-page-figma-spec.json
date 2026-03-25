@@ -619,7 +619,8 @@
       "5. Assemble the desktop frame in order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, and footer CTA.",
       "6. Mirror the same order on mobile and keep the proof panel directly under the hero CTA row.",
       "7. Apply auto-layout, motion notes, export rules, and reduced-motion handling after layout is locked.",
-      "8. Run the final layer-name and parse checks before handoff."
+      "8. Review the handoff-to-code mapping so P0 components are ready for implementation first.",
+      "9. Run the final layer-name and parse checks before handoff."
     ],
     "layerNaming": {
       "frames": ["Main Page / Desktop", "Main Page / Mobile"],
@@ -660,6 +661,48 @@
         "Avoid absolute positioning except for decoration layers and other non-content elements."
       ]
     },
+    "codeMapping": [
+      {
+        "component": "TopNav",
+        "implementationPriority": "P0",
+        "why": "Locks the primary navigation, brand, and above-the-fold CTA pattern."
+      },
+      {
+        "component": "PrimaryButton",
+        "implementationPriority": "P0",
+        "why": "Reused across hero, top bar, and footer conversion points."
+      },
+      {
+        "component": "ProofPanel",
+        "implementationPriority": "P0",
+        "why": "Carries the trust story and receipt preview that anchor the page."
+      },
+      {
+        "component": "MetricCard",
+        "implementationPriority": "P1",
+        "why": "Powers the trust strip and keeps KPI surfaces consistent."
+      },
+      {
+        "component": "PipelineStep",
+        "implementationPriority": "P1",
+        "why": "Supports the proof flow and establishes the core narrative order."
+      },
+      {
+        "component": "FeatureCard",
+        "implementationPriority": "P2",
+        "why": "Fills out the capability section once the core proof surfaces are in place."
+      },
+      {
+        "component": "WireframeFrame",
+        "implementationPriority": "P2",
+        "why": "Provides the QA view for implementation parity and responsive checks."
+      },
+      {
+        "component": "FooterCTA",
+        "implementationPriority": "P3",
+        "why": "Final conversion block that can ship after the primary trust surfaces land."
+      }
+    ],
     "qaSignOff": {
       "checklistSection": "2. Build Run",
       "validationCommand": "node -e \"JSON.parse(require('fs').readFileSync('docs/week3/frontend/main-page-figma-spec.json', 'utf8'))\"",

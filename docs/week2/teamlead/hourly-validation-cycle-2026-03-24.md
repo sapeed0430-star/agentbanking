@@ -181,13 +181,28 @@
 | F-FIGMA-1500 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Figma handoff bundle is complete enough for approval and next-step work. |
 
 ### Cycle: 2026-03-24 16:00 KST
-| Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
-|---|---|---|---|---|---|---|---|---|---|
-| Research |  |  |  |  |  |  |  |  |  |
-| Backend |  |  |  |  |  |  |  |  |  |
-| Frontend |  |  |  |  |  |  |  |  |  |
-| Design |  |  |  |  |  |  |  |  |  |
-| Marketing |  |  |  |  |  |  |  |  |  |
+#### 16:00 Gate Criteria (Pre-Gate)
+- Gate scope: `B-LIVE-1600`, `B-RUNTIME-1600`, `F-FIGMA-1600`.
+- Universal rule: `PASS`만 `Next Task Allowed = Yes`.
+- Universal rule: evidence link가 없으면 자동 `BLOCK`.
+- Universal rule: 링크가 있어도 실행 로그/산출물/결과가 검증되지 않으면 `BLOCK`.
+- 판정 표기 규칙: 승인 기준 충족 + 필수증적 완비 + 재현 가능 결과 확인 = `PASS`; runtime fallback only = `PARTIAL`; 그 외는 `BLOCK`.
+- Final gating rule: every non-`PASS` verdict must record blocker owner, blocker due time, and next update time.
+- Current posture: latest worker evidence has been reviewed; live-proof preflight ends in `FAIL` with `DNS_FAIL`, and runtime proof overall verdict is `BLOCK`.
+
+##### 16:00 Task Definition Table
+| Task ID | Lane | 승인 기준 | 필수 증적 | 판정 룰 | Next Task Allowed |
+|---|---|---|---|---|---|
+| B-LIVE-1600 | Backend | RFC3161 + Rekor 실연동이 실제 `PASS` 결과로 재현되어야 한다. | 실행 명령/스크립트, stdout/stderr 로그, RFC3161 request/response 요약, Rekor entry/inclusion/consistency 결과, 성공 결과 링크 | 증거 링크 누락 또는 결과가 `PASS`가 아니면 `BLOCK`; 모두 충족 시 `PASS` | `PASS`만 `Yes` |
+| B-RUNTIME-1600 | Backend | Docker compose가 실제로 기동되고 서비스가 살아 있음을 확인할 수 있어야 한다. | `docker compose up` 로그, 컨테이너 상태/헬스체크, 포트 바인딩 또는 컨테이너 ID, 성공 확인 링크 | 증거 링크 누락 또는 compose 기동 확인 실패 시 `BLOCK`; 기동과 확인이 모두 보이면 `PASS`; fallback only는 `PARTIAL` | `PASS`만 `Yes` |
+| F-FIGMA-1600 | Frontend | 메인 페이지 Figma handoff bundle이 전달용으로 완결되어야 한다. | concept doc, JSON spec, preview HTML, wireframe SVG, handoff checklist | 증거 링크 누락 또는 전달용 산출물이 불명확하면 `BLOCK`; 모든 handoff 산출물이 확인되면 `PASS` | `PASS`만 `Yes` |
+
+##### 16:00 Task Verdict Table
+| Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |
+|---|---|---|---|---|---|---|---|---|
+| B-LIVE-1600 | `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-24T16-39-29-170Z.json` | BLOCK | No | Backend Agent | 2026-03-24 17:00 | 2026-03-24 17:00 | N | Latest live-proof evidence ends in `FAIL` at preflight with `DNS_FAIL`, so a PASS bundle is still not present. |
+| B-RUNTIME-1600 | `docs/week2/backend/runtime-proof-2026-03-24.md` | BLOCK | No | Backend Agent | 2026-03-24 17:00 | 2026-03-24 17:00 | N | Runtime proof report records overall verdict `BLOCK`, so the lane does not qualify as PASS or partial approval. |
+| F-FIGMA-1600 | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md` | PASS | Yes | - | - | - | Y | Figma handoff bundle is complete enough for approval and next-step work. |
 
 ### Cycle: 2026-03-24 17:00 KST
 | Lane | Current Task ID | Evidence Link | Verdict (PASS/PARTIAL/BLOCK) | Next Task Allowed (PASS only) | Blocker Owner | Blocker Due (KST) | Next Update Time (KST) | Team Lead Approval (Y/N) | Notes |

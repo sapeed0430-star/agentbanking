@@ -571,6 +571,120 @@
         color: var(--text-soft);
       }
 
+      .handoff-map {
+        display: grid;
+        gap: 18px;
+      }
+
+      .mode-toggle {
+        display: inline-flex;
+        gap: 8px;
+        padding: 6px;
+        border: 1px solid rgba(103, 135, 170, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        width: fit-content;
+      }
+
+      .mode-button {
+        appearance: none;
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        background: transparent;
+        color: var(--text-soft);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mode-button.is-active {
+        background: linear-gradient(135deg, rgba(99, 234, 215, 0.18), rgba(155, 196, 255, 0.16));
+        color: var(--text);
+        box-shadow: inset 0 0 0 1px rgba(155, 196, 255, 0.16);
+      }
+
+      .handoff-panels {
+        display: grid;
+        gap: 14px;
+      }
+
+      .handoff-panel {
+        padding: 20px;
+        border-radius: 24px;
+        border: 1px solid rgba(103, 135, 170, 0.18);
+        background: linear-gradient(180deg, rgba(17, 32, 54, 0.82), rgba(9, 16, 28, 0.92));
+      }
+
+      .handoff-panel h3 {
+        margin-top: 0;
+      }
+
+      .handoff-panel ul {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        color: var(--text-soft);
+        line-height: 1.6;
+      }
+
+      .component-map {
+        border: 1px solid rgba(103, 135, 170, 0.18);
+        border-radius: 24px;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .component-map__scroll {
+        overflow-x: auto;
+      }
+
+      .mapping-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 720px;
+      }
+
+      .mapping-table caption {
+        caption-side: top;
+        text-align: left;
+        padding: 18px 20px 0;
+        color: var(--text-soft);
+        font-size: 13px;
+      }
+
+      .mapping-table th,
+      .mapping-table td {
+        padding: 16px 20px;
+        text-align: left;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(103, 135, 170, 0.14);
+      }
+
+      .mapping-table th {
+        color: var(--text);
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .mapping-table td {
+        color: var(--text-soft);
+        line-height: 1.55;
+      }
+
+      .priority-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(99, 234, 215, 0.14);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
       .wire-gallery {
         display: grid;
         grid-template-columns: 1.45fr 0.85fr;
@@ -747,6 +861,15 @@
           grid-template-columns: 1fr;
         }
 
+        .mode-toggle {
+          width: 100%;
+          flex-wrap: wrap;
+        }
+
+        .mode-button {
+          flex: 1 1 0;
+        }
+
         h1 {
           max-width: 100%;
           font-size: clamp(2.6rem, 14vw, 3.9rem);
@@ -785,7 +908,7 @@
     <main class="page">
       <div class="ribbon"><strong>F-FIGMA-1400</strong><span>handoff-ready main page concept</span></div>
 
-      <header class="topbar">
+      <header class="topbar" id="preview-top-nav">
         <div class="brand" aria-label="agentbanking">
           <div class="brand-mark" aria-hidden="true"></div>
           <div class="brand-name">
@@ -798,6 +921,7 @@
           <a href="#proof-flow">Proof Flow</a>
           <a href="#capabilities">Capability Cards</a>
           <a href="#operations">Operations</a>
+          <a href="#handoff-map">Handoff Map</a>
           <a href="#wireframes">Wireframes</a>
         </nav>
 
@@ -807,7 +931,7 @@
         </div>
       </header>
 
-      <section class="hero" aria-labelledby="hero-title">
+      <section class="hero" id="preview-hero" aria-labelledby="hero-title">
         <div class="hero-grid">
           <div class="hero-copy">
             <div class="eyebrow">00 / Trust console / live proof surface</div>
@@ -818,8 +942,8 @@
               easy-to-scan story.
             </p>
             <div class="hero-actions">
-              <button class="button button--solid" type="button">Start verification</button>
-              <button class="button button--ghost" type="button">View receipt</button>
+              <button class="button button--solid" type="button" id="hero-primary-cta">Start verification</button>
+              <button class="button button--ghost" type="button" id="hero-secondary-cta">View receipt</button>
             </div>
             <div class="chip-row" aria-label="Runtime modes">
               <span class="chip">Signer: local-ed25519</span>
@@ -828,7 +952,7 @@
             </div>
           </div>
 
-          <aside class="panel" aria-label="Receipt preview">
+          <aside class="panel" aria-label="Receipt preview" id="preview-proof-panel">
             <div class="panel-head">
               <div>
                 <div class="panel-title">Receipt preview</div>
@@ -872,7 +996,7 @@
         </div>
       </section>
 
-      <section class="kpis" aria-label="Trust metrics">
+      <section class="kpis" aria-label="Trust metrics" id="preview-trust-strip">
         <article class="kpi">
           <strong>99.98%</strong>
           <span>Verification uptime target for the trust surface and receipt endpoint.</span>
@@ -887,10 +1011,110 @@
         </article>
       </section>
 
+      <section class="section handoff-map" id="handoff-map" aria-labelledby="handoff-map-title">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">04 / Handoff map</div>
+            <h2 id="handoff-map-title">Switch between desktop and mobile implementation notes.</h2>
+          </div>
+          <p>The toggle makes the two frame targets obvious while the table below maps the major Figma component IDs to code priorities.</p>
+        </div>
+
+        <div class="mode-toggle" role="tablist" aria-label="Preview mode">
+          <button class="mode-button is-active" type="button" data-preview-mode="desktop" aria-pressed="true">Desktop</button>
+          <button class="mode-button" type="button" data-preview-mode="mobile" aria-pressed="false">Mobile</button>
+        </div>
+
+        <div class="handoff-panels">
+          <article class="handoff-panel is-active" data-preview-panel="desktop" id="preview-desktop-panel">
+            <h3>Desktop handoff</h3>
+            <ul>
+              <li>Frame target: 1440 px wide with the proof panel pinned beside the hero copy.</li>
+              <li>Priority focus: `TopNav`, `PrimaryButton`, and `ProofPanel` so the above-the-fold story is implementable first.</li>
+              <li>Section order: header, hero, trust strip, proof flow, capability cards, operations snapshot, wireframe QA, footer CTA.</li>
+            </ul>
+          </article>
+          <article class="handoff-panel" data-preview-panel="mobile" id="preview-mobile-panel" hidden>
+            <h3>Mobile handoff</h3>
+            <ul>
+              <li>Frame target: 375 px wide with the proof panel stacked directly below the CTA row.</li>
+              <li>Priority focus: `TopNav`, `PrimaryButton`, and `ProofPanel` so the stacked trust flow ships cleanly.</li>
+              <li>Section order: header, hero, proof panel, trust strip, proof flow, capability cards, operations snapshot, footer CTA.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="component-map">
+          <div class="component-map__scroll">
+            <table class="mapping-table">
+              <caption>Major component id mapping for the Figma preview and implementation handoff.</caption>
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>JSON ID</th>
+                  <th>Preview ID</th>
+                  <th>Implementation Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TopNav</td>
+                  <td><code>cmp-top-nav</code></td>
+                  <td><code>preview-top-nav</code></td>
+                  <td><span class="priority-chip">P0</span></td>
+                </tr>
+                <tr>
+                  <td>PrimaryButton</td>
+                  <td><code>cmp-primary-button</code></td>
+                  <td><code>hero-primary-cta</code></td>
+                  <td><span class="priority-chip">P0</span></td>
+                </tr>
+                <tr>
+                  <td>ProofPanel</td>
+                  <td><code>cmp-proof-panel</code></td>
+                  <td><code>preview-proof-panel</code></td>
+                  <td><span class="priority-chip">P0</span></td>
+                </tr>
+                <tr>
+                  <td>MetricCard</td>
+                  <td><code>cmp-metric-card</code></td>
+                  <td><code>preview-trust-strip</code></td>
+                  <td><span class="priority-chip">P1</span></td>
+                </tr>
+                <tr>
+                  <td>PipelineStep</td>
+                  <td><code>cmp-pipeline-step</code></td>
+                  <td><code>proof-flow</code></td>
+                  <td><span class="priority-chip">P1</span></td>
+                </tr>
+                <tr>
+                  <td>FeatureCard</td>
+                  <td><code>cmp-feature-card</code></td>
+                  <td><code>capabilities</code></td>
+                  <td><span class="priority-chip">P2</span></td>
+                </tr>
+                <tr>
+                  <td>WireframeFrame</td>
+                  <td><code>cmp-wireframe-frame</code></td>
+                  <td><code>wireframes</code></td>
+                  <td><span class="priority-chip">P2</span></td>
+                </tr>
+                <tr>
+                  <td>FooterCTA</td>
+                  <td><code>cmp-footer-cta</code></td>
+                  <td><code>footer-cta</code></td>
+                  <td><span class="priority-chip">P3</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="proof-flow" aria-labelledby="proof-flow-title">
         <div class="section-head">
           <div>
-            <div class="eyebrow">01 / Proof flow</div>
+            <div class="eyebrow">05 / Proof flow</div>
             <h2 id="proof-flow-title">A four-step story from policy gate to signed receipt.</h2>
           </div>
           <p>The page reads like a system diagram but keeps the prose human, so both product and ops can follow the flow quickly.</p>
@@ -923,7 +1147,7 @@
       <section class="section" id="capabilities" aria-labelledby="capabilities-title">
         <div class="section-head">
           <div>
-            <div class="eyebrow">02 / Capability Cards</div>
+            <div class="eyebrow">06 / Capability Cards</div>
             <h2 id="capabilities-title">Three surfaces that turn proof into something readable.</h2>
           </div>
           <p>Each card is intentionally dense enough to feel operational, while still keeping the main page elegant and approachable.</p>
@@ -954,7 +1178,7 @@
       <section class="section" id="operations" aria-labelledby="operations-title">
         <div class="section-head">
           <div>
-            <div class="eyebrow">03 / Operations</div>
+            <div class="eyebrow">07 / Operations</div>
             <h2 id="operations-title">Keep the page useful when the system is under stress.</h2>
           </div>
           <p>The lower half of the page shifts from marketing to status and design intent so it can support implementation and review.</p>
@@ -985,14 +1209,14 @@
       <section class="section" id="wireframes" aria-labelledby="wireframes-title">
         <div class="section-head">
           <div>
-            <div class="eyebrow">04 / Wireframe QA</div>
+            <div class="eyebrow">08 / Wireframe QA</div>
             <h2 id="wireframes-title">Low-fidelity frames for Figma recreation and QA.</h2>
           </div>
           <p>These thumbnails make the structural intent explicit, so the Figma version can preserve hierarchy even if the visual treatment changes later.</p>
         </div>
 
         <div class="wire-gallery">
-          <article class="wire-card">
+          <article class="wire-card" id="wireframes-desktop">
             <div class="wire-label">
               <strong>Desktop hierarchy</strong>
               <span class="wire-badge">1440 px / 12 cols</span>
@@ -1014,7 +1238,7 @@
             </div>
           </article>
 
-          <article class="wire-card">
+          <article class="wire-card" id="wireframes-mobile">
             <div class="wire-label">
               <strong>Mobile hierarchy</strong>
               <span class="wire-badge">375 px / 4 cols</span>
@@ -1031,10 +1255,10 @@
         </div>
       </section>
 
-      <section class="footer-panel" aria-labelledby="footer-title">
+      <section class="footer-panel" aria-labelledby="footer-title" id="footer-cta">
         <div class="section-head" style="margin-bottom: 0;">
           <div>
-            <div class="eyebrow">05 / Footer CTA</div>
+            <div class="eyebrow">09 / Footer CTA</div>
             <h2 id="footer-title" style="font-family: var(--font-heading); font-size: 28px; line-height: 1.1; letter-spacing: -0.03em;">Turn proof into a product surface.</h2>
           </div>
           <p>Use the landing page to explain the trust model first, then let the receipt detail do the heavier operational work.</p>
@@ -1048,5 +1272,31 @@
 
       <hr class="muted-divider" />
     </main>
+    <script>
+      (function () {
+        const buttons = Array.from(document.querySelectorAll('[data-preview-mode]'));
+        const panels = Array.from(document.querySelectorAll('[data-preview-panel]'));
+
+        function setMode(mode) {
+          buttons.forEach((button) => {
+            const active = button.dataset.previewMode === mode;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-pressed', String(active));
+          });
+
+          panels.forEach((panel) => {
+            const active = panel.dataset.previewPanel === mode;
+            panel.hidden = !active;
+            panel.classList.toggle('is-active', active);
+          });
+        }
+
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => setMode(button.dataset.previewMode));
+        });
+
+        setMode('desktop');
+      })();
+    </script>
   </body>
 </html>

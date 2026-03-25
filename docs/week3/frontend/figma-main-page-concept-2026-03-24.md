@@ -225,7 +225,23 @@
 - `State / Role / Metric` for chip, badge, and KPI labels.
 - Keep visible labels short, but preserve longer descriptive notes in secondary text or component descriptions.
 
-## 11. QA Sign-Off Criteria
+## 11. Handoff to Code Mapping
+| Component | Implementation Priority | Why it ships this early |
+|---|---|---|
+| `TopNav` | P0 | Locks the primary navigation, brand, and above-the-fold CTA pattern. |
+| `PrimaryButton` | P0 | Reused across hero, top bar, and footer conversion points. |
+| `ProofPanel` | P0 | Carries the trust story and receipt preview that anchor the page. |
+| `MetricCard` | P1 | Powers the trust strip and keeps KPI surfaces consistent. |
+| `PipelineStep` | P1 | Supports the proof flow and establishes the core narrative order. |
+| `FeatureCard` | P2 | Fills out the capability section once the core proof surfaces are in place. |
+| `WireframeFrame` | P2 | Provides the QA view for implementation parity and responsive checks. |
+| `FooterCTA` | P3 | Final conversion block that can ship after the primary trust surfaces land. |
+
+- Build P0 components first so the page can be handed to code with the main interaction and trust surfaces already stable.
+- Use P1 components to complete the page narrative before polishing the supporting cards and QA frames.
+- Treat P2 and P3 items as implementation follow-through once the core flow is validated.
+
+## 12. QA Sign-Off Criteria
 - [ ] Desktop and mobile frames use the exact section names listed in the JSON spec.
 - [ ] All documented component variants are present and used where expected.
 - [ ] The proof panel, CTA, and trust strip remain visually clear at both breakpoints.
@@ -233,7 +249,7 @@
 - [ ] Reduced-motion behavior is explicitly documented in the handoff notes.
 - [ ] The JSON spec still parses cleanly after the final edit pass.
 
-## 12. Acceptance Checklist
+## 13. Acceptance Checklist
 - [x] IA sections defined
 - [x] Layout grid and breakpoints defined
 - [x] Typographic tokens defined

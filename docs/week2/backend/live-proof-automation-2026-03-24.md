@@ -229,3 +229,50 @@ Result:
 - `BLOCK`
 - Reason: the current environment cannot resolve `rekor.sigstore.dev` or `freetsa.org`, so endpoint reachability is not established and `node scripts/capture-live-proof-evidence.js` cannot complete the timestamp and transparency stages.
 - Consequence: no `PASS` evidence bundle exists yet for `B-LIVE-1400`.
+
+## 11) 15:00 Cycle Preflight Matrix
+The `B-LIVE-1500` worker path uses a preflight gate before the live RFC3161 and Rekor stages. The gate classifies the first failure with a standard code so the evidence bundle can distinguish endpoint reachability from protocol or auth issues.
+
+### 11.1) Execution Example
+```bash
+AUDIT_SIGNER_MODE=local-ed25519 \
+AUDIT_SIGNER_PRIVATE_KEY_PEM="$(cat .keys/live-proof-ed25519-private.pem)" \
+AUDIT_TIMESTAMP_MODE=rfc3161 \
+AUDIT_RFC3161_ENDPOINT=https://freetsa.org/tsr \
+AUDIT_TRANSPARENCY_MODE=rekor \
+AUDIT_REKOR_BASE_URL=https://rekor.sigstore.dev \
+AUDIT_REKOR_PUBLIC_KEY_PEM_B64="$(curl -fsSL --max-time 20 https://rekor.sigstore.dev/api/v1/log/publicKey | base64 | tr -d '\n')" \
+npm run live-proof:capture -- --output docs/week2/backend/evidence/live-proof-<timestamp>.json
+```
+
+### 11.2) Evidence Additions
+The evidence JSON now includes:
+- `preflight.status`
+- `preflight.failed_target`
+- `preflight.failed_stage`
+- `preflight.checks[]`
+
+Each preflight check reports:
+- `target`: `timestamp` or `transparency`
+- `phase`: `config`, `dns`, or `request`
+- `error_code`: one of the standard codes below when the check fails
+- `request.status`: the HTTP status when a response is received
+
+### 11.3) Standard Error Codes
+- `DNS_FAIL`: hostname resolution failed
+- `NETWORK_FAIL`: socket/connect/TLS failure
+- `HTTP_NON_2XX`: live endpoint responded but was not successful
+- `AUTH_REQUIRED`: endpoint returned `401` or `403`
+- `TIMEOUT`: lookup or request timed out
+
+### 11.4) Status Judgment
+- `PASS`: signer, preflight, timestamp, and transparency all succeed
+- `FAIL` with `failed_stage=preflight`: a preflight check failed before the live calls
+- `FAIL` with `failed_stage=timestamp`: RFC3161 request failed after preflight passed
+- `FAIL` with `failed_stage=transparency`: Rekor request failed after preflight passed
+- `FAIL` with `error_code=DNS_FAIL|NETWORK_FAIL|HTTP_NON_2XX|AUTH_REQUIRED|TIMEOUT`: the evidence bundle should be read as a live integration failure, not a local signer failure
+
+### 11.5) Log Reading Rules
+- Check `preflight.checks[0]` for the TSA path first.
+- Check `preflight.checks[1]` for the Rekor path second.
+- If `preflight.status=FAIL`, the live stages are skipped on purpose so the evidence keeps the first failing condition.

@@ -1,136 +1,107 @@
 # Docker Runtime Setup Notes - 2026-03-24
 
 ## Purpose
-Record the exact Docker/runtime availability checks for B-RUNTIME-1400 and the fastest fallback path when compose-first execution is blocked.
+Record the exact Docker/runtime diagnostics used for B-RUNTIME-1500 and the concrete blocker when compose-first proof cannot complete.
 
-## Checks Performed
+## Current Result
+- `make runtime-proof` now prints staged diagnostics before the proof attempt.
+- On this host, the Docker CLI is missing, so the compose-first path cannot start.
+- The node fallback is also blocked in this sandbox because the process cannot bind `127.0.0.1:3210`.
+- Current verdict: `BLOCK`
 
-### 1) Docker CLI and compose availability
+## Diagnostics Run
+
+### 1) Runtime proof target
+
+Command:
+```bash
+make runtime-proof
+```
+
+Observed output:
+```text
+RUNTIME_DIAG docker=DOCKER_MISSING note=(not found)
+RUNTIME_DIAG daemon=SKIPPED note=(skipped)
+RUNTIME_DIAG compose=SKIPPED note=(skipped)
+RUNTIME_DIAG fallback=FALLBACK_ONLY note=node:events:486
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EPERM: operation not permitted 127.0.0.1:3210
+...
+runtime proof report written to /Users/myungchoi/Documents/New project/docs/week2/backend/runtime-proof-2026-03-24.md
+overall verdict: BLOCK
+```
+
+Result:
+- The runtime proof target now exposes the diagnostic codes directly.
+- `DOCKER_MISSING` is the first blocker.
+- The fallback path reaches a local bind failure and cannot complete the proof.
+
+### 2) Docker CLI availability
 
 Command:
 ```bash
 command -v docker || true
-command -v docker-compose || true
-command -v compose || true
 docker --version 2>/dev/null || true
-docker compose version 2>/dev/null || true
-docker info 2>/dev/null | sed -n '1,80p' || true
 ```
 
 Observed output:
 ```text
-(no output)
+docker: command not found
 ```
 
 Result:
-- Docker CLI is not installed or not on `PATH`.
-- Compose v2 is not available through `docker compose`.
-- Legacy `docker-compose` is not installed.
+- Docker is not installed or not on `PATH`.
+- This maps to `DOCKER_MISSING`.
 
-### 2) Alternate runtime availability
+### 3) Local bind probe
 
 Command:
 ```bash
-command -v podman || true
-command -v colima || true
-command -v lima || true
-command -v nerdctl || true
-command -v brew || true
-ls -d /Applications/Docker.app 2>/dev/null || true
-ls -d /Applications/Colima.app 2>/dev/null || true
-ls -d /Applications/Podman.app 2>/dev/null || true
+node -e 'require("http").createServer((req,res)=>res.end("ok")).listen(3210,"127.0.0.1",()=>console.log("up"))'
 ```
 
 Observed output:
 ```text
-/opt/homebrew/bin/brew
+Error: listen EPERM: operation not permitted 127.0.0.1:3210
 ```
 
 Result:
-- No alternative container runtime binary is available in `PATH`.
-- No Docker Desktop, Colima, or Podman app bundle is installed in `/Applications`.
-- Homebrew exists, so runtime installation would need a separate host-level install step outside this workspace sandbox.
+- Even a minimal localhost server cannot bind in this sandbox.
+- This is the concrete blocker for the node fallback and maps to `FALLBACK_ONLY` plus a sandbox-level port restriction.
 
-### 3) Homebrew installability snapshot
+## Diagnostic Codes and Actions
 
-Command:
-```bash
-brew info --cask docker 2>/dev/null | sed -n '1,120p' || true
-brew info colima 2>/dev/null | sed -n '1,120p' || true
-brew info nerdctl 2>/dev/null | sed -n '1,120p' || true
-```
+### `RUNTIME_OK`
+- Meaning: the stage passed and the next stage may run.
+- Action: continue to the compose-first proof and record the generated evidence.
 
-Observed output:
-```text
-docker-desktop: 4.60.1,218372 (auto_updates)
-Not installed
-colima: stable 0.10.0, HEAD
-Not installed
-nerdctl: stable 2.2.1, HEAD
-Not installed
-```
+### `DOCKER_MISSING`
+- Meaning: `docker` is not on `PATH`.
+- Action: install or relink Docker, then rerun `make runtime-proof`.
 
-Result:
-- Docker Desktop is available as a Homebrew cask but is not installed.
-- Colima is available as a Homebrew formula but is not installed.
-- `nerdctl` is available as a Homebrew formula but requires Linux, so it is not a practical macOS fallback for this host.
+### `DAEMON_DOWN`
+- Meaning: the Docker CLI exists, but the daemon is not reachable.
+- Action: start Colima or Docker Desktop, then rerun `docker info` and `make runtime-proof`.
 
-### 4) Runtime installation attempt
+### `COMPOSE_MISSING`
+- Meaning: `docker` works, but `docker compose` is unavailable.
+- Action: install the compose plugin or `docker-compose`, then rerun the proof.
 
-Command:
-```bash
-brew install colima docker docker-compose
-```
-
-Observed output:
-```text
-(interrupted by user before completion)
-```
-
-Result:
-- Installation was attempted, but the run was interrupted by the user before Homebrew completed.
-- Docker runtime installation success remains unconfirmed.
-- compose-first runtime proof could not be retried on top of a confirmed runtime.
-
-## Blocking Cause
-- `scripts/capture-runtime-proof.sh` fails at the compose-first step with `docker: command not found`.
-- Because there is no Docker-compatible runtime installed, the compose proof cannot be completed from the current host state.
-- The later `brew install colima docker docker-compose` attempt did not complete, so the host runtime state is still unconfirmed.
-- The host has an install path through Homebrew, but the workspace itself is not a place to perform a host-level Docker Desktop or Colima installation.
-
-## Immediately Executable Alternative
-Use the node fallback that is already validated by the runtime proof script:
-
-```bash
-PORT=3210 node server.js
-```
-
-Then verify:
-
-```bash
-curl -s http://127.0.0.1:3210/.well-known/jwks.json
-curl -sS -X POST http://127.0.0.1:3210/verify \
-  -H 'authorization: Bearer local-dev-token' \
-  -H 'content-type: application/json' \
-  -H 'x-operator-id: operator-runtime-proof' \
-  --data @<payload generated by the runtime-proof script>
-```
-
-Expected proof result:
-- `GET /.well-known/jwks.json` -> `200`
-- `POST /verify` -> `201`
+### `FALLBACK_ONLY`
+- Meaning: compose-first evidence could not be captured, so fallback evidence was used or attempted.
+- Action: keep the proof partial until compose-first output is available.
 
 ## Captured Result
-Latest run:
-```text
-runtime proof report written to /Users/myungchoi/Documents/New project/docs/week2/backend/runtime-proof-2026-03-24.md
-overall verdict: PARTIAL PASS
-```
+- Runtime proof report: [runtime-proof-2026-03-24.md](./runtime-proof-2026-03-24.md)
+- Verdict: `BLOCK`
+- Concrete blocker: Docker missing, plus sandbox port binding denied on `127.0.0.1:3210`
 
-Current B-RUNTIME-1400 basis:
-- `PARTIAL`
-- Compose-first evidence is still missing.
-- Node fallback remained valid, but Docker runtime installation did not finish, so the runtime state is not fully established.
-
-Reference:
-- [Runtime proof report](./runtime-proof-2026-03-24.md)
+## Notes
+- The proof report now captures:
+  - staged diagnostic lines
+  - compose attempt status
+  - fallback status
+  - bind probe output
+- If this is rerun on a host with Docker available, the expected next step is `RUNTIME_OK` for the Docker CLI/daemon/compose checks and then a compose-first PASS.

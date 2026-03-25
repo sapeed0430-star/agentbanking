@@ -26,7 +26,7 @@ help:
 	@echo "make daily-report-check DATE=YYYY-MM-DD - validate one daily report"
 	@echo "make keys-gen            - generate local Ed25519 key pair for signer/rekor tests"
 	@echo "make offline-verify RECEIPT=... REPORT=... [SCHEMA=...] [PUBKEY=...] - run offline verification CLI"
-	@echo "make runtime-proof       - capture compose-first runtime proof with node fallback"
+	@echo "make runtime-proof       - capture compose-first runtime proof with staged runtime diagnostics and node fallback"
 
 status:
 	@echo "Current branch: $(CURRENT_BRANCH)"

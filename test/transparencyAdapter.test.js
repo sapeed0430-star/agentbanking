@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { createTransparencyAdapter } from '../src/audit/adapters/transparency.js';
+import {
+  classifyTransparencyTransportCode,
+  createTransparencyAdapter,
+  probeRekorEndpoint,
+} from '../src/audit/adapters/transparency.js';
 
 function startMockRekorServer(handler) {
   return new Promise((resolve) => {
@@ -78,6 +82,40 @@ test('rekor adapter throws when public key is missing', async () => {
         reportDigest: { alg: 'sha-256', value: 'c'.repeat(64) },
         signature: { value: 'header.payload.signature' },
       }),
-    (err) => err.stage === 'transparency' && err.message.includes('missing_rekor_public_key')
+    (err) =>
+      err.stage === 'transparency' &&
+      err.error_code === 'MISSING_REKOR_PUBLIC_KEY' &&
+      err.message.includes('missing_rekor_public_key')
   );
+});
+
+test('rekor probe classifies DNS, HTTP, and timeout failures with standard codes', async () => {
+  const dnsFailure = await probeRekorEndpoint({
+    baseUrl: 'https://rekor.sigstore.dev',
+    lookupImpl: async () => {
+      const err = new Error('getaddrinfo ENOTFOUND rekor.sigstore.dev');
+      err.code = 'ENOTFOUND';
+      throw err;
+    },
+    fetchImpl: async () => {
+      throw new Error('should not be called');
+    },
+  });
+
+  assert.equal(dnsFailure.status, 'FAIL');
+  assert.equal(dnsFailure.phase, 'dns');
+  assert.equal(dnsFailure.error_code, 'DNS_FAIL');
+
+  const authRequired = await probeRekorEndpoint({
+    baseUrl: 'https://rekor.sigstore.dev',
+    lookupImpl: async () => ({ address: '127.0.0.1', family: 4 }),
+    fetchImpl: async () => ({ ok: false, status: 403 }),
+  });
+
+  assert.equal(authRequired.status, 'FAIL');
+  assert.equal(authRequired.phase, 'request');
+  assert.equal(authRequired.error_code, 'AUTH_REQUIRED');
+
+  assert.equal(classifyTransparencyTransportCode({ name: 'TimeoutError' }), 'TIMEOUT');
+  assert.equal(classifyTransparencyTransportCode({ cause: { code: 'ECONNRESET' } }), 'NETWORK_FAIL');
 });

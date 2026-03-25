@@ -50,14 +50,21 @@
 | B-RUNTIME-1500 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md`, `docs/week2/backend/docker-runtime-setup-2026-03-24.md` | PARTIAL | No | compose-first 미확보, node fallback(`jwks=200`, `verify=201`)만 재현 |
 | F-FIGMA-1500 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `main-page-figma-spec.json`, `main-page-figma-preview.html`, `main-page-wireframe-preview.svg`, `figma-handoff-checklist-2026-03-24.md` | PASS | Yes | 피그마 handoff bundle 완결성 유지, 다음 태스크 진행 승인 |
 
+## Task Gate Snapshot (16:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-LIVE-1600 | Backend | `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-24T16-39-29-170Z.json` | BLOCK | No | preflight 단계에서 `DNS_FAIL` 발생, RFC3161/Rekor PASS bundle 미충족 |
+| B-RUNTIME-1600 | Backend | `docs/week2/backend/runtime-proof-2026-03-24.md` | BLOCK | No | runtime report 자체가 `overall verdict: BLOCK`으로 기록되어 lane 잠금 유지 |
+| F-FIGMA-1600 | Frontend | `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `main-page-figma-spec.json`, `main-page-figma-preview.html`, `main-page-wireframe-preview.svg`, `figma-handoff-checklist-2026-03-24.md` | PASS | Yes | handoff-to-code 매핑까지 반영된 전달 번들 승인 |
+
 ## Open Blockers
 1. Backend
 - Owner: Backend Agent
-- Due: 2026-03-24 16:00 KST
+- Due: 2026-03-24 17:00 KST
 - Required closure:
   - RFC3161 실연동 성공 증적 (`PASS` 결과)
   - Rekor 실연동 성공 증적 (`PASS` 결과)
-  - Docker compose 실제 기동 증적(동등 환경 로그는 이미 확보)
+  - Docker compose 실제 기동 증적(현재 runtime report는 `BLOCK`)
 
 ## Gate Control Rule Confirmation
 1. `PASS`만 `Next Task Allowed=Yes`

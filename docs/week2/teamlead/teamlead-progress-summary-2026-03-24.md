@@ -322,3 +322,50 @@
     - Blocker owner: `-`
     - Blocker due: `-`
     - Next update time: `-`
+
+## 16:00 KST Pre-Gate (Prepared)
+- Scope:
+  - `B-LIVE-1600`: RFC3161 + Rekor live proof must complete with a readable PASS bundle.
+  - `B-RUNTIME-1600`: compose-first runtime proof must show a healthy service startup, or a fallback path must still be clearly marked as partial.
+  - `F-FIGMA-1600`: Figma handoff bundle must include concept, spec, preview, wireframe, and checklist.
+- Decision rule:
+  - `PASS`만 `Next Task Allowed = Yes`
+  - evidence link가 없으면 자동 `BLOCK`
+  - 링크가 있어도 필요한 결과가 검증되지 않으면 `BLOCK`
+  - compose fallback only remains `PARTIAL`, not `PASS`
+- Review checklist:
+  - each task has a readable evidence link
+  - each task shows the required artifact set
+  - non-PASS results must name blocker owner, due time, and next update time
+- Current posture:
+  - latest backend evidence shows live-proof preflight `FAIL` with `DNS_FAIL`
+  - runtime proof reports overall verdict `BLOCK`
+  - final verdict below uses the latest backend/runtime/frontend evidence already captured for the lanes
+
+## 16:00 Final Gate Verdict
+- Cycle verdict: `1 PASS / 0 PARTIAL / 2 BLOCK`
+- Next-task gate result:
+  - `Allowed`: `F-FIGMA-1600`
+  - `Locked`: `B-LIVE-1600`, `B-RUNTIME-1600`
+- Team Lead approval status:
+  - `Y`: `F-FIGMA-1600`
+  - `N`: `B-LIVE-1600`, `B-RUNTIME-1600`
+- Verdict details:
+  - `B-LIVE-1600` - `BLOCK`
+    - Evidence: `docs/week2/backend/live-proof-automation-2026-03-24.md`, `docs/week2/backend/evidence/live-proof-2026-03-24T16-39-29-170Z.json`
+    - Reason: the latest live-proof evidence ends in `FAIL` at preflight with `DNS_FAIL`, so a complete RFC3161/Rekor PASS bundle is not present.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 17:00 KST`
+    - Next update time: `2026-03-24 17:00 KST`
+  - `B-RUNTIME-1600` - `BLOCK`
+    - Evidence: `docs/week2/backend/runtime-proof-2026-03-24.md`
+    - Reason: the runtime proof report records overall verdict `BLOCK`, so the lane does not qualify for PASS or partial approval.
+    - Blocker owner: `Backend Agent`
+    - Blocker due: `2026-03-24 17:00 KST`
+    - Next update time: `2026-03-24 17:00 KST`
+  - `F-FIGMA-1600` - `PASS`
+    - Evidence: `docs/week3/frontend/figma-main-page-concept-2026-03-24.md`, `docs/week3/frontend/main-page-figma-spec.json`, `docs/week3/frontend/main-page-figma-preview.html`, `docs/week3/frontend/main-page-wireframe-preview.svg`, `docs/week3/frontend/figma-handoff-checklist-2026-03-24.md`
+    - Reason: the main-page Figma handoff bundle is complete, readable, and ready for approval.
+    - Blocker owner: `-`
+    - Blocker due: `-`
+    - Next update time: `-`

@@ -6,6 +6,8 @@ import { performance } from 'node:perf_hooks';
 
 import { digestCanonicalJson } from '../src/audit/canonical.js';
 import { createAuditRuntime } from '../src/audit/runtime.js';
+import { probeRfc3161Endpoint } from '../src/audit/adapters/timestamp.js';
+import { probeRekorEndpoint } from '../src/audit/adapters/transparency.js';
 
 function parseArgs(argv) {
   const result = {
@@ -64,6 +66,9 @@ function summarizeUrl(value) {
 function deriveErrorCode(err, stage) {
   const message = safeString(err?.message);
 
+  if (safeString(err?.error_code)) {
+    return String(err.error_code).toUpperCase();
+  }
   if (safeString(err?.code)) {
     return String(err.code).toUpperCase();
   }
@@ -81,8 +86,29 @@ function deriveErrorCode(err, stage) {
 function normalizeError(err, stage) {
   return {
     stage: safeString(err?.stage) || stage,
-    error_code: deriveErrorCode(err, stage),
+    error_code: safeString(err?.error_code) || deriveErrorCode(err, stage),
     message: safeString(err?.message) || 'unknown_error',
+    target: safeString(err?.target) || null,
+    phase: safeString(err?.phase) || null,
+  };
+}
+
+function summarizePreflightChecks(checks) {
+  const firstFailure = checks.find((item) => item.status === 'FAIL') || null;
+  return {
+    status: firstFailure ? 'FAIL' : 'PASS',
+    failed_target: firstFailure?.target || null,
+    failed_stage: firstFailure?.target || null,
+    checks,
+  };
+}
+
+function buildSkippedStep(stage, reason, extra = {}) {
+  return {
+    stage,
+    status: 'skipped',
+    reason,
+    ...extra,
   };
 }
 
@@ -170,68 +196,112 @@ async function main() {
     timestamp_proof: null,
     transparency_proof: null,
   };
+  let preflight = {
+    status: 'SKIPPED',
+    failed_target: null,
+    failed_stage: null,
+    checks: [],
+  };
   let failure = null;
 
-  const stageHandlers = [
-    {
+  const signerStartedAt = performance.now();
+  try {
+    outputs.signature = await runtime.signer.signReceipt({
+      reportDigest,
+      receiptId,
+      issuedAt,
+    });
+    stepResults.push({
       stage: 'signer',
-      run: async () =>
-        runtime.signer.signReceipt({
-          reportDigest,
-          receiptId,
-          issuedAt,
-        }),
-    },
-    {
-      stage: 'timestamp',
-      run: async () =>
-        runtime.timestamp.issueTimestamp({
+      status: 'success',
+      duration_ms: formatDurationMs(performance.now() - signerStartedAt),
+      output: outputs.signature,
+    });
+  } catch (err) {
+    failure = normalizeError(err, 'signer');
+    stepResults.push({
+      stage: 'signer',
+      status: 'failed',
+      duration_ms: formatDurationMs(performance.now() - signerStartedAt),
+      error: failure,
+    });
+  }
+
+  if (!failure) {
+    const [timestampCheck, transparencyCheck] = await Promise.all([
+      probeRfc3161Endpoint({
+        endpoint: process.env.AUDIT_RFC3161_ENDPOINT || '',
+        timeoutMs,
+      }),
+      probeRekorEndpoint({
+        baseUrl: process.env.AUDIT_REKOR_BASE_URL || '',
+        timeoutMs,
+      }),
+    ]);
+
+    preflight = summarizePreflightChecks([timestampCheck, transparencyCheck]);
+
+    if (preflight.status === 'FAIL') {
+      const firstFailure = preflight.checks.find((item) => item.status === 'FAIL');
+      failure = {
+        stage: 'preflight',
+        error_code: firstFailure?.error_code || 'NETWORK_FAIL',
+        message: firstFailure?.message || 'preflight_failed',
+        target: firstFailure?.target || null,
+        phase: firstFailure?.phase || null,
+      };
+      stepResults.push(buildSkippedStep('timestamp', 'preflight_failed', { target: 'timestamp' }));
+      stepResults.push(buildSkippedStep('transparency', 'preflight_failed', { target: 'transparency' }));
+    } else {
+      const timestampStartedAt = performance.now();
+      try {
+        outputs.timestamp_proof = await runtime.timestamp.issueTimestamp({
           reportDigest,
           receiptId,
           generatedAt: issuedAt,
-        }),
-    },
-    {
-      stage: 'transparency',
-      run: async () =>
-        runtime.transparency.appendProof({
-          receiptId,
-          reportDigest,
-          signature: outputs.signature,
-        }),
-    },
-  ];
+        });
+        stepResults.push({
+          stage: 'timestamp',
+          status: 'success',
+          duration_ms: formatDurationMs(performance.now() - timestampStartedAt),
+          output: outputs.timestamp_proof,
+        });
+      } catch (err) {
+        failure = normalizeError(err, 'timestamp');
+        stepResults.push({
+          stage: 'timestamp',
+          status: 'failed',
+          duration_ms: formatDurationMs(performance.now() - timestampStartedAt),
+          error: failure,
+        });
+      }
 
-  for (const handler of stageHandlers) {
-    if (failure) {
-      stepResults.push({
-        stage: handler.stage,
-        status: 'skipped',
-        reason: `not_run_after_${failure.stage}_failure`,
-      });
-      continue;
-    }
-
-    const startedAt = performance.now();
-    try {
-      const value = await handler.run();
-      if (handler.stage === 'signer') outputs.signature = value;
-      if (handler.stage === 'timestamp') outputs.timestamp_proof = value;
-      if (handler.stage === 'transparency') outputs.transparency_proof = value;
-      stepResults.push({
-        stage: handler.stage,
-        status: 'success',
-        duration_ms: formatDurationMs(performance.now() - startedAt),
-        output: value,
-      });
-    } catch (err) {
-      failure = normalizeError(err, handler.stage);
-      stepResults.push({
-        stage: handler.stage,
-        status: 'failed',
-        duration_ms: formatDurationMs(performance.now() - startedAt),
-        error: failure,
-      });
+      if (failure) {
+        stepResults.push(buildSkippedStep('transparency', `not_run_after_${failure.stage}_failure`, { target: 'transparency' }));
+      } else {
+        const transparencyStartedAt = performance.now();
+        try {
+          outputs.transparency_proof = await runtime.transparency.appendProof({
+            receiptId,
+            reportDigest,
+            signature: outputs.signature,
+          });
+          stepResults.push({
+            stage: 'transparency',
+            status: 'success',
+            duration_ms: formatDurationMs(performance.now() - transparencyStartedAt),
+            output: outputs.transparency_proof,
+          });
+        } catch (err) {
+          failure = normalizeError(err, 'transparency');
+          stepResults.push({
+            stage: 'transparency',
+            status: 'failed',
+            duration_ms: formatDurationMs(performance.now() - transparencyStartedAt),
+            error: failure,
+          });
+        }
+      }
     }
   }
 
@@ -253,6 +323,7 @@ async function main() {
       rekor_public_key_set: Boolean(process.env.AUDIT_REKOR_PUBLIC_KEY_PEM_B64),
       tsa_ca_cert_path: safeString(process.env.AUDIT_RFC3161_CA_CERT_PATH || ''),
     },
+    preflight,
     sample: {
       request: sampleRequest,
       digest: reportDigest,
@@ -316,6 +387,12 @@ main().catch(async (err) => {
       rekor_base_url: summarizeUrl(process.env.AUDIT_REKOR_BASE_URL || ''),
       rekor_public_key_set: Boolean(process.env.AUDIT_REKOR_PUBLIC_KEY_PEM_B64),
       tsa_ca_cert_path: safeString(process.env.AUDIT_RFC3161_CA_CERT_PATH || ''),
+    },
+    preflight: {
+      status: 'SKIPPED',
+      failed_target: null,
+      failed_stage: null,
+      checks: [],
     },
     steps: [
       {
