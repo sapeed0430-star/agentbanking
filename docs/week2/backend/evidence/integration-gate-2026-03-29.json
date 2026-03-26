@@ -1,0 +1,349 @@
+{
+  "evidence_type": "integration-stability-gate",
+  "spec_version": "B-INTEGRATION-2300",
+  "run_id": "d6650c69-6ff0-4dff-badc-f9102fab753b",
+  "captured_at": "2026-03-26T12:47:41.066Z",
+  "output_path": "/Users/myungchoi/Documents/New project/docs/week2/backend/evidence/integration-gate-2026-03-29.json",
+  "base_url": "http://127.0.0.1:54398",
+  "overall": "PASS",
+  "key_ids": {
+    "receipt_id": "79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+    "report_id": "rpt_1774529261081_1fc7ad1b"
+  },
+  "steps": [
+    {
+      "step": "POST /verify",
+      "expected_status": 201,
+      "status": 201,
+      "ok": true,
+      "duration_ms": 14.22,
+      "body": {
+        "receipt": {
+          "receipt_id": "79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+          "report_id": "rpt_1774529261081_1fc7ad1b",
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "agent_id": "agent-integration-gate",
+          "operator_id": "operator-integration-gate",
+          "schema_version": "1.0.0",
+          "issued_at": "2026-03-26T12:47:41.081Z",
+          "verification_result": "pass",
+          "policy_version": "policy-2026.03",
+          "report_digest": {
+            "alg": "sha-256",
+            "value": "1b931622b8addec7589e84516390900828c12d0d5651eb0e5813b17fd57584ea"
+          },
+          "signature": {
+            "format": "jws-compact",
+            "alg": "EdDSA",
+            "kid": "dev-ed25519-key-2026q1",
+            "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRldi1lZDI1NTE5LWtleS0yMDI2cTEifQ.eyJpc3MiOiJhZ2VudGJhbmtpbmctbW9jay1zaWduZXIiLCJhdWQiOiJyZWNlaXB0IiwicmVjZWlwdF9pZCI6Ijc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNCIsImRpZ2VzdCI6eyJhbGciOiJzaGEtMjU2IiwidmFsdWUiOiIxYjkzMTYyMmI4YWRkZWM3NTg5ZTg0NTE2MzkwOTAwODI4YzEyZDBkNTY1MWViMGU1ODEzYjE3ZmQ1NzU4NGVhIn0sImlhdCI6IjIwMjYtMDMtMjZUMTI6NDc6NDEuMDgxWiIsImp0aSI6IjUzYTViODExLTkyNWUtNGQ4Ny04ZjdjLWUzOWM1ZTVhY2RlZCJ9.YjFlOGRmZjMyYzU5YjE4YTFkMjE2ZTFlZDgzZjhiYjk4ZGM0ZjA2MjNkZjRhYTRkZTZkZGYxZTUzYTY0OTI0Yw"
+          },
+          "timestamp_proof": {
+            "tsa_name": "dev-rfc3161-tsa",
+            "gen_time": "2026-03-26T12:47:41.081Z",
+            "token_b64": "dHNhOjc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNDoyMDI2LTAzLTI2VDEyOjQ3OjQxLjA4MVo6MWQ0NmNjNzMtNDVmYy00N2U5LWI3ZGEtMzFhZDdkMWQ1OTU5"
+          },
+          "transparency_proof": {
+            "log_id": "dev-transparency-log",
+            "entry_id": "entry_79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+            "leaf_hash": "d9fa5bc09bc7a8590aa552db67b9465ec574bfb211568ae2c41bff71de204fae",
+            "root_hash": "4839df4c07f4b1b47b365e5d4e4bdaa0804b816aa07192d85e8d672308c53316",
+            "tree_size": 1,
+            "inclusion_proof": [
+              "a8f7c6583ce5b4da7207d03fb5a3bfe7c60eeee128b51fd2ad58bb03b20e28f6"
+            ]
+          },
+          "evidence_refs": [
+            {
+              "kind": "input",
+              "uri": "https://evidence.agentbanking.dev/integration/d6650c69-6ff0-4dff-badc-f9102fab753b",
+              "digest": {
+                "alg": "sha-256",
+                "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            }
+          ],
+          "retention_until": "2032-03-26T12:47:41.081Z",
+          "verification_endpoint": "http://127.0.0.1:54398/receipts/79e003a2-897a-48d3-9f0f-75eb7ffc3df4/verify",
+          "links": {
+            "verify_url": "http://127.0.0.1:54398/receipts/79e003a2-897a-48d3-9f0f-75eb7ffc3df4/verify",
+            "report_url": "http://127.0.0.1:54398/reports/rpt_1774529261081_1fc7ad1b"
+          }
+        },
+        "audit_report": {
+          "report_id": "rpt_1774529261081_1fc7ad1b",
+          "summary": "Verification passed with deterministic checks.",
+          "findings": [],
+          "request_context": {
+            "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+            "agent_id": "agent-integration-gate",
+            "operator_id": "operator-integration-gate",
+            "policy_version": "policy-2026.03",
+            "issued_at": "2026-03-26T12:47:41.081Z"
+          },
+          "evidence_store": {
+            "record_id": "evr_63d94eb2-f89c-4e2b-bfb1-f22b0d85cdb5",
+            "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+            "evidence_count": 1,
+            "request_payload_digest": {
+              "alg": "sha-256",
+              "value": "7b141d0cb14c8e32adb67a202d812a8c81f456f1b3b27ae36d739afe5ad9428b"
+            }
+          }
+        }
+      }
+    },
+    {
+      "step": "GET /receipts/{id}",
+      "expected_status": 200,
+      "status": 200,
+      "ok": true,
+      "duration_ms": 1.46,
+      "body": {
+        "receipt_id": "79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+        "report_id": "rpt_1774529261081_1fc7ad1b",
+        "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+        "agent_id": "agent-integration-gate",
+        "operator_id": "operator-integration-gate",
+        "schema_version": "1.0.0",
+        "issued_at": "2026-03-26T12:47:41.081Z",
+        "verification_result": "pass",
+        "policy_version": "policy-2026.03",
+        "report_digest": {
+          "alg": "sha-256",
+          "value": "1b931622b8addec7589e84516390900828c12d0d5651eb0e5813b17fd57584ea"
+        },
+        "signature": {
+          "format": "jws-compact",
+          "alg": "EdDSA",
+          "kid": "dev-ed25519-key-2026q1",
+          "value": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRldi1lZDI1NTE5LWtleS0yMDI2cTEifQ.eyJpc3MiOiJhZ2VudGJhbmtpbmctbW9jay1zaWduZXIiLCJhdWQiOiJyZWNlaXB0IiwicmVjZWlwdF9pZCI6Ijc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNCIsImRpZ2VzdCI6eyJhbGciOiJzaGEtMjU2IiwidmFsdWUiOiIxYjkzMTYyMmI4YWRkZWM3NTg5ZTg0NTE2MzkwOTAwODI4YzEyZDBkNTY1MWViMGU1ODEzYjE3ZmQ1NzU4NGVhIn0sImlhdCI6IjIwMjYtMDMtMjZUMTI6NDc6NDEuMDgxWiIsImp0aSI6IjUzYTViODExLTkyNWUtNGQ4Ny04ZjdjLWUzOWM1ZTVhY2RlZCJ9.YjFlOGRmZjMyYzU5YjE4YTFkMjE2ZTFlZDgzZjhiYjk4ZGM0ZjA2MjNkZjRhYTRkZTZkZGYxZTUzYTY0OTI0Yw"
+        },
+        "timestamp_proof": {
+          "tsa_name": "dev-rfc3161-tsa",
+          "gen_time": "2026-03-26T12:47:41.081Z",
+          "token_b64": "dHNhOjc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNDoyMDI2LTAzLTI2VDEyOjQ3OjQxLjA4MVo6MWQ0NmNjNzMtNDVmYy00N2U5LWI3ZGEtMzFhZDdkMWQ1OTU5"
+        },
+        "transparency_proof": {
+          "log_id": "dev-transparency-log",
+          "entry_id": "entry_79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+          "leaf_hash": "d9fa5bc09bc7a8590aa552db67b9465ec574bfb211568ae2c41bff71de204fae",
+          "root_hash": "4839df4c07f4b1b47b365e5d4e4bdaa0804b816aa07192d85e8d672308c53316",
+          "tree_size": 1,
+          "inclusion_proof": [
+            "a8f7c6583ce5b4da7207d03fb5a3bfe7c60eeee128b51fd2ad58bb03b20e28f6"
+          ]
+        },
+        "evidence_refs": [
+          {
+            "kind": "input",
+            "uri": "https://evidence.agentbanking.dev/integration/d6650c69-6ff0-4dff-badc-f9102fab753b",
+            "digest": {
+              "alg": "sha-256",
+              "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+          }
+        ],
+        "retention_until": "2032-03-26T12:47:41.081Z",
+        "verification_endpoint": "http://127.0.0.1:54398/receipts/79e003a2-897a-48d3-9f0f-75eb7ffc3df4/verify",
+        "links": {
+          "verify_url": "http://127.0.0.1:54398/receipts/79e003a2-897a-48d3-9f0f-75eb7ffc3df4/verify",
+          "report_url": "http://127.0.0.1:54398/reports/rpt_1774529261081_1fc7ad1b"
+        }
+      }
+    },
+    {
+      "step": "GET /receipts/{id}/verify",
+      "expected_status": 200,
+      "status": 200,
+      "ok": true,
+      "duration_ms": 0.55,
+      "body": {
+        "receipt_id": "79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+        "verification_result": "pass",
+        "signature_valid": true,
+        "digest_valid": true,
+        "timestamp_valid": true,
+        "transparency_valid": true,
+        "verified_at": "2026-03-26T12:47:41.087Z"
+      }
+    },
+    {
+      "step": "GET /reports/{id}",
+      "expected_status": 200,
+      "status": 200,
+      "ok": true,
+      "duration_ms": 0.39,
+      "body": {
+        "report_id": "rpt_1774529261081_1fc7ad1b",
+        "summary": "Verification passed with deterministic checks.",
+        "findings": [],
+        "request_context": {
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "agent_id": "agent-integration-gate",
+          "operator_id": "operator-integration-gate",
+          "policy_version": "policy-2026.03",
+          "issued_at": "2026-03-26T12:47:41.081Z"
+        },
+        "evidence_store": {
+          "record_id": "evr_63d94eb2-f89c-4e2b-bfb1-f22b0d85cdb5",
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "evidence_count": 1,
+          "request_payload_digest": {
+            "alg": "sha-256",
+            "value": "7b141d0cb14c8e32adb67a202d812a8c81f456f1b3b27ae36d739afe5ad9428b"
+          }
+        }
+      }
+    },
+    {
+      "step": "GET /certificates/{receiptId}",
+      "expected_status": 200,
+      "status": 200,
+      "ok": true,
+      "duration_ms": 0.42,
+      "body": {
+        "certificate_id": "cert_a2baca2a-cd6d-4c02-a5a5-077290eb2e82",
+        "type": [
+          "VerifiableCredential",
+          "AuditReceiptCredential"
+        ],
+        "issuer": "did:web:agentbanking.dev",
+        "issuanceDate": "2026-03-26T12:47:41.081Z",
+        "credentialSubject": {
+          "receipt_id": "79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+          "report_id": "rpt_1774529261081_1fc7ad1b",
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "agent_id": "agent-integration-gate",
+          "operator_id": "operator-integration-gate",
+          "verification_result": "pass",
+          "report_digest": {
+            "alg": "sha-256",
+            "value": "1b931622b8addec7589e84516390900828c12d0d5651eb0e5813b17fd57584ea"
+          },
+          "timestamp_proof": {
+            "tsa_name": "dev-rfc3161-tsa",
+            "gen_time": "2026-03-26T12:47:41.081Z",
+            "token_b64": "dHNhOjc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNDoyMDI2LTAzLTI2VDEyOjQ3OjQxLjA4MVo6MWQ0NmNjNzMtNDVmYy00N2U5LWI3ZGEtMzFhZDdkMWQ1OTU5"
+          },
+          "transparency_proof": {
+            "log_id": "dev-transparency-log",
+            "entry_id": "entry_79e003a2-897a-48d3-9f0f-75eb7ffc3df4",
+            "leaf_hash": "d9fa5bc09bc7a8590aa552db67b9465ec574bfb211568ae2c41bff71de204fae",
+            "root_hash": "4839df4c07f4b1b47b365e5d4e4bdaa0804b816aa07192d85e8d672308c53316",
+            "tree_size": 1,
+            "inclusion_proof": [
+              "a8f7c6583ce5b4da7207d03fb5a3bfe7c60eeee128b51fd2ad58bb03b20e28f6"
+            ]
+          },
+          "findings_count": 0
+        },
+        "proof": {
+          "type": "DataIntegrityProof",
+          "created": "2026-03-26T12:47:41.081Z",
+          "cryptosuite": "eddsa-jcs-2022",
+          "verificationMethod": "did:web:agentbanking.dev#dev-ed25519-key-2026q1",
+          "jws": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCIsImtpZCI6ImRldi1lZDI1NTE5LWtleS0yMDI2cTEifQ.eyJpc3MiOiJhZ2VudGJhbmtpbmctbW9jay1zaWduZXIiLCJhdWQiOiJyZWNlaXB0IiwicmVjZWlwdF9pZCI6Ijc5ZTAwM2EyLTg5N2EtNDhkMy05ZjBmLTc1ZWI3ZmZjM2RmNCIsImRpZ2VzdCI6eyJhbGciOiJzaGEtMjU2IiwidmFsdWUiOiIxYjkzMTYyMmI4YWRkZWM3NTg5ZTg0NTE2MzkwOTAwODI4YzEyZDBkNTY1MWViMGU1ODEzYjE3ZmQ1NzU4NGVhIn0sImlhdCI6IjIwMjYtMDMtMjZUMTI6NDc6NDEuMDgxWiIsImp0aSI6IjUzYTViODExLTkyNWUtNGQ4Ny04ZjdjLWUzOWM1ZTVhY2RlZCJ9.YjFlOGRmZjMyYzU5YjE4YTFkMjE2ZTFlZDgzZjhiYjk4ZGM0ZjA2MjNkZjRhYTRkZTZkZGYxZTUzYTY0OTI0Yw"
+        }
+      }
+    },
+    {
+      "step": "POST /verify/offline",
+      "expected_status": 200,
+      "status": 200,
+      "ok": true,
+      "duration_ms": 1.36,
+      "body": {
+        "correlation_id": "136d3d3e-4df1-41b1-96c1-d0904938ec86",
+        "verification_result": "PASS",
+        "failed_codes": [],
+        "warnings": [
+          "Signature cryptographic verification skipped (no public key provided)."
+        ],
+        "checks": [
+          {
+            "name": "schema",
+            "ok": true,
+            "code": "SCHEMA_VALID",
+            "severity": "low",
+            "message": "Receipt schema validation passed."
+          },
+          {
+            "name": "digest",
+            "ok": true,
+            "code": "DIGEST_OK",
+            "severity": "low",
+            "message": "Report digest matched receipt digest."
+          },
+          {
+            "name": "signature",
+            "ok": true,
+            "code": "SIGNATURE_SKIPPED",
+            "severity": "medium",
+            "message": "Signature format validated (cryptographic verify skipped)."
+          },
+          {
+            "name": "timestamp_proof",
+            "ok": true,
+            "code": "TIMESTAMP_OK",
+            "severity": "low",
+            "message": "Timestamp proof basic validation passed."
+          },
+          {
+            "name": "transparency_proof",
+            "ok": true,
+            "code": "TRANSPARENCY_OK",
+            "severity": "low",
+            "message": "Transparency proof basic validation passed."
+          }
+        ]
+      }
+    },
+    {
+      "step": "GET /receipts/{id} forbidden check",
+      "expected_status": 403,
+      "status": 403,
+      "ok": false,
+      "duration_ms": 0.34,
+      "body": {
+        "code": "FORBIDDEN",
+        "message": "Operator is not allowed to access this receipt.",
+        "severity": "medium",
+        "category": "authz",
+        "retryable": false,
+        "correlation_id": "2a70a26a-a7a9-4d1a-bf03-7f6ae187766d",
+        "details": {
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "agent_id": "agent-integration-gate",
+          "operator_id": "operator-integration-gate",
+          "header_operator_id": "operator-mismatch"
+        },
+        "remediation": "Use credentials scoped to the receipt owner."
+      }
+    },
+    {
+      "step": "POST /verify replay check",
+      "expected_status": 409,
+      "status": 409,
+      "ok": false,
+      "duration_ms": 0.4,
+      "body": {
+        "code": "REQUEST_REPLAY_DETECTED",
+        "message": "Duplicate request_id detected.",
+        "severity": "high",
+        "category": "conflict",
+        "retryable": false,
+        "correlation_id": "f4a1e8f3-00a8-40cb-936a-0caefcff134f",
+        "details": {
+          "check": "request_replay",
+          "reason_code": "REQUEST_REPLAY_DETECTED",
+          "request_id": "req-int-d6650c69-6ff0-4dff-badc-f9102fab753b",
+          "agent_id": "agent-integration-gate",
+          "operator_id": "operator-integration-gate"
+        },
+        "remediation": "Use a new request_id for a new verification attempt."
+      }
+    }
+  ],
+  "failures": []
+}

@@ -75,6 +75,38 @@
       "freshness_date": "2026-03-26"
     },
     {
+      "id": "backend-integration-evidence-0329",
+      "category": "backend-integration",
+      "path": "docs/week2/backend/evidence/integration-gate-2026-03-29.json",
+      "owner_lane": "backend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-29"
+    },
+    {
+      "id": "ops-launch-dryrun-report-0330",
+      "category": "ops-dryrun-report",
+      "path": "docs/week2/operations/launch-dryrun-2026-03-30.md",
+      "owner_lane": "ops",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-30"
+    },
+    {
+      "id": "ops-launch-dryrun-script",
+      "category": "ops-dryrun-automation",
+      "path": "scripts/run-launch-dryrun.sh",
+      "owner_lane": "ops",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-30"
+    },
+    {
+      "id": "ops-launch-dryrun-validator",
+      "category": "ops-dryrun-validation",
+      "path": "scripts/check-launch-dryrun-report.js",
+      "owner_lane": "ops",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-30"
+    },
+    {
       "id": "frontend-operator-flow",
       "category": "frontend-flow",
       "path": "docs/week3/frontend/launch-critical-operator-flow-2026-03-27.md",

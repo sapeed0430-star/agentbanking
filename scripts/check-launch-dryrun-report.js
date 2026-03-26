@@ -4,8 +4,10 @@ import { constants } from 'node:fs';
 import { join } from 'node:path';
 
 function getReportArg() {
-  const arg = process.argv.find((v) => v.startsWith('--report='));
-  if (arg) return arg.split('=')[1];
+  const eqArg = process.argv.find((v) => v.startsWith('--report='));
+  if (eqArg) return eqArg.split('=')[1];
+  const idx = process.argv.findIndex((v) => v === '--report');
+  if (idx !== -1 && process.argv[idx + 1]) return process.argv[idx + 1];
   return 'docs/week2/operations/launch-dryrun-2026-03-26.md';
 }
 
