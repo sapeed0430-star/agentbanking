@@ -6,7 +6,7 @@ SHELL := /bin/bash
 .PHONY: release-start release-finish release-announce
 .PHONY: hotfix-start hotfix-finish
 .PHONY: push-main push-all
-.PHONY: daily-report-check contract-check evidence-check integration-check dryrun-check launch-dryrun
+.PHONY: daily-report-check contract-check evidence-check integration-check dryrun-check readiness-check launch-dryrun
 .PHONY: offline-verify keys-gen
 .PHONY: runtime-proof proof-suite
 
@@ -28,6 +28,7 @@ help:
 	@echo "make evidence-check      - validate launch evidence manifest integrity"
 	@echo "make integration-check   - capture integration stability gate evidence"
 	@echo "make dryrun-check        - validate launch dry-run report pass criteria"
+	@echo "make readiness-check     - run final readiness precheck"
 	@echo "make launch-dryrun       - run launch rehearsal checks and emit report"
 	@echo "make keys-gen            - generate local Ed25519 key pair for signer/rekor tests"
 	@echo "make offline-verify RECEIPT=... REPORT=... [SCHEMA=...] [PUBKEY=...] - run offline verification CLI"
@@ -161,6 +162,9 @@ integration-check:
 
 dryrun-check:
 	@npm run check:dryrun
+
+readiness-check:
+	@npm run check:readiness
 
 launch-dryrun:
 	@npm run dryrun:launch

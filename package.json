@@ -11,6 +11,7 @@
     "check:evidence": "node scripts/check-evidence-integrity.js",
     "check:integration": "node scripts/capture-integration-gate-evidence.js",
     "check:dryrun": "node scripts/check-launch-dryrun-report.js",
+    "check:readiness": "node scripts/check-final-readiness.js",
     "dryrun:launch": "bash scripts/run-launch-dryrun.sh",
     "live-proof:capture": "node scripts/capture-live-proof-evidence.js",
     "verify:offline": "node scripts/verify-receipt-cli.js",
