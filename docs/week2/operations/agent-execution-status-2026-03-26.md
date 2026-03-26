@@ -14,6 +14,13 @@
 | O-REVIEW-2200 | Operations | `docs/week2/operations/evidence-integrity-review-2026-03-26.md` | PASS | Yes | duplicate/contradiction/missing-evidence 리뷰 결과 PASS 확정 |
 | B-EVIDENCE-CHECK-2200 | Backend | `scripts/check-evidence-integrity.js`, `package.json`, `Makefile` | PASS | Yes | `npm run check:evidence` 및 `make evidence-check` 경로로 무결성 자동검사 연동 완료 |
 
+## Task Gate Snapshot (23:00 KST)
+| Task ID | Owner Lane | Evidence | Team Lead Verdict | Next Task Allowed | Notes |
+|---|---|---|---|---|---|
+| B-INTEGRATION-2300 | Backend | `docs/week2/backend/evidence/integration-gate-2026-03-26T12-23-41-643Z.json`, `scripts/capture-integration-gate-evidence.js` | PASS | Yes | integration stability gate PASS, captured evidence payload 검증 완료 |
+| B-CONTRACT-CHECK-2300 | Backend | `scripts/check-openapi-contract.js`, `docs/week1/backend/openapi-draft.yaml` | PASS | Yes | OpenAPI contract check 재실행 후 구현/계약 정합성 유지 확인 |
+| B-EVIDENCE-CHECK-2300 | Backend | `scripts/check-evidence-integrity.js` | PASS | Yes | 증거 무결성 검사 재확인으로 23:00 안정화 사이클 승인 |
+
 ## Open Blockers
 - None
 

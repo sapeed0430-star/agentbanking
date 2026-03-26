@@ -51,6 +51,30 @@
       "freshness_date": "2026-03-26"
     },
     {
+      "id": "backend-integration-evidence",
+      "category": "backend-integration",
+      "path": "docs/week2/backend/evidence/integration-gate-2026-03-26T12-23-41-643Z.json",
+      "owner_lane": "backend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-integration-report",
+      "category": "backend-integration-report",
+      "path": "docs/week2/backend/integration-stability-check-2026-03-26.md",
+      "owner_lane": "backend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-integration-script",
+      "category": "backend-automation",
+      "path": "scripts/capture-integration-gate-evidence.js",
+      "owner_lane": "backend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
       "id": "frontend-operator-flow",
       "category": "frontend-flow",
       "path": "docs/week3/frontend/launch-critical-operator-flow-2026-03-27.md",
