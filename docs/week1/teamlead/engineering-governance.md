@@ -82,3 +82,17 @@
 - 12-week daily reports folder: `docs/program/daily-tracking/`
 - Detailed 4-scope development plan: `docs/program/detailed-plan-product-architecture-integrity-receipt.md`
 - Agent ownership reinforcement v2: `docs/program/agent-ownership-plan-v2.md`
+
+## 7) Strict Sub-Agent Control Policy (2026-03-26 Update)
+
+1. Every sub-agent submission must pass 3 QA checks before Team Lead review:
+   - duplicate detection
+   - contradiction detection
+   - missing evidence detection
+2. Team Lead approval can only be issued when evidence is authentic and cross-document verdicts are consistent.
+3. Any crypto/integrity ambiguity is handled as immediate `BLOCK` with no waiver.
+4. `PARTIAL` does not unlock next tasks. Only explicit `PASS` unlocks lane progression.
+5. Launch target is fixed at `2026-04-01 (KST)` and is managed by a daily GO/NO-GO countdown:
+   - plan: `docs/program/launch-countdown-2026-04-01.md`
+   - strict validation baseline: `docs/week2/teamlead/strict-validation-policy-2026-03-26.md`
+   - sub-agent QA status note: `docs/week2/operations/subagent-reporting-qa-status-note-2026-03-26.md`
