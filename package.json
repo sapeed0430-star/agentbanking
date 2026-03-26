@@ -7,6 +7,7 @@
     "start": "node server.js",
     "test": "node --test",
     "check:daily": "node scripts/check-daily-report.js",
+    "check:contract": "node scripts/check-openapi-contract.js",
     "live-proof:capture": "node scripts/capture-live-proof-evidence.js",
     "verify:offline": "node scripts/verify-receipt-cli.js",
     "keys:gen": "node scripts/generate-ed25519-keypair.js",

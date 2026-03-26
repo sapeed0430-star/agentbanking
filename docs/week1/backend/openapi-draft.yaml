@@ -18,6 +18,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JwksResponse'
+  /admin/keys/rotate:
+    post:
+      operationId: rotateSigningKey
+      summary: Rotate signing keys.
+      tags: [Keys]
+      responses:
+        '200':
+          description: Key rotation completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminKeyRotationResponse'
+        '401':
+          description: Missing or invalid admin credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/keys/revoke:
+    post:
+      operationId: revokeSigningKey
+      summary: Revoke a signing key.
+      tags: [Keys]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminKeyRevokeRequest'
+      responses:
+        '200':
+          description: Key revoked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminKeyRevokeResponse'
+        '400':
+          description: Invalid request payload.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Missing or invalid admin credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Key cannot be revoked or was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /verify:
     post:
       operationId: createVerification
@@ -171,6 +225,73 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: Internal retrieval error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /receipts/{receiptId}/verify:
+    get:
+      operationId: verifyReceiptById
+      summary: Verify an issued receipt.
+      tags: [Receipts]
+      parameters:
+        - in: path
+          name: receiptId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Receipt verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptVerificationResponse'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Operator not allowed to access this receipt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Receipt not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /reports/{reportId}:
+    get:
+      operationId: getReportById
+      summary: Retrieve an audit report.
+      tags: [Reports]
+      parameters:
+        - in: path
+          name: reportId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditReport'
+        '401':
+          description: Missing or invalid authentication.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Report not found.
           content:
             application/json:
               schema:
@@ -333,6 +454,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/JwkKey'
+    AdminKeyRotationResponse:
+      type: object
+      required: [status, previous_kid, current_kid, rotated_at, jwks_keys]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        previous_kid:
+          type:
+            [string, 'null']
+        current_kid:
+          type: string
+        rotated_at:
+          type: string
+          format: date-time
+        jwks_keys:
+          type: integer
+    AdminKeyRevokeRequest:
+      type: object
+      required: [kid]
+      properties:
+        kid:
+          type: string
+    AdminKeyRevokeResponse:
+      type: object
+      required: [ok, kid, revoked_at]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        kid:
+          type: string
+        revoked_at:
+          type: string
+          format: date-time
     Certificate:
       type: object
       required:
@@ -477,6 +633,34 @@ components:
                 enum: [info, low, medium, high, critical]
               message:
                 type: string
+    ReceiptVerificationResponse:
+      type: object
+      required:
+        - receipt_id
+        - verification_result
+        - signature_valid
+        - digest_valid
+        - timestamp_valid
+        - transparency_valid
+        - verified_at
+      properties:
+        receipt_id:
+          type: string
+          format: uuid
+        verification_result:
+          type: string
+          enum: [pass]
+        signature_valid:
+          type: boolean
+        digest_valid:
+          type: boolean
+        timestamp_valid:
+          type: boolean
+        transparency_valid:
+          type: boolean
+        verified_at:
+          type: string
+          format: date-time
     EvidenceRef:
       type: object
       required: [kind, uri, digest]
