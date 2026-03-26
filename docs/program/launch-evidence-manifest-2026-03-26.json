@@ -1,0 +1,110 @@
+{
+  "manifest_version": "2026-03-26",
+  "generated_at_kst": "2026-03-26T21:12:27+09:00",
+  "artifacts": [
+    {
+      "id": "launch-countdown",
+      "category": "launch-gate-plan",
+      "path": "docs/program/launch-countdown-2026-04-01.md",
+      "owner_lane": "teamlead",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "daily-validation-report",
+      "category": "daily-validation",
+      "path": "docs/program/daily-tracking/2026-03-26.md",
+      "owner_lane": "teamlead",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-openapi-contract",
+      "category": "backend-contract",
+      "path": "docs/week1/backend/openapi-draft.yaml",
+      "owner_lane": "backend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-receipt-schema",
+      "category": "backend-schema",
+      "path": "docs/week1/backend/receipt-1.0.0.schema.json",
+      "owner_lane": "backend",
+      "required_for_gate": false,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-integrity-policy",
+      "category": "backend-policy",
+      "path": "docs/week2/backend/integrity-failure-decision-matrix.md",
+      "owner_lane": "backend",
+      "required_for_gate": false,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "backend-proof-runbook",
+      "category": "backend-runbook",
+      "path": "docs/week2/backend/proof-suite-runbook-2026-03-25.md",
+      "owner_lane": "backend",
+      "required_for_gate": false,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "frontend-operator-flow",
+      "category": "frontend-flow",
+      "path": "docs/week3/frontend/launch-critical-operator-flow-2026-03-27.md",
+      "owner_lane": "frontend",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "frontend-error-ui-contract",
+      "category": "frontend-contract",
+      "path": "docs/week2/frontend/error-code-ui-mapping-contract.md",
+      "owner_lane": "frontend",
+      "required_for_gate": false,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "marketing-claim-traceability",
+      "category": "marketing-traceability",
+      "path": "docs/week1/marketing/launch-claim-evidence-traceability-2026-03-27.md",
+      "owner_lane": "marketing",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "teamlead-hourly-validation",
+      "category": "teamlead-cycle",
+      "path": "docs/week2/teamlead/hourly-validation-cycle-2026-03-26.md",
+      "owner_lane": "teamlead",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "teamlead-progress-summary",
+      "category": "teamlead-summary",
+      "path": "docs/week2/teamlead/teamlead-progress-summary-2026-03-26.md",
+      "owner_lane": "teamlead",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "ops-execution-status",
+      "category": "ops-status",
+      "path": "docs/week2/operations/agent-execution-status-2026-03-26.md",
+      "owner_lane": "ops",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    },
+    {
+      "id": "ops-qa-policy",
+      "category": "ops-qa-policy",
+      "path": "docs/week2/operations/subagent-reporting-qa-status-note-2026-03-26.md",
+      "owner_lane": "ops",
+      "required_for_gate": true,
+      "freshness_date": "2026-03-26"
+    }
+  ]
+}

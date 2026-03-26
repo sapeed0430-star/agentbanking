@@ -6,7 +6,7 @@ SHELL := /bin/bash
 .PHONY: release-start release-finish release-announce
 .PHONY: hotfix-start hotfix-finish
 .PHONY: push-main push-all
-.PHONY: daily-report-check contract-check
+.PHONY: daily-report-check contract-check evidence-check
 .PHONY: offline-verify keys-gen
 .PHONY: runtime-proof proof-suite
 
@@ -25,6 +25,7 @@ help:
 	@echo "make push-all            - push all branches in .gitignore-safe baseline + release/hotfix"
 	@echo "make daily-report-check DATE=YYYY-MM-DD - validate one daily report"
 	@echo "make contract-check      - validate launch-critical OpenAPI contract coverage"
+	@echo "make evidence-check      - validate launch evidence manifest integrity"
 	@echo "make keys-gen            - generate local Ed25519 key pair for signer/rekor tests"
 	@echo "make offline-verify RECEIPT=... REPORT=... [SCHEMA=...] [PUBKEY=...] - run offline verification CLI"
 	@echo "make runtime-proof       - capture compose-first runtime proof with staged runtime diagnostics and node fallback"
@@ -148,6 +149,9 @@ daily-report-check:
 
 contract-check:
 	@npm run check:contract
+
+evidence-check:
+	@npm run check:evidence
 
 keys-gen:
 	@npm run keys:gen
