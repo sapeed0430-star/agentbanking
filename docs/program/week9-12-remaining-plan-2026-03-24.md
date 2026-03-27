@@ -35,6 +35,14 @@
 
 2. Added simulation asset (done):
 - `npm run mock:test` (service mock test script)
+- `npm run check:mock-baseline` (automated local baseline capture)
+
+3. Week11 execution update (2026-03-26):
+- Baseline evidence captured: `docs/week11/backend/evidence/mock-load-baseline-2026-03-26.json`
+- Baseline report: `docs/week11/backend/mock-load-baseline-2026-03-26.md` (`PASS`)
+- Penetration checklist: `docs/week11/security/penetration-checklist-2026-03-26.md` (`BLOCK`)
+- Team Lead validation: `docs/week11/teamlead/week11-validation-summary-2026-03-26.md`
+- Gate result: `1 PASS / 1 BLOCK` -> Week12 pilot-readiness remains `NO-GO` until penetration artifacts are added.
 
 ## 3) Service Mock Test ETA
 1. First executable mock test run:

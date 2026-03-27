@@ -1,0 +1,16 @@
+{
+  "base_url": "http://127.0.0.1:3300",
+  "total_requests": 100,
+  "concurrency": 10,
+  "success_rate": 100,
+  "latency_ms": {
+    "p50": 1.74,
+    "p95": 16.8,
+    "p99": 17.4,
+    "max": 44.02
+  },
+  "status_counts": {
+    "201": 100
+  },
+  "run_at": "2026-03-26T15:33:30.001Z"
+}

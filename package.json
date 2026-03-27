@@ -16,6 +16,7 @@
     "live-proof:capture": "node scripts/capture-live-proof-evidence.js",
     "verify:offline": "node scripts/verify-receipt-cli.js",
     "keys:gen": "node scripts/generate-ed25519-keypair.js",
-    "mock:test": "node scripts/mock-service-runner.js"
+    "mock:test": "node scripts/mock-service-runner.js",
+    "check:mock-baseline": "bash scripts/run-mock-baseline.sh"
   }
 }
