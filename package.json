@@ -18,6 +18,7 @@
     "verify:offline": "node scripts/verify-receipt-cli.js",
     "keys:gen": "node scripts/generate-ed25519-keypair.js",
     "mock:test": "node scripts/mock-service-runner.js",
-    "check:mock-baseline": "bash scripts/run-mock-baseline.sh"
+    "check:mock-baseline": "bash scripts/run-mock-baseline.sh",
+    "check:week12": "node scripts/check-week12-readiness.js"
   }
 }
