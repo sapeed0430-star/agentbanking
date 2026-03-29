@@ -26,8 +26,8 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon',
 };
 
-function json(res, status, payload) {
-  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
+function json(res, status, payload, headers = {}) {
+  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', ...headers });
   res.end(JSON.stringify(payload));
 }
 
@@ -92,6 +92,51 @@ function validateRuntimeSecurityConfig() {
   }
 }
 
+const DEFAULT_RATE_LIMIT_WINDOW_MS = 60_000;
+const DEFAULT_RATE_LIMIT_MAX = 60;
+
+function parsePositiveInt(value, fallback) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function resolveRateLimitConfig(windowMs = process.env.AUDIT_RATE_LIMIT_WINDOW_MS, max = process.env.AUDIT_RATE_LIMIT_MAX) {
+  return {
+    windowMs: parsePositiveInt(windowMs, DEFAULT_RATE_LIMIT_WINDOW_MS),
+    max: parsePositiveInt(max, DEFAULT_RATE_LIMIT_MAX),
+  };
+}
+
+function consumeRateLimit(rateLimits, scope, windowMs, max) {
+  const now = Date.now();
+  const existing = rateLimits.get(scope);
+  if (!existing || existing.resetAt <= now) {
+    const next = { count: 1, resetAt: now + windowMs };
+    rateLimits.set(scope, next);
+    return { limited: false, ...next };
+  }
+
+  if (existing.count >= max) {
+    return {
+      limited: true,
+      count: existing.count,
+      resetAt: existing.resetAt,
+      retryAfterMs: Math.max(0, existing.resetAt - now),
+    };
+  }
+
+  existing.count += 1;
+  return { limited: false, ...existing };
+}
+
+function operatorScope(body, headerOperatorId) {
+  return isNonEmptyString(body.operator_id)
+    ? body.operator_id
+    : isNonEmptyString(headerOperatorId)
+      ? headerOperatorId
+      : 'anonymous';
+}
+
 function parseJsonBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];
@@ -152,8 +197,15 @@ export function createAppServer({
   verifierEngine = createVerifierEngine(),
   receiptIssuer = createReceiptIssuer({ retentionYears: RETENTION_YEARS }),
   certificateIssuer = createCertificateIssuer(),
+  rateLimitWindowMs,
+  rateLimitMax,
 } = {}) {
   validateRuntimeSecurityConfig();
+
+  const { windowMs: defaultRateLimitWindowMs, max: defaultRateLimitMax } = resolveRateLimitConfig();
+  const effectiveRateLimitWindowMs = parsePositiveInt(rateLimitWindowMs, defaultRateLimitWindowMs);
+  const effectiveRateLimitMax = parsePositiveInt(rateLimitMax, defaultRateLimitMax);
+  const rateLimitByOperator = new Map();
 
   const receipts = new Map();
   const reports = new Map();
@@ -333,6 +385,38 @@ export function createAppServer({
             },
             'Use a token scoped to the same operator and retry.'
           )
+        );
+      }
+
+      const rateLimit = consumeRateLimit(
+        rateLimitByOperator,
+        operatorScope(body, headerOperatorId),
+        effectiveRateLimitWindowMs,
+        effectiveRateLimitMax
+      );
+      if (rateLimit.limited) {
+        const retryAfterSeconds = Math.max(1, Math.ceil(rateLimit.retryAfterMs / 1000));
+        return json(
+          res,
+          429,
+          errorResponse(
+            'RATE_LIMITED',
+            'Too many verification requests for this operator scope.',
+            'rate_limit',
+            true,
+            'low',
+            {
+              operator_id: operatorScope(body, headerOperatorId),
+              scope: 'operator',
+              limit: effectiveRateLimitMax,
+              window_ms: effectiveRateLimitWindowMs,
+              retry_after_ms: rateLimit.retryAfterMs,
+              retry_after_seconds: retryAfterSeconds,
+              reset_at: new Date(rateLimit.resetAt).toISOString(),
+            },
+            'Retry after the cool-down window and reduce request volume for this operator.'
+          ),
+          { 'Retry-After': String(retryAfterSeconds) }
         );
       }
 

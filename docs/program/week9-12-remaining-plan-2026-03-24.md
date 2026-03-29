@@ -44,6 +44,10 @@
 - Team Lead validation: `docs/week11/teamlead/week11-validation-summary-2026-03-26.md`
 - Gate result: `1 PASS / 1 BLOCK` -> Week12 pilot-readiness remains `NO-GO` until penetration artifacts are added.
 
+4. Week11 penetration evidence capture update (2026-03-29):
+- Penetration evidence capture is complete: `docs/week11/security/evidence/penetration-check-2026-03-29.json`
+- Penetration checklist recorded: `docs/week11/security/penetration-checklist-2026-03-29.md` (`PASS`)
+
 ## 3) Service Mock Test ETA
 1. First executable mock test run:
 - target: within 1-2 days (after staging env variables are set)

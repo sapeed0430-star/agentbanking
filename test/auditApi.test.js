@@ -106,6 +106,33 @@ test('POST /verify returns 409 on duplicate request_id', async (t) => {
   assert.equal(error.details.request_id, 'req-replay-001');
 });
 
+test('POST /verify returns 429 when operator exceeds the rate limit', async (t) => {
+  const server = createAppServer({ rateLimitWindowMs: 60_000, rateLimitMax: 1 });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => server.close());
+  const { port } = server.address();
+  const baseUrl = `http://127.0.0.1:${port}`;
+
+  const payload = verifyPayload({ request_id: 'req-rate-001' });
+  const first = await postVerify(baseUrl, payload);
+  assert.equal(first.status, 201);
+
+  const second = await postVerify(baseUrl, {
+    ...payload,
+    request_id: 'req-rate-002',
+  });
+  assert.equal(second.status, 429);
+  const error = await second.json();
+  assert.equal(error.code, 'RATE_LIMITED');
+  assert.equal(error.category, 'rate_limit');
+  assert.equal(error.retryable, true);
+  assert.equal(error.details.operator_id, payload.operator_id);
+  assert.equal(error.details.limit, 1);
+  assert.equal(error.details.window_ms, 60_000);
+  assert.ok(error.details.retry_after_ms >= 0);
+  assert.ok(Number(second.headers.get('retry-after')) >= 1);
+});
+
 test('POST /verify returns 422 integrity failure payload', async (t) => {
   const server = createAppServer();
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
