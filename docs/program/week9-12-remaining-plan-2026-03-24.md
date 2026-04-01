@@ -65,3 +65,9 @@
 1. Add OpenAPI alignment for JWKS/Certificate/admin key ops.
 2. Run mock test against running server and capture baseline metrics.
 3. Produce week10 operations drill artifacts and evidence links.
+
+6. Week12 runtime execution update (2026-03-29):
+- Pilot runtime execution log recorded: `docs/week12/operations/pilot-day1-execution-log-2026-03-29.md` (`PASS`)
+- SLA daily monitoring log recorded: `docs/week12/operations/sla-monitoring-daily-2026-03-29.md` (`PASS`)
+- Onboarding issue register recorded: `docs/week12/operations/onboarding-issue-register-2026-03-29.md` (`PASS`, blockers none)
+- Team Lead runtime validation recorded: `docs/week12/teamlead/week12-launch-ops-validation-2026-03-29.md` (`UNLOCKED`, `GO`)

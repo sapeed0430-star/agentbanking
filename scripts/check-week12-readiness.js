@@ -40,6 +40,10 @@ async function main() {
     sla: `docs/week12/operations/sla-acceptance-checklist-${date}.md`,
     goNoGo: `docs/week12/operations/ga-go-no-go-package-${date}.md`,
     teamlead: `docs/week12/teamlead/week12-governance-validation-${date}.md`,
+    runtimePilotLog: `docs/week12/operations/pilot-day1-execution-log-${date}.md`,
+    runtimeSlaLog: `docs/week12/operations/sla-monitoring-daily-${date}.md`,
+    issueRegister: `docs/week12/operations/onboarding-issue-register-${date}.md`,
+    teamleadRuntime: `docs/week12/teamlead/week12-launch-ops-validation-${date}.md`,
   };
 
   const errors = [];
@@ -68,6 +72,18 @@ async function main() {
   }
   if (contents.teamlead && !contents.teamlead.includes('- Recommendation: `GO`')) {
     errors.push(`teamlead recommendation is not GO (${files.teamlead})`);
+  }
+  if (contents.runtimePilotLog && !contents.runtimePilotLog.includes('- Verdict: `PASS`')) {
+    errors.push(`pilot day1 execution verdict is not PASS (${files.runtimePilotLog})`);
+  }
+  if (contents.runtimeSlaLog && !contents.runtimeSlaLog.includes('- Verdict: `PASS`')) {
+    errors.push(`sla monitoring daily verdict is not PASS (${files.runtimeSlaLog})`);
+  }
+  if (contents.teamleadRuntime && !contents.teamleadRuntime.includes('`UNLOCKED`')) {
+    errors.push(`teamlead runtime unlock decision is not UNLOCKED (${files.teamleadRuntime})`);
+  }
+  if (contents.teamleadRuntime && !contents.teamleadRuntime.includes('- Recommendation: `GO`')) {
+    errors.push(`teamlead runtime recommendation is not GO (${files.teamleadRuntime})`);
   }
 
   const evidenceToValidate = [];
